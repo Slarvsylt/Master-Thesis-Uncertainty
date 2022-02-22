@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Move : MonoBehaviour
+public interface Move
 {
-    void Effect(Unit target)
-    {
-        
-    }
+    bool requireTarget { get; set; }
+    float MPcost { get; set; }
 }

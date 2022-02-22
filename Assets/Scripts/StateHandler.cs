@@ -25,6 +25,4 @@ public class StateHandler : MonoBehaviour
         currentState = GameState.END;
     }
 
-
-
 }
