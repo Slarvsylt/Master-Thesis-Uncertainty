@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState {PLAYERONE, PLAYERTWO, END, START}
+public enum GameState {PLAYERONE, PLAYERTWO, END, START, NEXTTURN}
 
 public class StateHandler : MonoBehaviour
 {
