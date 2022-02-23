@@ -1,25 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class StatusHandler : MonoBehaviour
 {
 
     public static StatusHandler statusHandler;
 
+
     private void Awake()
     {
         statusHandler = this;
     }
-    // Start is called before the first frame update
-    void Start()
+
+    public event Action OnMove;
+    public void Move()
     {
-        
+        OnMove();
     }
 
-    // Update is called once per frame
-    void Update()
+    public event Action OnAttack;
+    public void Attack()
     {
-        
+        OnAttack();
     }
+
+    public event Action OnDefend;
+    public void Defend()
+    {
+        OnDefend();
+    }
+
+
+
 }

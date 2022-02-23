@@ -2030,8 +2030,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2132740209}
-  - component: {fileID: 2132740208}
-  - component: {fileID: 2132740207}
+  - component: {fileID: 2132740210}
   m_Layer: 0
   m_Name: Dajep
   m_TagString: Untagged
@@ -2039,47 +2038,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2132740207
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2132740206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfa15a771ceb98c4da0be2db80bae819, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <requireTarget>k__BackingField: 0
-  <MPcost>k__BackingField: 0
-  <MoveTypes>k__BackingField: 
-  <effects>k__BackingField: []
---- !u!114 &2132740208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2132740206}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9c9470e64f1c764c89105d3b07f058c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentHP: 0
-  currentMP: 0
-  maxHP: 15
-  maxMP: 15
-  hitMod: 1
-  critMod: 1
-  damageMod: 1
-  defMod: 1
-  CurrentEffects: []
-  CurrentEffectsPerm: []
-  Strengths: 
-  Weaknesses: 
-  AttackTypes: 
 --- !u!4 &2132740209
 Transform:
   m_ObjectHideFlags: 0
@@ -2095,6 +2053,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2132740210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2132740206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9c9470e64f1c764c89105d3b07f058c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHP: 0
+  currentMP: 0
+  maxHP: 10
+  maxMP: 10
+  hitMod: 1
+  critMod: 1
+  damageMod: 1
+  defMod: 1
+  Strengths: 03000000
+  Weaknesses: 01000000
+  AttackTypes: 02000000
 --- !u!1001 &6855708654479529767
 PrefabInstance:
   m_ObjectHideFlags: 0
