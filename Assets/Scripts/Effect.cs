@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Effect: MonoBehaviour, IEnumerable
+public interface Effect
 {
-    public UnitStates appliedState;
-    public Dictionary<string, float> modifiers;
-
-    public IEnumerator GetEnumerator()
-    {
-        return ((IEnumerable)modifiers).GetEnumerator();
-    }
+    string EffectName { get; set; }
+    void OnInflict();
+    void OnTurnBegin();
+    void OnTurnEnd();
+    void OnRemoved(); 
 }

@@ -1,0 +1,12 @@
+[
+	{
+		"RequireTarget": "true",
+		"MPcost": "5",
+		"MoveTypes":["MAGIC","MENTAL"],
+		"Effects": ["Sleeping"],
+		"ObjectSlug": "Sleep",
+		"Description": "Put the target to sleep",
+		"MoveName": "Sleep",
+		"Damage": "0"
+	}
+]

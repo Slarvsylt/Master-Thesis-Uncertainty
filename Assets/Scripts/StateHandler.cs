@@ -25,4 +25,14 @@ public class StateHandler : MonoBehaviour
         currentState = GameState.END;
     }
 
+    void StartTurn()
+    {
+
+    }
+
+    void EndTurn()
+    {
+
+    }
+
 }

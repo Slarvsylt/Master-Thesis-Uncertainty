@@ -1,0 +1,13 @@
+[
+	{
+		"RequireTarget": "true",
+		"MPcost": "5",
+		"MoveTypes":["MAGIC","MENTAL"],
+		"Effects": [
+			{
+				
+			}
+		
+		]
+	}
+]
