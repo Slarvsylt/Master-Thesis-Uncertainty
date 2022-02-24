@@ -1,18 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class TESTbuttons : MonoBehaviour
+public class TESTbuttons : MonoBehaviour, ISelectHandler
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Button testButton;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	void Start()
+	{
+		Button btn = testButton.GetComponent<Button>();
+		btn.onClick.AddListener(TaskOnClick);
+	}
+
+	void TaskOnClick()
+	{
+		SelectedObject.selectedObject = gameObject;
+		Debug.Log("You have clicked the button!");
+	}
+
+	public void OnSelect(BaseEventData eventData)
+	{
+		Debug.Log(this.gameObject.name + " was selected");
+	}
 }

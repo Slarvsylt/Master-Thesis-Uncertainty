@@ -6,7 +6,7 @@ public class Sleeping : MonoBehaviour, Effect
 {
 
     public UnitStates AppliedState { get; set; }
-    public Dictionary<string, float> Modifiers { get; set; }
+    public Dictionary<string, int> Modifiers { get; set; }
     public string EffectName { get; set; }
     public string Description { get; set; }
     public Unit target { get; set; }
