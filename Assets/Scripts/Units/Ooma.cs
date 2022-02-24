@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Dajep : Unit
+public class Ooma : Unit
 {
     void Start()
     {

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+/// <summary>
+/// Uneccessary
+/// </summary>
 public class StatusHandler : MonoBehaviour
 {
 
