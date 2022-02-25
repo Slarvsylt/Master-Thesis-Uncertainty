@@ -17,6 +17,7 @@ public class StatusEffect
 /// Handles attacks, defends, and moves made by units.
 /// Listens for actions made by units and player.
 /// Remembers which status effects are applied to which units and for how long.
+/// 
 /// </summary>
 public class GameSystem : MonoBehaviour
 {
@@ -29,23 +30,53 @@ public class GameSystem : MonoBehaviour
         gameSystem = this;
     }
 
-    public event Action OnMove;
-    public void Move()
+    public IEnumerator EndOfTurnEffects()
     {
-        OnMove();
+        yield return new WaitForSeconds(1);
     }
 
-    public event Action OnAttack;
-    public void Attack()
+    public IEnumerator StartOfturnEffects()
     {
-        OnAttack();
+        yield return new WaitForSeconds(1);
     }
 
-    public event Action OnDefend;
-    public void Defend()
+    public IEnumerator Attack(Unit chosenUnit, Unit Target)
     {
-        OnDefend();
+        chosenUnit.PerformAttack();
+        Target.TakeDamage(1);
+        yield return new WaitForSeconds(1);
     }
+
+    public IEnumerator Defend(Unit chosenUnit, Unit Target)
+    {
+        chosenUnit.Defend();
+        Target.defended = true;
+        yield return new WaitForSeconds(1);
+    }
+
+    public IEnumerator Move(Unit chosenUnit, Move chosenMove)
+    {
+        chosenUnit.MakeMove(chosenMove);
+        yield return new WaitForSeconds(1);
+    }
+
+    public IEnumerator Move(Unit chosenUnit, Move chosenMove, Unit Target)
+    {
+        chosenUnit.MakeMove(chosenMove);
+        Target.HitByMove(chosenMove);
+        yield return new WaitForSeconds(1);
+    }
+
+    public IEnumerator EndGame()
+    {
+        yield return new WaitForSeconds(1);
+    }
+
+    public IEnumerator StartGame()
+    {
+        yield return new WaitForSeconds(1);
+    }
+
 
     public event Action OnEndTurn;
     public void EndTurn()

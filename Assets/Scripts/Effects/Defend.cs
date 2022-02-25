@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sleeping : MonoBehaviour, Effect
+public class Defend : MonoBehaviour, Effect
 {
-
     public EffectMoment effectMoment { get; set; }
     public UnitStates AppliedState { get; set; }
     public Dictionary<string, int> Modifiers { get; set; }
@@ -33,7 +32,6 @@ public class Sleeping : MonoBehaviour, Effect
         AppliedState = UnitStates.ASLEEP;
         Modifiers.Add("Stunned for", 2);
         EffectName = "Sleeping";
-        effectMoment = EffectMoment.END;
         Description = "The unit is sleeping.";
     }
 }

@@ -30,8 +30,15 @@ public class Unit: MonoBehaviour
     public List<MoveType> Weaknesses;
     public List<MoveType> AttackTypes;
 
-    public void PerformAttack(Unit Target) { }
-    public void Defend(Unit Target) { }
+    public bool defended;
+
+    public void PerformAttack() 
+    {
+
+    }
+    public void Defend() 
+    {
+    }
     public void TakeDamage(float damage)
     {
         currentHP -= damage;
@@ -44,16 +51,26 @@ public class Unit: MonoBehaviour
         if (currentHP > maxHP)
             currentHP = maxHP;
     }
-    public void MakeMove(Move move) { }
-    public void Die() { }
-    public void HitByMove(Move move) { }
-    public void AddMoves()
+    public void MakeMove(Move move) 
     {
-
+        //Make move.
+    }
+    public void Die() 
+    {
+        //Inactivate unit and display corpse
+    }
+    public void HitByMove(Move move) 
+    {
+        //Hit by move
+        //Apply status effects
+    }
+    public void AddMoves(List<Move> moves)
+    {
+        Moves = moves;
     }
 
     public void CheckAndApplyCurrentEffects()
     {
-
+        //Maybe should be done elsewhere
     }
 }
