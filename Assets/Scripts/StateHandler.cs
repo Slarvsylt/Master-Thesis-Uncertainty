@@ -55,7 +55,7 @@ public class StateHandler : MonoBehaviour
         //Do stuff at the start of turn for active player
         //Wait for the player having done their decisions and have clicked the end turn button.
         StartCoroutine(GameSystem.gameSystem.StartOfturnEffects());
-        StartCoroutine(currentPlayer.ChooseAction());
+        //StartCoroutine(currentPlayer.ChooseAction());
         yield return new WaitForSeconds(2.0f);
     }
 

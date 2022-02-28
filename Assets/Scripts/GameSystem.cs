@@ -10,6 +10,7 @@ using UnityEngine.EventSystems;
 public class StatusEffect
 {
     public int TurnsSinceApplied;
+    public int MaxTurns;
     public Effect effect;
 }
 
@@ -23,7 +24,12 @@ public class GameSystem : MonoBehaviour
 {
     public static GameSystem gameSystem;
 
-    public Dictionary<Unit, StatusEffect> statusEffects;
+    public Dictionary<Unit, List<StatusEffect>> statusEffects;
+
+    public delegate void OnBattleMenuSelectionCallback();
+    public OnBattleMenuSelectionCallback onBattleMenuSelectionCallback;
+    public delegate void OnBattleSelectionModeConfirmCallback();
+    public OnBattleSelectionModeConfirmCallback onBattleSelectionModeConfirmCallback;
 
     private void Awake()
     {
@@ -38,6 +44,21 @@ public class GameSystem : MonoBehaviour
     public IEnumerator StartOfturnEffects()
     {
         yield return new WaitForSeconds(1);
+    }
+
+    public void IncreaseEffectsTurnCounter()
+    {
+        foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
+        {
+            for (int i = entry.Value.Count - 1; i >= 0; i--)
+            {
+                entry.Value[i].TurnsSinceApplied++;
+                if (entry.Value[i].TurnsSinceApplied >= entry.Value[i].MaxTurns)
+                {
+                    entry.Value.RemoveAt(i);
+                }
+            }
+        }
     }
 
     public IEnumerator Attack(Unit chosenUnit, Unit Target)

@@ -12,6 +12,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
+    private GameSystem gameSystem;
+
     [SerializeField]
     public List<Unit> Units;
     public Unit chosenUnit { get; set; }
@@ -19,9 +21,13 @@ public class Player : MonoBehaviour
 
     public GameObject attackButton;
     public GameObject defendButton;
+    public GameObject moveButton;
     public GameObject move1Button;
     public GameObject move2Button;
     public GameObject move3Button;
+    public GameObject Unit1Button;
+    public GameObject Unit2Button;
+    public GameObject Unit3Button;
     public GameObject cancelButton;
 
     public Func<Action<bool, bool>, IEnumerator> DoAction;
@@ -29,13 +35,23 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        attackButton.GetComponent<Button>().interactable = false;
+        attackButton.GetComponent<Button>().onClick.AddListener(ChooseAttack);
         defendButton.GetComponent<Button>().interactable = false;
+        moveButton.GetComponent<Button>().interactable = false;
         move1Button.GetComponent<Button>().interactable = false;
         move2Button.GetComponent<Button>().interactable = false;
         move3Button.GetComponent<Button>().interactable = false;
+        cancelButton.GetComponent<Button>().interactable = false;
 
-        
+        attackButton.GetComponent<Button>().interactable = false;
+        defendButton.GetComponent<Button>().interactable = false;
+        moveButton.GetComponent<Button>().interactable = false;
+        move1Button.GetComponent<Button>().interactable = false;
+        move2Button.GetComponent<Button>().interactable = false;
+        move3Button.GetComponent<Button>().interactable = false;
+        cancelButton.GetComponent<Button>().interactable = false;
+
+        gameSystem = GameSystem.gameSystem;
     }
 
     // Update is called once per frame
@@ -46,28 +62,25 @@ public class Player : MonoBehaviour
 
     public IEnumerator Attack(Unit Target)
     {
-        chosenUnit.PerformAttack();
-        Target.TakeDamage(1);
+        gameSystem.Attack(chosenUnit, Target);
         yield return new WaitForSeconds(1);
     }
 
     public IEnumerator Defend(Unit Target)
     {
-        chosenUnit.Defend();
-        Target.defended = true;
+        gameSystem.Defend(chosenUnit, Target);
         yield return new WaitForSeconds(1);
     }
 
     public IEnumerator Move()
     {
-        chosenUnit.MakeMove(chosenMove);
+        gameSystem.Move(chosenUnit,chosenMove);
         yield return new WaitForSeconds(1);
     }
 
     public IEnumerator Move(Unit Target)
     {
-        chosenUnit.MakeMove(chosenMove);
-        Target.HitByMove(chosenMove);
+        gameSystem.Move(chosenUnit, chosenMove, Target);
         yield return new WaitForSeconds(1);
     }
 
@@ -76,9 +89,18 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(1);
     }
 
-    public IEnumerator ChooseAction()
+    public void ChooseAction()
     {
-        yield return new WaitForSeconds(1);
+    }
+    public void ChooseAttack()
+    {
+    }
+    public void ChooseDefend()
+    {
+    }
+
+    public void ChooseMove()
+    {
     }
 
     public IEnumerator ChooseTargetAction()
