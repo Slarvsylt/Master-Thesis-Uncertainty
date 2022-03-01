@@ -71,7 +71,10 @@ public class StateHandler : MonoBehaviour
         Player tmp = currentPlayer;
         currentPlayer = inactivePlayer;
         inactivePlayer = currentPlayer;
+        inactivePlayer.gameObject.SetActive(false);
+        currentPlayer.gameObject.SetActive(true);
         ChangeState(GameState.PLAYERTURN);
+
         //Do stuff between turn and switch active player.
         //Switch active Player.
         //re-render sprites to indicate player switch.
