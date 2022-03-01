@@ -25,15 +25,17 @@ public class GameSystem : MonoBehaviour
     public static GameSystem gameSystem;
 
     public Dictionary<Unit, List<StatusEffect>> statusEffects;
-
-    public delegate void OnBattleMenuSelectionCallback();
-    public OnBattleMenuSelectionCallback onBattleMenuSelectionCallback;
-    public delegate void OnBattleSelectionModeConfirmCallback();
-    public OnBattleSelectionModeConfirmCallback onBattleSelectionModeConfirmCallback;
+    public LayerMask enemiesLayer;
+    public LayerMask friendsLayer;
 
     private void Awake()
     {
         gameSystem = this;
+    }
+
+    private void Start()
+    {
+        statusEffects = new Dictionary<Unit, List<StatusEffect>>();
     }
 
     public IEnumerator EndOfTurnEffects()

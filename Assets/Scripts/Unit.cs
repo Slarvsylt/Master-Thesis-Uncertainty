@@ -11,6 +11,8 @@ public class Unit: MonoBehaviour
     public float currentMP;
 
     [SerializeField]
+    public string Name;
+    [SerializeField]
     public float maxHP;
     [SerializeField]
     public float maxMP;
