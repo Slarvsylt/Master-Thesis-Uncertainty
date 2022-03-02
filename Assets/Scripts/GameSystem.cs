@@ -38,6 +38,31 @@ public class GameSystem : MonoBehaviour
         statusEffects = new Dictionary<Unit, List<StatusEffect>>();
     }
 
+    public void ApplyStatusEffect(Unit unit, Effect effect)
+    {
+        StatusEffect sf = new StatusEffect();
+        sf.effect = effect;
+        sf.MaxTurns = 1;
+        sf.TurnsSinceApplied = 0;
+
+        List<StatusEffect> list;
+
+        statusEffects.TryGetValue(unit, out list);
+
+        foreach(StatusEffect s in list)
+        {
+            if(s.effect == sf.effect)
+            {
+                //Already exist
+                return;
+            }
+        }
+
+        list.Add(sf);
+        statusEffects.Remove(unit);
+        statusEffects.Add(unit, list);
+    }
+
     public IEnumerator EndOfTurnEffects()
     {
         yield return new WaitForSeconds(1);

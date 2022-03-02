@@ -9,6 +9,7 @@ public class Unit: MonoBehaviour
 
     public float currentHP;
     public float currentMP;
+    public int index;
 
     [SerializeField]
     public string Name;

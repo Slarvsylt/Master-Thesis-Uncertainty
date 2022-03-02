@@ -8,7 +8,5 @@ public class Dajep : Unit
     {
         currentHP = maxHP;
         currentMP = maxMP;
-        List<Move> NewMoves = new List<Move> { MoveDatabase.Instance.GetMove("sleep"), MoveDatabase.Instance.GetMove("sleep2"), MoveDatabase.Instance.GetMove("sleep3") };
-        AddMoves(NewMoves);
     }
 }
