@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Defend : MonoBehaviour, Effect
 {
-    public EffectMoment effectMoment { get; set; }
     public UnitStates AppliedState { get; set; }
     public Dictionary<string, int> Modifiers { get; set; }
     public string EffectName { get; set; }

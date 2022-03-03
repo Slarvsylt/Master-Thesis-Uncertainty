@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Sleeping : MonoBehaviour, Effect
 {
-
-    public EffectMoment effectMoment { get; set; }
     public UnitStates AppliedState { get; set; }
     public Dictionary<string, int> Modifiers { get; set; }
     public string EffectName { get; set; }
@@ -17,7 +15,7 @@ public class Sleeping : MonoBehaviour, Effect
     }
     public void OnTurnBegin()
     {
-
+        //Stun Unit
     }
     public void OnTurnEnd()
     {
@@ -25,7 +23,7 @@ public class Sleeping : MonoBehaviour, Effect
     }
     public void OnRemoved()
     {
-
+        
     }
 
     void Start()
@@ -33,7 +31,6 @@ public class Sleeping : MonoBehaviour, Effect
         AppliedState = UnitStates.ASLEEP;
         Modifiers.Add("Stunned for", 2);
         EffectName = "Sleeping";
-        effectMoment = EffectMoment.END;
         Description = "The unit is sleeping.";
     }
 }

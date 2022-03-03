@@ -1005,6 +1005,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 584910449}
   m_CullTransparentMesh: 1
+--- !u!1 &641653336
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 641653338}
+  - component: {fileID: 641653337}
+  m_Layer: 0
+  m_Name: GameSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &641653337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 641653336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d418d497a05fc5941820cdbe426c0add, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemiesLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  friendsLayer:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!4 &641653338
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 641653336}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 252.45674, y: 221.44676, z: 1.1292851}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &674075550
 GameObject:
   m_ObjectHideFlags: 0
@@ -1692,10 +1742,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   opponent: {fileID: 1988396668}
+  gameSystem: {fileID: 641653337}
   hasClicked: 0
   isSelectionMode: 0
   onSelectionModeEnabled: 0
   keyDown: 0
+  isTurn: 0
   Units: []
   GameObjectUnits:
   - {fileID: 8102713940481322985, guid: c0a8dc180bab7a548b3bb0dc20ab3786, type: 3}
@@ -2401,7 +2453,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4381cff6ef3e15d49b759b24ed64541a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 912ab5a4271d1ff47a74ad336c2701c2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2884,7 +2936,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 95f3c721ac18b7140b48ba992a619a2b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 03b4a2b4c907bc14aa33ffb5c02b542f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3091,7 +3143,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 4381cff6ef3e15d49b759b24ed64541a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 36e4d00392c08944392fe195eb65068a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3632,10 +3684,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   opponent: {fileID: 952907903}
+  gameSystem: {fileID: 641653337}
   hasClicked: 0
   isSelectionMode: 0
   onSelectionModeEnabled: 0
   keyDown: 0
+  isTurn: 0
   Units: []
   GameObjectUnits:
   - {fileID: 8102713940481322985, guid: 3df7c134831079c46876044f0fbbac04, type: 3}
@@ -4067,6 +4121,7 @@ MonoBehaviour:
   currentState: 0
   currentPlayer: {fileID: 0}
   inactivePlayer: {fileID: 0}
+  gameSystem: {fileID: 641653337}
 --- !u!4 &2126716789
 Transform:
   m_ObjectHideFlags: 0

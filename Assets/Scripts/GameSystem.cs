@@ -31,6 +31,8 @@ public class GameSystem : MonoBehaviour
     private void Awake()
     {
         gameSystem = this;
+        QualitySettings.vSyncCount = 0;  // VSync must be disabled
+        Application.targetFrameRate = 45;
     }
 
     private void Start()
@@ -65,11 +67,25 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator EndOfTurnEffects()
     {
+        foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
+        {
+            for (int i = entry.Value.Count - 1; i >= 0; i--)
+            {
+                entry.Value[i].effect.OnTurnEnd();
+            }
+        }
         yield return new WaitForSeconds(1);
     }
 
     public IEnumerator StartOfturnEffects()
     {
+        foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
+        {
+            for (int i = entry.Value.Count - 1; i >= 0; i--)
+            {
+                entry.Value[i].effect.OnTurnBegin();
+            }
+        }
         yield return new WaitForSeconds(1);
     }
 
@@ -82,6 +98,7 @@ public class GameSystem : MonoBehaviour
                 entry.Value[i].TurnsSinceApplied++;
                 if (entry.Value[i].TurnsSinceApplied >= entry.Value[i].MaxTurns)
                 {
+                    Debug.Log("Removed effect: "+ entry.Value[i].effect.EffectName);
                     entry.Value.RemoveAt(i);
                 }
             }
@@ -108,11 +125,26 @@ public class GameSystem : MonoBehaviour
         yield return new WaitForSeconds(1);
     }
 
-    public IEnumerator Move(Unit chosenUnit, Move chosenMove, Unit Target)
+    public void Move(Unit chosenUnit, Move chosenMove, Unit Target)
     {
+        Debug.Log("Move!!");
         chosenUnit.MakeMove(chosenMove);
         Target.HitByMove(chosenMove);
-        yield return new WaitForSeconds(1);
+
+        foreach(String effect in chosenMove.Effects)
+        {
+            Debug.Log(effect);
+            Type t = Type.GetType(effect);
+            if (t != null)
+            {
+                StatusEffect e = new StatusEffect();
+                e.effect = (Effect)Activator.CreateInstance(t);
+                e.TurnsSinceApplied = 0;
+                e.MaxTurns = 2;
+                Debug.Log("StatusEffect: \n Turns:" + e.TurnsSinceApplied + "\n Max: " + e.MaxTurns + "\n Effect: " + e.effect.EffectName);
+            }   
+                //statusEffects.Add(Target, Activator.CreateInstance(t));
+        }
     }
 
     public IEnumerator EndGame()

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MenuButton : MonoBehaviour
 {
-    static bool isPressedAction = false;
 
     public Player currentPlayer;
 
@@ -13,13 +12,8 @@ public class MenuButton : MonoBehaviour
 
     void Start()
     {
-        currentPlayer.onBattleMenuSelectionCallback += TriggerAction;
     }
 
-    void TriggerAction()
-    {
-        isPressedAction = true;
-    }
 
     void Update()
     {

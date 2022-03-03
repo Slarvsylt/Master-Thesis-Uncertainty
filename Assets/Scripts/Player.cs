@@ -30,10 +30,11 @@ public class Player : MonoBehaviour
 {
     public Player opponent;
 
-    private GameSystem gameSystem;
+    public GameSystem gameSystem;
 
     public bool hasClicked = false;
     public bool isSelectionMode = false, onSelectionModeEnabled = false, keyDown = false;
+    public bool isTurn = false;
 
     [SerializeField]
     public List<Unit> Units;
@@ -123,7 +124,6 @@ public class Player : MonoBehaviour
             ChooseMove(move3Button, 2);
         });
 
-        doneButton.onClick.AddListener(Done);
         cancelButton.onClick.AddListener(Cancel);
 
         //Enemy1Button.onClick.AddListener(delegate { SelectedEnemy(Enemy1Button.gameObject.GetComponent<Unit>()); });
@@ -146,12 +146,10 @@ public class Player : MonoBehaviour
         Unit2Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit2Button, 1); });
         Unit3Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit3Button, 2); });
 
-        gameSystem = GameSystem.gameSystem;
         //onBattleSelectionModeConfirmCallback += ConfirmSelectionModeChoice;
         ordersToBeDone = new List<StoredOrder>();
         OneOrder = null;
         //LoadUnits();
-        Debug.Log("Starting " + gameObject.name);
         //PopulateField(); // remove later
     }
 
@@ -213,35 +211,6 @@ public class Player : MonoBehaviour
             isSelectionMode = false;
             hasClicked = true;
         }
-    }
-
-    public IEnumerator Attack(Unit Target)
-    {
-        gameSystem.Attack(chosenUnit, Target);
-        yield return new WaitForSeconds(1);
-    }
-
-    public IEnumerator Defend(Unit Target)
-    {
-        gameSystem.Defend(chosenUnit, Target);
-        yield return new WaitForSeconds(1);
-    }
-
-    public IEnumerator Move()
-    {
-        gameSystem.Move(chosenUnit,chosenMove);
-        yield return new WaitForSeconds(1);
-    }
-
-    public IEnumerator Move(Unit Target)
-    {
-        gameSystem.Move(chosenUnit, chosenMove, Target);
-        yield return new WaitForSeconds(1);
-    }
-
-    public IEnumerator SelectAction()
-    {
-        yield return new WaitForSeconds(1);
     }
 
     public void SelectedEnemy(Unit enemy)
@@ -334,7 +303,7 @@ public class Player : MonoBehaviour
         if (change.isOn)
         {
             Unit unit = Units[whichUnit];
-         //   Debug.Log("Clicked a Unit! " + whichUnit);
+            //Debug.Log("Clicked a Unit! " + whichUnit);
             ActionToggleGroup.SetAllTogglesOff();
             isSelectionMode = false;
             attackButton.interactable = true;
@@ -370,11 +339,36 @@ public class Player : MonoBehaviour
           //  Debug.DrawLine(unitToggles[ordersToBeDone[2].unit.index].gameObject.transform.localPosition, unitToggles[ordersToBeDone[2].Target.index].gameObject.transform.localPosition, Color.red, 5);
 
         }
-        else
-            Debug.Log("No Orders done!");
+
+        foreach (StoredOrder order in ordersToBeDone)
+        {
+            if(order.order == Order.ATTACK)
+            {
+                gameSystem.Attack(order.unit, order.Target);
+            }
+            if (order.order == Order.DEFEND)
+            {
+                gameSystem.Defend(order.unit, order.Target);
+            }
+            if (order.order == Order.MOVE)
+            {
+                gameSystem.Move(order.unit, order.move, order.Target);
+                Debug.Log("Cast " + order.move.MoveName);
+            }
+
+
+        }
 
         ResetStates();
-        stateHandler.ChangeState(GameState.NEXTTURN);
+
+        if (isTurn)
+        {
+            stateHandler.ChangeState(GameState.NEXTTURN);
+            doneButton.onClick.RemoveListener(Done);
+        }
+           
+        else
+            Debug.Log("isNotTurn");
     }
 
     private void ResetStates() 
@@ -391,6 +385,7 @@ public class Player : MonoBehaviour
         move1Button.interactable = false;
         move2Button.interactable = false;
         move3Button.interactable = false;
+        doneButton.interactable = false;
         //Debug.Log("Reseted");
     }
 
@@ -469,6 +464,11 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void DisableUnit(int index)
+    {
+        
+    }
+
     /// <summary>
     /// Method for populating the field with portraits of the players own Units.
     /// Should happen at the start of every turn before the player make their moves.
@@ -476,6 +476,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void PopulateField()
     {
+        doneButton.onClick.AddListener(Done);
         Unit1Button.gameObject.GetComponent<Image>().sprite = GameObjectUnits[0].GetComponent<Image>().sprite;
         Unit2Button.gameObject.GetComponent<Image>().sprite = GameObjectUnits[1].GetComponent<Image>().sprite;
         Unit3Button.gameObject.GetComponent<Image>().sprite = GameObjectUnits[2].GetComponent<Image>().sprite;
@@ -484,6 +485,6 @@ public class Player : MonoBehaviour
         Enemy2Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[1].GetComponent<Image>().sprite;
         Enemy3Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[2].GetComponent<Image>().sprite;
 
-        Debug.Log("Pop");
+        Debug.Log("Pop " + gameObject.name);
     }
 }

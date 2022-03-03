@@ -20,7 +20,7 @@ public class MoveDatabase : MonoBehaviour
     private void BuildDatabase()
     {
         Moves = JsonConvert.DeserializeObject<List<Move>>(Resources.Load<TextAsset>("JSON/Moves").ToString());
-        Debug.Log(Moves[0]);
+        //Debug.Log(Moves[0]);
     }
 
     public Move GetMove(string moveSlug)
