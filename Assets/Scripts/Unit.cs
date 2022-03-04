@@ -34,6 +34,7 @@ public class Unit: MonoBehaviour
     public List<MoveType> AttackTypes;
 
     public bool defended;
+    public bool stunned = false; 
 
     public void PerformAttack() 
     {

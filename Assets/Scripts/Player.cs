@@ -360,6 +360,7 @@ public class Player : MonoBehaviour
         }
 
         ResetStates();
+        opponent.ResetStates();
 
         if (isTurn)
         {
@@ -485,6 +486,6 @@ public class Player : MonoBehaviour
         Enemy2Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[1].GetComponent<Image>().sprite;
         Enemy3Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[2].GetComponent<Image>().sprite;
 
-        Debug.Log("Pop " + gameObject.name);
+        //Debug.Log("Pop " + gameObject.name);
     }
 }

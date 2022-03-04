@@ -11,6 +11,7 @@ public class StateHandler : MonoBehaviour
     public Player currentPlayer;
     public Player inactivePlayer;
     public GameSystem gameSystem;
+    public int TurnCounter = 0;
 
     void Awake()
     {
@@ -85,7 +86,7 @@ public class StateHandler : MonoBehaviour
         //Do stuff at the start of turn for active player
         //Wait for the player having done their decisions and have clicked the end turn button.
         // Debug.Log("Starting new turn and populating field :" + currentPlayer.gameObject.name);
-        Debug.Log("STARTING TURN for : " + currentPlayer.gameObject.name);
+        //Debug.Log("STARTING TURN for : " + currentPlayer.gameObject.name);
         currentPlayer.PopulateField();
         gameSystem.StartOfturnEffects();
         gameSystem.IncreaseEffectsTurnCounter();
@@ -103,8 +104,9 @@ public class StateHandler : MonoBehaviour
 
     void NextTurn()
     {
+        TurnCounter++;
         gameSystem.EndOfTurnEffects();
-       // Debug.Log("ENDING TURN for player: " + currentPlayer.gameObject.name);
+        Debug.Log("ENDING TURN for player: " + currentPlayer.gameObject.name);
         Player tmp = currentPlayer;
         currentPlayer = inactivePlayer;
         inactivePlayer = tmp;

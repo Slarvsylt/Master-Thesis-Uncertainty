@@ -44,12 +44,23 @@ public class GameSystem : MonoBehaviour
     {
         StatusEffect sf = new StatusEffect();
         sf.effect = effect;
-        sf.MaxTurns = 1;
+        sf.MaxTurns = 2;
         sf.TurnsSinceApplied = 0;
 
         List<StatusEffect> list;
 
-        statusEffects.TryGetValue(unit, out list);
+        if(!statusEffects.TryGetValue(unit, out list))
+        {
+            //No effects yet
+            list = new List<StatusEffect>();
+            statusEffects.Remove(unit);
+            sf.effect.affected = unit;
+            sf.effect.OnInflict();
+            list.Add(sf);
+            statusEffects.Add(unit, list);
+            Debug.Log("StatusEffect: \n Turns:" + sf.TurnsSinceApplied + "\n Max: " + sf.MaxTurns + "\n Effect: " + sf.effect.EffectName);
+            return;
+        }
 
         foreach(StatusEffect s in list)
         {
@@ -60,6 +71,10 @@ public class GameSystem : MonoBehaviour
             }
         }
 
+        Debug.Log("StatusEffect: \n Turns:" + sf.TurnsSinceApplied + "\n Max: " + sf.MaxTurns + "\n Effect: " + sf.effect.EffectName);
+
+        sf.effect.affected = unit;
+        sf.effect.OnInflict();
         list.Add(sf);
         statusEffects.Remove(unit);
         statusEffects.Add(unit, list);
@@ -96,9 +111,11 @@ public class GameSystem : MonoBehaviour
             for (int i = entry.Value.Count - 1; i >= 0; i--)
             {
                 entry.Value[i].TurnsSinceApplied++;
+                Debug.Log("Increasing turn counter for effect: " + entry.Value[i].effect.EffectName + " " + i);
                 if (entry.Value[i].TurnsSinceApplied >= entry.Value[i].MaxTurns)
                 {
                     Debug.Log("Removed effect: "+ entry.Value[i].effect.EffectName);
+                    entry.Value[i].effect.OnRemoved();
                     entry.Value.RemoveAt(i);
                 }
             }
@@ -127,23 +144,14 @@ public class GameSystem : MonoBehaviour
 
     public void Move(Unit chosenUnit, Move chosenMove, Unit Target)
     {
-        Debug.Log("Move!!");
+        //Debug.Log("Move!!");
         chosenUnit.MakeMove(chosenMove);
         Target.HitByMove(chosenMove);
 
-        foreach(String effect in chosenMove.Effects)
+        foreach(Effect effect in chosenMove.Effects)
         {
-            Debug.Log(effect);
-            Type t = Type.GetType(effect);
-            if (t != null)
-            {
-                StatusEffect e = new StatusEffect();
-                e.effect = (Effect)Activator.CreateInstance(t);
-                e.TurnsSinceApplied = 0;
-                e.MaxTurns = 2;
-                Debug.Log("StatusEffect: \n Turns:" + e.TurnsSinceApplied + "\n Max: " + e.MaxTurns + "\n Effect: " + e.effect.EffectName);
-            }   
-                //statusEffects.Add(Target, Activator.CreateInstance(t));
+            Debug.Log(effect.EffectName);
+            ApplyStatusEffect(Target, effect);
         }
     }
 
