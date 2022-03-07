@@ -38,14 +38,14 @@ public class Unit: MonoBehaviour
 
     public void PerformAttack() 
     {
-
+        //Play animation or something
     }
     public void Defend() 
     {
     }
     public void TakeDamage(float damage)
     {
-        currentHP -= damage;
+        currentHP -= damage*defMod;
         if (currentHP <= 0)
             Die();
     }
@@ -58,6 +58,7 @@ public class Unit: MonoBehaviour
     public void MakeMove(Move move) 
     {
         //Make move.
+        //Animation 
     }
     public void Die() 
     {

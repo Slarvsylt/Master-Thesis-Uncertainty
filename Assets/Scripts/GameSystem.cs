@@ -80,7 +80,7 @@ public class GameSystem : MonoBehaviour
         statusEffects.Add(unit, list);
     }
 
-    public IEnumerator EndOfTurnEffects()
+    public void EndOfTurnEffects()
     {
         foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
         {
@@ -89,10 +89,9 @@ public class GameSystem : MonoBehaviour
                 entry.Value[i].effect.OnTurnEnd();
             }
         }
-        yield return new WaitForSeconds(1);
     }
 
-    public IEnumerator StartOfturnEffects()
+    public void StartOfturnEffects()
     {
         foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
         {
@@ -101,7 +100,6 @@ public class GameSystem : MonoBehaviour
                 entry.Value[i].effect.OnTurnBegin();
             }
         }
-        yield return new WaitForSeconds(1);
     }
 
     public void IncreaseEffectsTurnCounter()
@@ -125,7 +123,14 @@ public class GameSystem : MonoBehaviour
     public IEnumerator Attack(Unit chosenUnit, Unit Target)
     {
         chosenUnit.PerformAttack();
-        Target.TakeDamage(1);
+        if (RandomChance(chosenUnit.hitMod * 0.9f))
+        {
+            Target.TakeDamage(1 * chosenUnit.damageMod);
+        }
+        else
+        {
+            //Miss and do something else
+        }
         yield return new WaitForSeconds(1);
     }
 
@@ -146,35 +151,24 @@ public class GameSystem : MonoBehaviour
     {
         //Debug.Log("Move!!");
         chosenUnit.MakeMove(chosenMove);
-        Target.HitByMove(chosenMove);
-
-        foreach(Effect effect in chosenMove.Effects)
+        if (RandomChance(0.9f * chosenUnit.hitMod))
         {
-            Debug.Log(effect.EffectName);
-            ApplyStatusEffect(Target, effect);
+            Target.HitByMove(chosenMove);
+
+            foreach (Effect effect in chosenMove.Effects)
+            {
+                Debug.Log(effect.EffectName);
+                ApplyStatusEffect(Target, effect);
+            }
+        }
+        else
+        {
+            //missed and do something else
         }
     }
-
-    public IEnumerator EndGame()
+    
+    public bool RandomChance(float chance)
     {
-        yield return new WaitForSeconds(1);
-    }
-
-    public IEnumerator StartGame()
-    {
-        yield return new WaitForSeconds(1);
-    }
-
-
-    public event Action OnEndTurn;
-    public void EndTurn()
-    {
-        OnEndTurn();
-    }
-
-    public event Action OnStartTurn;
-    public void StartTurn()
-    {
-        OnStartTurn();
+        return UnityEngine.Random.value >= chance;
     }
 }
