@@ -16,6 +16,7 @@ public class Sleeping : MonoBehaviour, Effect
     }
     public void OnTurnBegin()
     {
+        affected.stunned = true;
         //Stun Unit
     }
     public void OnTurnEnd()

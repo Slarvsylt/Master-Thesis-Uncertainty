@@ -120,30 +120,25 @@ public class GameSystem : MonoBehaviour
         }
     }
 
-    public IEnumerator Attack(Unit chosenUnit, Unit Target)
+    public void Attack(Unit chosenUnit, Unit Target)
     {
         chosenUnit.PerformAttack();
         if (RandomChance(chosenUnit.hitMod * 0.9f))
         {
-            Target.TakeDamage(1 * chosenUnit.damageMod);
+            Target.TakeDamage(100 * chosenUnit.damageMod);
+            Debug.Log(chosenUnit.Name + " atacc " + Target.Name);
         }
         else
         {
             //Miss and do something else
+            Debug.Log(chosenUnit.Name + " atacc " + Target.Name + " but MISSES!");
         }
-        yield return new WaitForSeconds(1);
     }
 
     public IEnumerator Defend(Unit chosenUnit, Unit Target)
     {
         chosenUnit.Defend();
         Target.defended = true;
-        yield return new WaitForSeconds(1);
-    }
-
-    public IEnumerator Move(Unit chosenUnit, Move chosenMove)
-    {
-        chosenUnit.MakeMove(chosenMove);
         yield return new WaitForSeconds(1);
     }
 
@@ -169,6 +164,6 @@ public class GameSystem : MonoBehaviour
     
     public bool RandomChance(float chance)
     {
-        return UnityEngine.Random.value >= chance;
+        return UnityEngine.Random.value <= chance;
     }
 }

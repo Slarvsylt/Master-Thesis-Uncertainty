@@ -34,7 +34,8 @@ public class Unit: MonoBehaviour
     public List<MoveType> AttackTypes;
 
     public bool defended;
-    public bool stunned = false; 
+    public bool stunned = false;
+    public bool isDead = false;
 
     public void PerformAttack() 
     {
@@ -60,8 +61,14 @@ public class Unit: MonoBehaviour
         //Make move.
         //Animation 
     }
+
+    /// <summary>
+    /// Tells the unit to die.
+    /// </summary>
     public void Die() 
     {
+        isDead = true;
+        Debug.Log(Name + " died!");
         //Inactivate unit and display corpse
     }
     public void HitByMove(Move move) 

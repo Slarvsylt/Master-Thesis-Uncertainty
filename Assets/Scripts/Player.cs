@@ -188,7 +188,7 @@ public class Player : MonoBehaviour
 
         if(OneOrder != null)
         {
-            someOrder = OneOrder.order.ToString();
+            someOrder = ordersToBeDone[0].order.ToString();
         }
         else
         {
@@ -199,7 +199,7 @@ public class Player : MonoBehaviour
             selectedEnemy = "No enemy targeted!";
         }
 
-        StatusText.text = selectedUnit + "\n" + someOrder + "\n" + selectedEnemy;
+        StatusText.text = selectedUnit + " " + someOrder + "s " + selectedEnemy;
     }
 
 
