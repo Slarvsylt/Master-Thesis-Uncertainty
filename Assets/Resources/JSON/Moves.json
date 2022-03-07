@@ -1,0 +1,32 @@
+[
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 0,
+		"Effects": ["Sleeping"], 
+		"ObjectSlug": "sleep",
+		"Description": "Put a unit to sleep.",
+		"MoveName": "Sleep",
+		"Damage": 0
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 0,
+		"Effects": ["Sleeping"], 
+		"ObjectSlug": "sleep3",
+		"Description": "Put a unit to sleep.",
+		"MoveName": "Sleep3",
+		"Damage": 0
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 0,
+		"Effects": ["Sleeping"], 
+		"ObjectSlug": "sleep2",
+		"Description": "Put a unit to sleep.",
+		"MoveName": "Sleep2",
+		"Damage": 0
+	}
+]
