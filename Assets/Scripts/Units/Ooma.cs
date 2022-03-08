@@ -4,9 +4,5 @@ using UnityEngine;
 
 public class Ooma : Unit
 {
-    void Start()
-    {
-        currentHP = maxHP;
-        currentMP = maxMP;
-    }
+
 }

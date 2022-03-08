@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
+using System.Linq;
 using UnityEngine;
 using TMPro;
 
@@ -32,12 +33,16 @@ public class Player : MonoBehaviour
 
     public GameSystem gameSystem;
 
+    public bool hasLost;
+
     public bool hasClicked = false;
     public bool isSelectionMode = false, onSelectionModeEnabled = false, keyDown = false;
     public bool isTurn = false;
 
     [SerializeField]
     public List<Unit> Units;
+    public bool[] deadIndexes = new bool[3];
+    public bool[] deadEnemies = new bool[3];
     public List<GameObject> GameObjectUnits;
     public List<StoredOrder> ordersToBeDone;
     public StoredOrderForOne OneOrder;
@@ -142,9 +147,9 @@ public class Player : MonoBehaviour
         //Unit2Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit1Button, Unit2Button.gameObject.GetComponent<Unit>()); });
         //Unit3Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit1Button, Unit3Button.gameObject.GetComponent<Unit>()); });
 
-        Unit1Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit1Button, 0); });
-        Unit2Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit2Button, 1); });
-        Unit3Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit3Button, 2); });
+        //Unit1Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit1Button, 0); });
+        //Unit2Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit2Button, 1); });
+        //Unit3Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit3Button, 2); });
 
         //onBattleSelectionModeConfirmCallback += ConfirmSelectionModeChoice;
         ordersToBeDone = new List<StoredOrder>();
@@ -156,6 +161,13 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (deadIndexes.All(x => x))
+        {
+            Debug.Log("Everyone is dead!");
+            hasLost = true;
+        }
+            
+
         if (isSelectionMode)
         {
             Enemy1Button.interactable = true;
@@ -168,7 +180,7 @@ public class Player : MonoBehaviour
             Enemy2Button.interactable = false;
             Enemy3Button.interactable = false;
         }
-        if (ordersToBeDone.Count > 0 || OneOrder != null)
+        if (ordersToBeDone.Count > 0)
         {
             doneButton.interactable = true;
         }
@@ -197,6 +209,10 @@ public class Player : MonoBehaviour
         if(selectedEnemy == null)
         {
             selectedEnemy = "No enemy targeted!";
+        }
+        if (!UnitToggleGroup.AnyTogglesOn())
+        {
+            ResetStates();
         }
 
         StatusText.text = selectedUnit + " " + someOrder + "s " + selectedEnemy;
@@ -276,49 +292,48 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void ChooseUnit(Toggle change, Unit unit)
-    {
-        if (change.isOn)
-        {
-          //  Debug.Log("Clicked a Unit!");
-            ActionToggleGroup.SetAllTogglesOff();
-            isSelectionMode = false;
-            attackButton.interactable = true;
-            defendButton.interactable = true;
-            move1Button.interactable = true;
-            move2Button.interactable = true;
-            move3Button.interactable = true;
-
-            move1Button.GetComponentInChildren<Text>().text = unit.Moves[0].MoveName;
-            move2Button.GetComponentInChildren<Text>().text = unit.Moves[1].MoveName;
-            move3Button.GetComponentInChildren<Text>().text = unit.Moves[2].MoveName;
-
-            cancelButton.interactable = true;
-            chosenUnit = unit;
-        }
-    }
-
     public void ChooseUnit(Toggle change, int whichUnit)
     {
+        ColorBlock cb = change.colors;
         if (change.isOn)
         {
+            cb.normalColor = new Color(255, 241, 124);
+
             Unit unit = Units[whichUnit];
+           // Debug.Log("Selected!" + unit.Name);
+            if (!unit.isDead)
+            {
+                ActionToggleGroup.SetAllTogglesOff();
+                isSelectionMode = false;
+                attackButton.interactable = true;
+                defendButton.interactable = true;
+                move1Button.interactable = true;
+                move2Button.interactable = true;
+                move3Button.interactable = true;
+
+                move1Button.GetComponentInChildren<Text>().text = unit.Moves[0].MoveName;
+                move2Button.GetComponentInChildren<Text>().text = unit.Moves[1].MoveName;
+                move3Button.GetComponentInChildren<Text>().text = unit.Moves[2].MoveName;
+
+                cancelButton.interactable = true;
+                chosenUnit = unit;
+            }
+            else
+            {
+                Debug.Log("dead" + unit.isDead);
+                change.interactable = false;
+                //deadIndexes[whichUnit] = true;
+                //Cannot select unit
+            }
             //Debug.Log("Clicked a Unit! " + whichUnit);
-            ActionToggleGroup.SetAllTogglesOff();
-            isSelectionMode = false;
-            attackButton.interactable = true;
-            defendButton.interactable = true;
-            move1Button.interactable = true;
-            move2Button.interactable = true;
-            move3Button.interactable = true;
 
-            move1Button.GetComponentInChildren<Text>().text = unit.Moves[0].MoveName;
-            move2Button.GetComponentInChildren<Text>().text = unit.Moves[1].MoveName;
-            move3Button.GetComponentInChildren<Text>().text = unit.Moves[2].MoveName;
-
-            cancelButton.interactable = true;
-            chosenUnit = unit;
         }
+        else
+        {
+        //    Debug.Log("DEselected!");
+            cb.normalColor = Color.white;
+        }
+        change.colors = cb;
     }
 
     public void Cancel()
@@ -329,16 +344,6 @@ public class Player : MonoBehaviour
 
     public void Done()
     {
-        if (ordersToBeDone.Count == 3 || OneOrder != null)
-        {
-          //  Debug.Log(ordersToBeDone[0].unit.Name + " performs " + ordersToBeDone[0].order.ToString() + " on " + ordersToBeDone[0].Target.Name);
-          //  Debug.DrawLine(unitToggles[ordersToBeDone[0].unit.index].gameObject.transform.localPosition, unitToggles[ordersToBeDone[0].Target.index].gameObject.transform.localPosition, Color.red, 5);
-          //  Debug.Log(ordersToBeDone[1].unit.Name + " performs " + ordersToBeDone[1].order.ToString() + " on " + ordersToBeDone[1].Target.Name);
-          //  Debug.DrawLine(unitToggles[ordersToBeDone[1].unit.index].gameObject.transform.localPosition, unitToggles[ordersToBeDone[1].Target.index].gameObject.transform.localPosition, Color.red, 5);
-           // Debug.Log(ordersToBeDone[2].unit.Name + " performs " + ordersToBeDone[2].order.ToString() + " on " + ordersToBeDone[2].Target.Name);
-          //  Debug.DrawLine(unitToggles[ordersToBeDone[2].unit.index].gameObject.transform.localPosition, unitToggles[ordersToBeDone[2].Target.index].gameObject.transform.localPosition, Color.red, 5);
-
-        }
 
         foreach (StoredOrder order in ordersToBeDone)
         {
@@ -352,8 +357,15 @@ public class Player : MonoBehaviour
             }
             if (order.order == Order.MOVE)
             {
-                gameSystem.Move(order.unit, order.move, order.Target);
-                Debug.Log("Cast " + order.move.MoveName);
+                if(order.unit.currentMP >= order.move.MPcost)
+                {
+                    gameSystem.Move(order.unit, order.move, order.Target);
+                    Debug.Log("Cast " + order.move.MoveName);
+                }
+                else
+                {
+                    Debug.Log("Not enough mp");
+                }
             }
 
 
@@ -366,6 +378,9 @@ public class Player : MonoBehaviour
         {
             stateHandler.ChangeState(GameState.NEXTTURN);
             doneButton.onClick.RemoveListener(Done);
+            Unit1Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit1Button, 0); });
+            Unit2Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit2Button, 1); });
+            Unit3Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit3Button, 2); });
         }
            
         else
@@ -381,6 +396,7 @@ public class Player : MonoBehaviour
         chosenMove = null;
         chosenUnit = null;
         isSelectionMode = false;
+        selectedEnemy = null;
         attackButton.interactable = false;
         defendButton.interactable = false;
         move1Button.interactable = false;
@@ -432,9 +448,16 @@ public class Player : MonoBehaviour
 
     public IEnumerator ChooseUnit(Unit unit)
     {
-        attackButton.GetComponent<Button>().interactable = true;
-        defendButton.GetComponent<Button>().interactable = true;
-        chosenUnit = unit;
+        if (!unit.isDead)
+        {
+            attackButton.GetComponent<Button>().interactable = true;
+            defendButton.GetComponent<Button>().interactable = true;
+            chosenUnit = unit;
+        }
+        else
+        {
+            //Cannot target
+        }
         yield return new WaitForSeconds(1);
     }
 
@@ -456,11 +479,11 @@ public class Player : MonoBehaviour
         }*/
         for (int i = 0; i < GameObjectUnits.Count; i++)
         {
-            GameObject unit = GameObjectUnits[i];
+            Unit unit = GameObject.Instantiate<Unit>(GameObjectUnits[i].GetComponent<Unit>());
             List<Move> NewMoves = new List<Move> { MoveDatabase.Instance.GetMove("sleep"), MoveDatabase.Instance.GetMove("sleep2"), MoveDatabase.Instance.GetMove("sleep3") };
-            unit.GetComponent<Unit>().AddMoves(NewMoves);
-            unit.GetComponent<Unit>().index = i;
-            Units.Add(unit.GetComponent<Unit>());
+            unit.AddMoves(NewMoves);
+            unit.index = i;
+            Units.Add(unit);
            // Debug.Log("Loaded a unit! " + unit.GetComponent<Unit>().Name + " plus moves!" + " index : " + i);
         }
     }
@@ -477,7 +500,33 @@ public class Player : MonoBehaviour
     /// </summary>
     public void PopulateField()
     {
+        Unit1Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit1Button, 0); });
+        Unit2Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit2Button, 1); });
+        Unit3Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit3Button, 2); });
         doneButton.onClick.AddListener(Done);
+        for (int i = 0; i < Units.Count; i++)
+        {
+            if (Units[i].isDead)
+            {
+                deadIndexes[i] = true;
+            }
+            else
+            {
+                deadIndexes[i] = false;
+            }
+        }
+
+        for (int i = 0; i < opponent.Units.Count; i++)
+        {
+            if (opponent.Units[i].isDead)
+            {
+                deadEnemies[i] = true;
+            }
+            else
+            {
+                deadEnemies[i] = false;
+            }
+        }
         Unit1Button.gameObject.GetComponent<Image>().sprite = GameObjectUnits[0].GetComponent<Image>().sprite;
         Unit2Button.gameObject.GetComponent<Image>().sprite = GameObjectUnits[1].GetComponent<Image>().sprite;
         Unit3Button.gameObject.GetComponent<Image>().sprite = GameObjectUnits[2].GetComponent<Image>().sprite;

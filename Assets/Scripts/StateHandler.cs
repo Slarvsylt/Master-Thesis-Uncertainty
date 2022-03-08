@@ -23,6 +23,21 @@ public class StateHandler : MonoBehaviour
         ChangeState(GameState.START);
     }
 
+    public void Update()
+    {
+        if(currentPlayer.hasLost || inactivePlayer.hasLost)
+        {
+            ChangeState(GameState.END);
+        }
+        else if (currentPlayer.hasLost)
+        {
+
+        } else if (inactivePlayer.hasLost)
+        {
+
+        }
+    }
+
     public void ChangeState(GameState newState)
     {
         currentState = newState;
@@ -78,6 +93,8 @@ public class StateHandler : MonoBehaviour
         //StartCoroutine(GameSystem.gameSystem.EndGame());
         //End Game
         //Display winner
+        Debug.Log("Someone lost!");
+        Application.Quit();
     }
 
     private void StartTurn()

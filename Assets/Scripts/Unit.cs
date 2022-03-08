@@ -34,9 +34,18 @@ public class Unit: MonoBehaviour
     public List<MoveType> AttackTypes;
 
     public bool defended;
+    [SerializeField]
     public bool stunned = false;
+    [SerializeField]
     public bool isDead = false;
 
+    void Start()
+    {
+        currentHP = maxHP;
+        currentMP = maxMP;
+        isDead = false;
+        //Debug.Log("New Unit " + Name);
+    }
     public void PerformAttack() 
     {
         //Play animation or something
@@ -58,6 +67,7 @@ public class Unit: MonoBehaviour
     }
     public void MakeMove(Move move) 
     {
+        currentMP -= move.MPcost;
         //Make move.
         //Animation 
     }
@@ -71,6 +81,14 @@ public class Unit: MonoBehaviour
         Debug.Log(Name + " died!");
         //Inactivate unit and display corpse
     }
+
+    public void Ressurect()
+    {
+        isDead = false;
+        currentHP = 1.0f;
+        Debug.Log(Name + " is alive once again!");
+    }
+    
     public void HitByMove(Move move) 
     {
         //Hit by move

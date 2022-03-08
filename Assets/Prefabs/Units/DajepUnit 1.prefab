@@ -89,8 +89,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9c9470e64f1c764c89105d3b07f058c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHP: 0
+  currentHP: -100
   currentMP: 0
+  index: 1
   Name: Dajep
   maxHP: 10
   maxMP: 10
@@ -102,3 +103,5 @@ MonoBehaviour:
   Weaknesses: 01000000
   AttackTypes: 02000000
   defended: 0
+  stunned: 0
+  isDead: 0
