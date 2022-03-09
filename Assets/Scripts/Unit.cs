@@ -9,7 +9,10 @@ public class Unit: MonoBehaviour
 
     public float currentHP;
     public float currentMP;
+    public int index;
 
+    [SerializeField]
+    public string Name;
     [SerializeField]
     public float maxHP;
     [SerializeField]
@@ -30,11 +33,19 @@ public class Unit: MonoBehaviour
     public List<MoveType> Weaknesses;
     public List<MoveType> AttackTypes;
 
-    public void PerformAttack(Unit Target) { }
-    public void Defend(Unit Target) { }
+    public bool defended;
+    public bool stunned = false; 
+
+    public void PerformAttack() 
+    {
+        //Play animation or something
+    }
+    public void Defend() 
+    {
+    }
     public void TakeDamage(float damage)
     {
-        currentHP -= damage;
+        currentHP -= damage*defMod;
         if (currentHP <= 0)
             Die();
     }
@@ -44,16 +55,27 @@ public class Unit: MonoBehaviour
         if (currentHP > maxHP)
             currentHP = maxHP;
     }
-    public void MakeMove(Move move) { }
-    public void Die() { }
-    public void HitByMove(Move move) { }
-    public void AddMoves()
+    public void MakeMove(Move move) 
     {
-
+        //Make move.
+        //Animation 
+    }
+    public void Die() 
+    {
+        //Inactivate unit and display corpse
+    }
+    public void HitByMove(Move move) 
+    {
+        //Hit by move
+        //Apply status effects
+    }
+    public void AddMoves(List<Move> moves)
+    {
+        Moves = moves;
     }
 
     public void CheckAndApplyCurrentEffects()
     {
-
+        //Maybe should be done elsewhere
     }
 }
