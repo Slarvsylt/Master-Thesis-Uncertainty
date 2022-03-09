@@ -135,9 +135,9 @@ public class Player : MonoBehaviour
        // Enemy2Button.onClick.AddListener(delegate { SelectedEnemy(Enemy2Button.gameObject.GetComponent<Unit>()); });
         //Enemy3Button.onClick.AddListener(delegate { SelectedEnemy(Enemy3Button.gameObject.GetComponent<Unit>()); });
 
-        Enemy1Button.onClick.AddListener(delegate { SelectedEnemy(0); });
-        Enemy2Button.onClick.AddListener(delegate { SelectedEnemy(1); });
-        Enemy3Button.onClick.AddListener(delegate { SelectedEnemy(2); });
+        //Enemy1Button.onClick.AddListener(delegate { SelectedEnemy(0); });
+        //Enemy2Button.onClick.AddListener(delegate { SelectedEnemy(1); });
+        //Enemy3Button.onClick.AddListener(delegate { SelectedEnemy(2); });
 
         Unit1Button.interactable = true;
         Unit2Button.interactable = true;
@@ -173,6 +173,31 @@ public class Player : MonoBehaviour
             Enemy1Button.interactable = true;
             Enemy2Button.interactable = true;
             Enemy3Button.interactable = true;
+
+            if (!opponent.Units[0].isDead)
+            {
+                Enemy1Button.interactable = true;
+            }
+            else
+            {
+                Enemy1Button.interactable = false;
+            }
+            if (!opponent.Units[1].isDead)
+            {
+                Enemy2Button.interactable = true;
+            }
+            else
+            {
+                Enemy2Button.interactable = false;
+            }
+            if (!opponent.Units[2].isDead)
+            {
+                Enemy3Button.interactable = true;
+            }
+            else
+            {
+                Enemy3Button.interactable = false;
+            }
         }
         else
         {
@@ -321,7 +346,6 @@ public class Player : MonoBehaviour
             else
             {
                 Debug.Log("dead" + unit.isDead);
-                change.interactable = false;
                 //deadIndexes[whichUnit] = true;
                 //Cannot select unit
             }
@@ -381,6 +405,9 @@ public class Player : MonoBehaviour
             Unit1Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit1Button, 0); });
             Unit2Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit2Button, 1); });
             Unit3Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit3Button, 2); });
+            Enemy1Button.onClick.RemoveListener(delegate { SelectedEnemy(0); });
+            Enemy2Button.onClick.RemoveListener(delegate { SelectedEnemy(1); });
+            Enemy3Button.onClick.RemoveListener(delegate { SelectedEnemy(2); });
         }
            
         else
@@ -503,6 +530,38 @@ public class Player : MonoBehaviour
         Unit1Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit1Button, 0); });
         Unit2Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit2Button, 1); });
         Unit3Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit3Button, 2); });
+
+        Enemy1Button.onClick.AddListener(delegate { SelectedEnemy(0); });
+        Enemy2Button.onClick.AddListener(delegate { SelectedEnemy(1); });
+        Enemy3Button.onClick.AddListener(delegate { SelectedEnemy(2); });
+        if (!Units[0].isDead)
+        {
+            Unit1Button.interactable = true;
+        }
+        else
+        {
+            Unit1Button.interactable = false;
+        }
+        if (!Units[1].isDead)
+        {
+            Unit2Button.interactable = true;
+        }
+        else
+        {
+            Unit2Button.interactable = false;
+        }
+        if (!Units[2].isDead)
+        {
+            Unit3Button.interactable = true;
+        }
+        else
+        {
+            Unit3Button.interactable = false;
+        }
+
+
+
+
         doneButton.onClick.AddListener(Done);
         for (int i = 0; i < Units.Count; i++)
         {

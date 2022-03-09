@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public enum GameState {PLAYERTURN, END, START, NEXTTURN, ENDTURN, STARTTURN}
 
@@ -12,6 +13,7 @@ public class StateHandler : MonoBehaviour
     public Player inactivePlayer;
     public GameSystem gameSystem;
     public int TurnCounter = 0;
+    public TextMeshProUGUI winText;
 
     void Awake()
     {
@@ -93,6 +95,14 @@ public class StateHandler : MonoBehaviour
         //StartCoroutine(GameSystem.gameSystem.EndGame());
         //End Game
         //Display winner
+        string m = "none";
+        if (currentPlayer.hasLost && inactivePlayer.hasLost)
+            m = "Both players ";
+        else if (currentPlayer.hasLost)
+            m = inactivePlayer.name;
+        else if (inactivePlayer.hasLost)
+            m = currentPlayer.name;
+        winText.text = m + " won!";
         Debug.Log("Someone lost!");
         Application.Quit();
     }

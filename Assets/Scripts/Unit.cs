@@ -55,6 +55,7 @@ public class Unit: MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
+        Debug.Log(name + " takes " + damage + " damage");
         currentHP -= damage*defMod;
         if (currentHP <= 0)
             Die();

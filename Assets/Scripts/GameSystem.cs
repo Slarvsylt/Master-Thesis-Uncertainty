@@ -126,12 +126,12 @@ public class GameSystem : MonoBehaviour
         if (RandomChance(chosenUnit.hitMod * 0.9f))
         {
             Target.TakeDamage(100 * chosenUnit.damageMod);
-            Debug.Log(chosenUnit.Name + " atacc " + Target.Name);
+            //Debug.Log(chosenUnit.Name + " atacc " + Target.Name);
         }
         else
         {
             //Miss and do something else
-            Debug.Log(chosenUnit.Name + " atacc " + Target.Name + " but MISSES!");
+            //Debug.Log(chosenUnit.Name + " atacc " + Target.Name + " but MISSES!");
         }
     }
 
