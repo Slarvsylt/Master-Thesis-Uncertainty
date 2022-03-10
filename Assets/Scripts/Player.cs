@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System;
+using System.Text;
 using System.Linq;
 using UnityEngine;
 using TMPro;
@@ -50,8 +51,11 @@ public class Player : MonoBehaviour
     public Order selectedOrder;
 
     public StateHandler stateHandler;
-    public Unit chosenUnit { get; set; }
-    public Move chosenMove { get; set; }
+
+    [SerializeField]
+    public Unit chosenUnit;
+    [SerializeField]
+    public Move chosenMove;
 
     public ToggleGroup ActionToggleGroup;
     public ToggleGroup UnitToggleGroup;
@@ -81,6 +85,10 @@ public class Player : MonoBehaviour
     private string selectedEnemy;
 
     public Func<Action<bool, bool>, IEnumerator> DoAction;
+
+    public TextMeshProUGUI UnitNameText;
+    public TextMeshProUGUI UnitTypeText;
+    public TextMeshProUGUI UnitActiveEffectsText;
 
     public delegate void OnBattleMenuSelectionCallback();
     public OnBattleMenuSelectionCallback onBattleMenuSelectionCallback;
@@ -349,6 +357,21 @@ public class Player : MonoBehaviour
 
                 cancelButton.interactable = true;
                 chosenUnit = unit;
+                UnitNameText.text = chosenUnit.Name;
+
+                StringBuilder sb = new StringBuilder();
+                foreach (MoveType move in chosenUnit.Strengths)
+                {
+                    sb.Append(move + "\n");
+                }
+                UnitTypeText.text = sb.ToString();
+
+                sb = new StringBuilder();
+                foreach (Effect effect in chosenUnit.CurrentEffects)
+                {
+                    sb.Append(effect.EffectName + "\n");
+                }
+                UnitActiveEffectsText.text = sb.ToString();
             }
             else
             {

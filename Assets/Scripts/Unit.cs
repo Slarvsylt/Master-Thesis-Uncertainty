@@ -27,7 +27,7 @@ public class Unit: MonoBehaviour
     public float defMod;
 
     public List<Move> Moves;
-    public List<Effect> CurrentEffects;
+    public List<Effect> CurrentEffects = new List<Effect>();
     public List<Effect> CurrentEffectsPerm;
     public List<MoveType> Strengths;
     public List<MoveType> Weaknesses;
