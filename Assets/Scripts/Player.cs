@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 using TMPro;
+using CodeMonkey.Utils;
 
 public enum BattleMenuOption {ATTACK, DEFEND, MOVE}
 public enum Order { ATTACK, DEFEND, MOVE, NONE}
@@ -111,6 +112,8 @@ public class Player : MonoBehaviour
         Enemy2Button.interactable = false;
         Enemy3Button.interactable = false;
 
+
+
         attackButton.onValueChanged.AddListener(delegate {
             ChooseAttack(attackButton);
         });
@@ -156,6 +159,10 @@ public class Player : MonoBehaviour
         OneOrder = null;
         //LoadUnits();
         //PopulateField(); // remove later
+
+        //Unit1Button.mouse
+
+        
     }
 
     // Update is called once per frame
