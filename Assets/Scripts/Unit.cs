@@ -26,9 +26,11 @@ public class Unit: MonoBehaviour
     [SerializeField]
     public float defMod;
 
+    [SerializeField]
     public List<Move> Moves;
     public List<Effect> CurrentEffects = new List<Effect>();
     public List<Effect> CurrentEffectsPerm;
+    [SerializeField]
     public List<MoveType> Strengths;
     public List<MoveType> Weaknesses;
     public List<MoveType> AttackTypes;

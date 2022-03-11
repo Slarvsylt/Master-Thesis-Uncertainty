@@ -120,28 +120,6 @@ public class Player : MonoBehaviour
         Enemy2Button.interactable = false;
         Enemy3Button.interactable = false;
 
-
-
-        attackButton.onValueChanged.AddListener(delegate {
-            ChooseAttack(attackButton);
-        });
-
-        defendButton.onValueChanged.AddListener(delegate {
-            ChooseDefend(defendButton);
-        });
-
-        move1Button.onValueChanged.AddListener(delegate {
-            ChooseMove(move1Button, 0);
-        });
-        move2Button.onValueChanged.AddListener(delegate {
-            ChooseMove(move2Button, 1);
-        });
-        move3Button.onValueChanged.AddListener(delegate {
-            ChooseMove(move3Button, 2);
-        });
-
-        cancelButton.onClick.AddListener(Cancel);
-
         //Enemy1Button.onClick.AddListener(delegate { SelectedEnemy(Enemy1Button.gameObject.GetComponent<Unit>()); });
        // Enemy2Button.onClick.AddListener(delegate { SelectedEnemy(Enemy2Button.gameObject.GetComponent<Unit>()); });
         //Enemy3Button.onClick.AddListener(delegate { SelectedEnemy(Enemy3Button.gameObject.GetComponent<Unit>()); });
@@ -324,10 +302,14 @@ public class Player : MonoBehaviour
     {
         if (change.isOn)
         {
-          //  Debug.Log("Clicked a Move!");
+            Debug.Log(change.name);
+            Debug.Log(i);
+            Debug.Log(chosenUnit.Moves.Count);
+            Debug.Log("Clicked a Move!");
 
             isSelectionMode = true;
             selectedOrder = Order.MOVE;
+
             chosenMove = chosenUnit.Moves[i];
         }
     }
@@ -337,7 +319,7 @@ public class Player : MonoBehaviour
         ColorBlock cb = change.colors;
         if (change.isOn)
         {
-            cb.normalColor = new Color(255, 241, 124);
+            cb.normalColor = new Color(255, 205, 0);
 
             Unit unit = Units[whichUnit];
            // Debug.Log("Selected!" + unit.Name);
@@ -357,6 +339,7 @@ public class Player : MonoBehaviour
 
                 cancelButton.interactable = true;
                 chosenUnit = unit;
+                Debug.Log(chosenUnit.Name);
                 UnitNameText.text = chosenUnit.Name;
 
                 StringBuilder sb = new StringBuilder();
@@ -367,10 +350,25 @@ public class Player : MonoBehaviour
                 UnitTypeText.text = sb.ToString();
 
                 sb = new StringBuilder();
-                foreach (Effect effect in chosenUnit.CurrentEffects)
+                if (gameSystem.statusEffects.ContainsKey(unit))
                 {
-                    sb.Append(effect.EffectName + "\n");
+                    if(gameSystem.statusEffects[unit].Count > 0)
+                    {
+                        foreach (StatusEffect effect in gameSystem.statusEffects[unit])
+                        {
+                            sb.Append(effect.effect.EffectName + "\n");
+                        }
+                    }
+                    else
+                    {
+                        sb.Append("No active effects.");
+                    }
                 }
+                else
+                {
+                    sb.Append("No active effects.");
+                }
+
                 UnitActiveEffectsText.text = sb.ToString();
             }
             else
@@ -438,6 +436,26 @@ public class Player : MonoBehaviour
             Enemy1Button.onClick.RemoveListener(delegate { SelectedEnemy(0); });
             Enemy2Button.onClick.RemoveListener(delegate { SelectedEnemy(1); });
             Enemy3Button.onClick.RemoveListener(delegate { SelectedEnemy(2); });
+
+            attackButton.onValueChanged.RemoveListener(delegate {
+                ChooseAttack(attackButton);
+            });
+
+            defendButton.onValueChanged.RemoveListener(delegate {
+                ChooseDefend(defendButton);
+            });
+
+            move1Button.onValueChanged.RemoveListener(delegate {
+                ChooseMove(move1Button, 0);
+            });
+            move2Button.onValueChanged.RemoveListener(delegate {
+                ChooseMove(move2Button, 1);
+            });
+            move3Button.onValueChanged.RemoveListener(delegate {
+                ChooseMove(move3Button, 2);
+            });
+
+            cancelButton.onClick.RemoveListener(Cancel);
         }
            
         else
@@ -534,12 +552,14 @@ public class Player : MonoBehaviour
             Units.Add(unit.GetComponent<Unit>());
             Debug.Log("Loaded a unit! " + unit.GetComponent<Unit>().Name + " plus moves!");
         }*/
+        Units = new List<Unit>();
         for (int i = 0; i < GameObjectUnits.Count; i++)
         {
             Unit unit = GameObject.Instantiate<Unit>(GameObjectUnits[i].GetComponent<Unit>());
-            List<Move> NewMoves = new List<Move> { MoveDatabase.Instance.GetMove("sleep"), MoveDatabase.Instance.GetMove("sleep2"), MoveDatabase.Instance.GetMove("sleep3") };
+            List<Move> NewMoves = new List<Move> { MoveDatabase.Instance.GetMove("fire"), MoveDatabase.Instance.GetMove("fart"), MoveDatabase.Instance.GetMove("headache") };
             unit.AddMoves(NewMoves);
             unit.index = i;
+            //Debug.Log(unit.Name);
             Units.Add(unit);
            // Debug.Log("Loaded a unit! " + unit.GetComponent<Unit>().Name + " plus moves!" + " index : " + i);
         }
@@ -564,6 +584,28 @@ public class Player : MonoBehaviour
         Enemy1Button.onClick.AddListener(delegate { SelectedEnemy(0); });
         Enemy2Button.onClick.AddListener(delegate { SelectedEnemy(1); });
         Enemy3Button.onClick.AddListener(delegate { SelectedEnemy(2); });
+
+        attackButton.onValueChanged.AddListener(delegate {
+            ChooseAttack(attackButton);
+        });
+
+        defendButton.onValueChanged.AddListener(delegate {
+            ChooseDefend(defendButton);
+        });
+
+        move1Button.onValueChanged.AddListener(delegate {
+            ChooseMove(move1Button, 0);
+        });
+        move2Button.onValueChanged.AddListener(delegate {
+            ChooseMove(move2Button, 1);
+        });
+        move3Button.onValueChanged.AddListener(delegate {
+            ChooseMove(move3Button, 2);
+        });
+
+        cancelButton.onClick.AddListener(Cancel);
+
+
         if (!Units[0].isDead)
         {
             Unit1Button.interactable = true;

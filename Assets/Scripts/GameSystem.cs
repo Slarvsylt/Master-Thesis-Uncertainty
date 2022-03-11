@@ -44,7 +44,7 @@ public class GameSystem : MonoBehaviour
     {
         StatusEffect sf = new StatusEffect();
         sf.effect = effect;
-        sf.MaxTurns = 2;
+        sf.MaxTurns = 3;
         sf.TurnsSinceApplied = 0;
 
         List<StatusEffect> list;

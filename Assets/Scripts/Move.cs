@@ -36,7 +36,7 @@ public class Move
             //Debug.Log("Effects/" + e);
             GameObject go = (GameObject)Resources.Load("Effects/" + e);
             Effect ef = go.GetComponent<Effect>();
-            //Debug.Log(ef.EffectName);
+            Debug.Log(ef.EffectName);
             this.Effects.Add(ef);
         }
         this.ObjectSlug = ObjectSlug;
