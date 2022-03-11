@@ -26,16 +26,28 @@ public class Unit: MonoBehaviour
     [SerializeField]
     public float defMod;
 
+    [SerializeField]
     public List<Move> Moves;
-    public List<Effect> CurrentEffects;
+    public List<Effect> CurrentEffects = new List<Effect>();
     public List<Effect> CurrentEffectsPerm;
+    [SerializeField]
     public List<MoveType> Strengths;
     public List<MoveType> Weaknesses;
     public List<MoveType> AttackTypes;
 
     public bool defended;
-    public bool stunned = false; 
+    [SerializeField]
+    public bool stunned = false;
+    [SerializeField]
+    public bool isDead = false;
 
+    void Start()
+    {
+        currentHP = maxHP;
+        currentMP = maxMP;
+        isDead = false;
+        //Debug.Log("New Unit " + Name);
+    }
     public void PerformAttack() 
     {
         //Play animation or something
@@ -45,6 +57,7 @@ public class Unit: MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
+        Debug.Log(name + " takes " + damage + " damage");
         currentHP -= damage*defMod;
         if (currentHP <= 0)
             Die();
@@ -57,13 +70,28 @@ public class Unit: MonoBehaviour
     }
     public void MakeMove(Move move) 
     {
+        currentMP -= move.MPcost;
         //Make move.
         //Animation 
     }
+
+    /// <summary>
+    /// Tells the unit to die.
+    /// </summary>
     public void Die() 
     {
+        isDead = true;
+        Debug.Log(Name + " died!");
         //Inactivate unit and display corpse
     }
+
+    public void Ressurect()
+    {
+        isDead = false;
+        currentHP = 1.0f;
+        Debug.Log(Name + " is alive once again!");
+    }
+    
     public void HitByMove(Move move) 
     {
         //Hit by move

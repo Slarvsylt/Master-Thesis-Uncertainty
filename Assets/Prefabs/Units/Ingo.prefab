@@ -67,7 +67,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 95f3c721ac18b7140b48ba992a619a2b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 912ab5a4271d1ff47a74ad336c2701c2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -103,3 +103,5 @@ MonoBehaviour:
   Weaknesses: 01000000
   AttackTypes: 02000000
   defended: 0
+  stunned: 0
+  isDead: 0

@@ -28,5 +28,35 @@
 		"Description": "Put a unit to sleep.",
 		"MoveName": "Sleep2",
 		"Damage": 0
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 5,
+		"Effects": ["Fire"], 
+		"ObjectSlug": "fire",
+		"Description": "Put a unit to sleep.",
+		"MoveName": "Fire",
+		"Damage": 1
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 7,
+		"Effects": ["BadSmell", "SonicBoom"], 
+		"ObjectSlug": "fart",
+		"Description": "Fart.",
+		"MoveName": "Fart",
+		"Damage": 1
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 8,
+		"Effects": ["Headache"], 
+		"ObjectSlug": "headache",
+		"Description": "Give headache",
+		"MoveName": "Headache",
+		"Damage": 0
 	}
 ]
