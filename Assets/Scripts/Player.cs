@@ -112,7 +112,6 @@ public class Player : MonoBehaviour
         move2Button.interactable = false;
         move3Button.interactable = false;
         cancelButton.interactable = false;
-        doneButton.interactable = false;
 
         Enemy1Button.interactable = false;
         Enemy2Button.interactable = false;
@@ -195,14 +194,6 @@ public class Player : MonoBehaviour
             Enemy1Button.interactable = false;
             Enemy2Button.interactable = false;
             Enemy3Button.interactable = false;
-        }
-        if (ordersToBeDone.Count > 0)
-        {
-            doneButton.interactable = true;
-        }
-        else
-        {
-            doneButton.interactable = false;
         }
 
         if(chosenUnit != null)
@@ -392,46 +383,75 @@ public class Player : MonoBehaviour
     public void Done()
     {
         StringBuilder sb = new StringBuilder();
-
-        foreach (StoredOrder order in ordersToBeDone)
+        if(ordersToBeDone.Count > 0)
         {
-            if(order.order == Order.ATTACK)
+            foreach (StoredOrder order in ordersToBeDone)
             {
-                sb.Append(order.unit.Name + "  " + order.order.ToString() + "  " + order.Target.Name + "! \n");
-                gameSystem.Attack(order.unit, order.Target);
-            }
-            if (order.order == Order.DEFEND)
-            {
-                sb.Append(order.unit.Name + "  " + order.order.ToString() + "  " + order.Target.Name + "! \n");
-                gameSystem.Defend(order.unit, order.Target);
-            }
-            if (order.order == Order.MOVE)
-            {
-                if(order.unit.currentMP >= order.move.MPcost)
+                if (order.order == Order.ATTACK)
                 {
-                    gameSystem.Move(order.unit, order.move, order.Target);
-                    sb.Append(order.unit.Name + " performs the move  " + order.move.MoveName + " on " + order.Target.Name + "! \n");
-                    Debug.Log("Cast " + order.move.MoveName);
+                    sb.Append(order.unit.Name + "  " + order.order.ToString() + "  " + order.Target.Name + "! \n");
+                    gameSystem.Attack(order.unit, order.Target);
                 }
-                else
+                if (order.order == Order.DEFEND)
                 {
-                    Debug.Log("Not enough mp");
+                    sb.Append(order.unit.Name + "  " + order.order.ToString() + "  " + order.Target.Name + "! \n");
+                    gameSystem.Defend(order.unit, order.Target);
+                }
+                if (order.order == Order.MOVE)
+                {
+                    if (order.unit.currentMP >= order.move.MPcost)
+                    {
+                        gameSystem.Move(order.unit, order.move, order.Target);
+                        sb.Append(order.unit.Name + " performs the move  " + order.move.MoveName + " on " + order.Target.Name + "! \n");
+                        Debug.Log("Cast " + order.move.MoveName);
+                    }
+                    else
+                    {
+                        Debug.Log("Not enough mp");
+                    }
                 }
             }
         }
+        else
+        {
+            sb.Append("No Orders given!");
+        }
+       
         OrderText.text = sb.ToString();
 
         ResetStates();
         opponent.ResetStates();
 
-        Unit1Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit1Button, 0); });
-        Unit2Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit2Button, 1); });
-        Unit3Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit3Button, 2); });
-        Enemy1Button.onClick.RemoveListener(delegate { SelectedEnemy(0); });
-        Enemy2Button.onClick.RemoveListener(delegate { SelectedEnemy(1); });
-        Enemy3Button.onClick.RemoveListener(delegate { SelectedEnemy(2); });
+        Unit1Button.onValueChanged.RemoveAllListeners();
+        Unit2Button.onValueChanged.RemoveAllListeners();
+        Unit3Button.onValueChanged.RemoveAllListeners();
 
-        attackButton.onValueChanged.RemoveListener(delegate {
+        Enemy1Button.onClick.RemoveAllListeners();
+        Enemy2Button.onClick.RemoveAllListeners();
+        Enemy3Button.onClick.RemoveAllListeners();
+
+        attackButton.onValueChanged.RemoveAllListeners();
+
+        defendButton.onValueChanged.RemoveAllListeners();
+
+        move1Button.onValueChanged.RemoveAllListeners();
+
+        move2Button.onValueChanged.RemoveAllListeners();
+
+        move3Button.onValueChanged.RemoveAllListeners();
+
+        //UnityEditor.Events.UnityEventTools.RemovePersistentListener(Unit1Button.onValueChanged, 0);
+        //UnityEditor.Events.UnityEventTools.RemovePersistentListener(Unit2Button.onValueChanged, 0);
+        //UnityEditor.Events.UnityEventTools.RemovePersistentListener(Unit3Button.onValueChanged, 0);
+
+        //Unit1Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit1Button, 0); });
+        //Unit2Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit2Button, 1); });
+        //Unit3Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit3Button, 2); });
+        //Enemy1Button.onClick.RemoveListener(delegate { SelectedEnemy(0); });
+        //Enemy2Button.onClick.RemoveListener(delegate { SelectedEnemy(1); });
+        //Enemy3Button.onClick.RemoveListener(delegate { SelectedEnemy(2); });
+
+        /*attackButton.onValueChanged.RemoveListener(delegate {
             ChooseAttack(attackButton);
         });
 
@@ -447,7 +467,7 @@ public class Player : MonoBehaviour
         });
         move3Button.onValueChanged.RemoveListener(delegate {
             ChooseMove(move3Button, 2);
-        });
+        });*/
 
         doneButton.onClick.RemoveListener(Done);
 
@@ -472,7 +492,6 @@ public class Player : MonoBehaviour
         move1Button.interactable = false;
         move2Button.interactable = false;
         move3Button.interactable = false;
-        doneButton.interactable = false;
         //Debug.Log("Reseted");
     }
 
