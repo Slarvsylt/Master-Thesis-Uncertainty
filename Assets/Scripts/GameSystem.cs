@@ -10,7 +10,6 @@ using UnityEngine.EventSystems;
 public class StatusEffect
 {
     public int TurnsSinceApplied;
-    public int MaxTurns;
     public Effect effect;
 }
 
@@ -44,7 +43,6 @@ public class GameSystem : MonoBehaviour
     {
         StatusEffect sf = new StatusEffect();
         sf.effect = effect;
-        sf.MaxTurns = 3;
         sf.TurnsSinceApplied = 0;
 
         List<StatusEffect> list;
@@ -58,7 +56,7 @@ public class GameSystem : MonoBehaviour
             sf.effect.OnInflict();
             list.Add(sf);
             statusEffects.Add(unit, list);
-            Debug.Log("StatusEffect: \n Turns:" + sf.TurnsSinceApplied + "\n Max: " + sf.MaxTurns + "\n Effect: " + sf.effect.EffectName);
+            Debug.Log("StatusEffect: \n Turns:" + sf.TurnsSinceApplied + "\n Max: " + sf.effect.maxTurns + "\n Effect: " + sf.effect.EffectName);
             return;
         }
 
@@ -71,7 +69,7 @@ public class GameSystem : MonoBehaviour
             }
         }
 
-        Debug.Log("StatusEffect: \n Turns:" + sf.TurnsSinceApplied + "\n Max: " + sf.MaxTurns + "\n Effect: " + sf.effect.EffectName);
+        Debug.Log("StatusEffect: \n Turns:" + sf.TurnsSinceApplied + "\n Max: " + sf.effect.maxTurns + "\n Effect: " + sf.effect.EffectName);
 
         sf.effect.affected = unit;
         sf.effect.OnInflict();
@@ -109,8 +107,7 @@ public class GameSystem : MonoBehaviour
             for (int i = entry.Value.Count - 1; i >= 0; i--)
             {
                 entry.Value[i].TurnsSinceApplied++;
-                Debug.Log("Increasing turn counter for effect: " + entry.Value[i].effect.EffectName + " " + i);
-                if (entry.Value[i].TurnsSinceApplied >= entry.Value[i].MaxTurns)
+                if (entry.Value[i].TurnsSinceApplied >= entry.Value[i].effect.maxTurns)
                 {
                     Debug.Log("Removed effect: "+ entry.Value[i].effect.EffectName);
                     entry.Value[i].effect.OnRemoved();

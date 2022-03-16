@@ -9,6 +9,7 @@ public class Sleeping : MonoBehaviour, Effect
     public string EffectName { get; set; } = "Sleeping";
     public string Description { get; set; } = "Schh... the Unit is sleeping... ";
     public Unit affected { get; set; }
+    public int maxTurns { get; set; } = 3;
     public void OnInflict()
     {
         affected.stunned = true;

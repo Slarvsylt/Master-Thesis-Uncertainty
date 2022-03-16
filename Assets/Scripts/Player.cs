@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
+using UnityEngine.Events;
 using System;
 using System.Text;
 using System.Linq;
@@ -90,10 +90,8 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI UnitTypeText;
     public TextMeshProUGUI UnitActiveEffectsText;
 
-    public delegate void OnBattleMenuSelectionCallback();
-    public OnBattleMenuSelectionCallback onBattleMenuSelectionCallback;
-    public delegate void OnBattleSelectionModeConfirmCallback();
-    public OnBattleSelectionModeConfirmCallback onBattleSelectionModeConfirmCallback;
+    public TextMeshProUGUI OrderText;
+
 
     private void Awake()
     {
@@ -303,9 +301,6 @@ public class Player : MonoBehaviour
         if (change.isOn)
         {
             Debug.Log(change.name);
-            Debug.Log(i);
-            Debug.Log(chosenUnit.Moves.Count);
-            Debug.Log("Clicked a Move!");
 
             isSelectionMode = true;
             selectedOrder = Order.MOVE;
@@ -340,7 +335,7 @@ public class Player : MonoBehaviour
                 cancelButton.interactable = true;
                 chosenUnit = unit;
                 Debug.Log(chosenUnit.Name);
-                UnitNameText.text = chosenUnit.Name;
+                UnitNameText.text = chosenUnit.Name + " " + chosenUnit.currentHP + "/" + chosenUnit.maxHP + " HP \n" + chosenUnit.currentMP +"/" +chosenUnit.maxMP+ "MP";
 
                 StringBuilder sb = new StringBuilder();
                 foreach (MoveType move in chosenUnit.Strengths)
@@ -396,15 +391,18 @@ public class Player : MonoBehaviour
 
     public void Done()
     {
+        StringBuilder sb = new StringBuilder();
 
         foreach (StoredOrder order in ordersToBeDone)
         {
             if(order.order == Order.ATTACK)
             {
+                sb.Append(order.unit.Name + "  " + order.order.ToString() + "  " + order.Target.Name + "! \n");
                 gameSystem.Attack(order.unit, order.Target);
             }
             if (order.order == Order.DEFEND)
             {
+                sb.Append(order.unit.Name + "  " + order.order.ToString() + "  " + order.Target.Name + "! \n");
                 gameSystem.Defend(order.unit, order.Target);
             }
             if (order.order == Order.MOVE)
@@ -412,6 +410,7 @@ public class Player : MonoBehaviour
                 if(order.unit.currentMP >= order.move.MPcost)
                 {
                     gameSystem.Move(order.unit, order.move, order.Target);
+                    sb.Append(order.unit.Name + " performs the move  " + order.move.MoveName + " on " + order.Target.Name + "! \n");
                     Debug.Log("Cast " + order.move.MoveName);
                 }
                 else
@@ -419,47 +418,43 @@ public class Player : MonoBehaviour
                     Debug.Log("Not enough mp");
                 }
             }
-
-
         }
+        OrderText.text = sb.ToString();
 
         ResetStates();
         opponent.ResetStates();
 
-        if (isTurn)
-        {
-            stateHandler.ChangeState(GameState.NEXTTURN);
-            doneButton.onClick.RemoveListener(Done);
-            Unit1Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit1Button, 0); });
-            Unit2Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit2Button, 1); });
-            Unit3Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit3Button, 2); });
-            Enemy1Button.onClick.RemoveListener(delegate { SelectedEnemy(0); });
-            Enemy2Button.onClick.RemoveListener(delegate { SelectedEnemy(1); });
-            Enemy3Button.onClick.RemoveListener(delegate { SelectedEnemy(2); });
+        Unit1Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit1Button, 0); });
+        Unit2Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit2Button, 1); });
+        Unit3Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit3Button, 2); });
+        Enemy1Button.onClick.RemoveListener(delegate { SelectedEnemy(0); });
+        Enemy2Button.onClick.RemoveListener(delegate { SelectedEnemy(1); });
+        Enemy3Button.onClick.RemoveListener(delegate { SelectedEnemy(2); });
 
-            attackButton.onValueChanged.RemoveListener(delegate {
-                ChooseAttack(attackButton);
-            });
+        attackButton.onValueChanged.RemoveListener(delegate {
+            ChooseAttack(attackButton);
+        });
 
-            defendButton.onValueChanged.RemoveListener(delegate {
-                ChooseDefend(defendButton);
-            });
+        defendButton.onValueChanged.RemoveListener(delegate {
+            ChooseDefend(defendButton);
+        });
 
-            move1Button.onValueChanged.RemoveListener(delegate {
-                ChooseMove(move1Button, 0);
-            });
-            move2Button.onValueChanged.RemoveListener(delegate {
-                ChooseMove(move2Button, 1);
-            });
-            move3Button.onValueChanged.RemoveListener(delegate {
-                ChooseMove(move3Button, 2);
-            });
+        move1Button.onValueChanged.RemoveListener(delegate {
+            ChooseMove(move1Button, 0);
+        });
+        move2Button.onValueChanged.RemoveListener(delegate {
+            ChooseMove(move2Button, 1);
+        });
+        move3Button.onValueChanged.RemoveListener(delegate {
+            ChooseMove(move3Button, 2);
+        });
 
-            cancelButton.onClick.RemoveListener(Cancel);
-        }
-           
-        else
-            Debug.Log("isNotTurn");
+        doneButton.onClick.RemoveListener(Done);
+
+        cancelButton.onClick.RemoveListener(Cancel);
+
+
+        stateHandler.ChangeState(GameState.NEXTTURN);
     }
 
     private void ResetStates() 
@@ -577,6 +572,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void PopulateField()
     {
+
         Unit1Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit1Button, 0); });
         Unit2Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit2Button, 1); });
         Unit3Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit3Button, 2); });

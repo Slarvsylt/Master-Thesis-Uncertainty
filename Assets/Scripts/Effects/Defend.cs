@@ -9,6 +9,7 @@ public class Defend : MonoBehaviour, Effect
     public string EffectName { get; set; }
     public string Description { get; set; }
     public Unit affected { get; set; }
+    public int maxTurns { get; set; } = 3;
     public void OnInflict()
     {
 

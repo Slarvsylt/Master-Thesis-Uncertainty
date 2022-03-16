@@ -9,6 +9,7 @@ public class SonicBoom : MonoBehaviour, Effect
     public string EffectName { get; set; } = "Sonic Boom";
     public string Description { get; set; } = "The unit has had their eardrums blown out. \"Huh? What was that?\" ";
     public Unit affected { get; set; }
+    public int maxTurns { get; set; } = 3;
     public void OnInflict()
     {
         affected.TakeDamage(2);

@@ -9,6 +9,7 @@ public class Headache : MonoBehaviour, Effect
     public string EffectName { get; set; } = "Headache";
     public string Description { get; set; } = "Ow, my head!";
     public Unit affected { get; set; }
+    public int maxTurns { get; set; } = 3;
     public void OnInflict()
     {
         Debug.Log("Giving the unit a headache: " + affected.Name);

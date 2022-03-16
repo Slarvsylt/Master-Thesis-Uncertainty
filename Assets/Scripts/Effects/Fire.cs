@@ -9,6 +9,7 @@ public class Fire : MonoBehaviour, Effect
     public string EffectName { get; set; } = "Fire";
     public string Description { get; set; } = "The unit is burning! Fuck!";
     public Unit affected { get; set; }
+    public int maxTurns { get; set; } = 3;
     public void OnInflict()
     {
         Debug.Log("Putting the unit on fire: " + affected.Name);

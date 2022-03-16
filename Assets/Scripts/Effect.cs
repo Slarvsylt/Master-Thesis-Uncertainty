@@ -7,6 +7,7 @@ public interface Effect
 {
     string EffectName { get; set; }
     public Unit affected { get; set; }
+    public int maxTurns { get; set; }
     void OnInflict();
     void OnTurnBegin();
     void OnTurnEnd();
