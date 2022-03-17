@@ -37,7 +37,7 @@ public class EnemyButton : MonoBehaviour
         {
             isShaking = true;
         }
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.5f);
 
         isShaking = false;
         rt.position = originalPos;

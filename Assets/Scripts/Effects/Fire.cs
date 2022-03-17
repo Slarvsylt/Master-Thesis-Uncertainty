@@ -16,7 +16,7 @@ public class Fire : MonoBehaviour, Effect
     }
     public void OnTurnBegin()
     {
-        Debug.Log("owie I'm on fire!");
+        Debug.Log("owie I'm on fire!" + affected.Name);
         affected.TakeDamage(1);
         //Stun Unit
     }

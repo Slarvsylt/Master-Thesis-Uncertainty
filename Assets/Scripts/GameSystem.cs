@@ -42,7 +42,7 @@ public class GameSystem : MonoBehaviour
         statusEffects = new Dictionary<Unit, List<StatusEffect>>();
     }
 
-    public void ApplyStatusEffect(Unit unit, Effect effect)
+    public IEnumerator ApplyStatusEffect(Unit unit, Effect effect)
     {
         StatusEffect sf = new StatusEffect();
         sf.effect = effect;
@@ -60,7 +60,7 @@ public class GameSystem : MonoBehaviour
             list.Add(sf);
             statusEffects.Add(unit, list);
             Debug.Log("StatusEffect: \n Turns:" + sf.TurnsSinceApplied + "\n Max: " + sf.effect.maxTurns + "\n Effect: " + sf.effect.EffectName);
-            return;
+            yield break;
         }
 
         foreach(StatusEffect s in list)
@@ -68,7 +68,7 @@ public class GameSystem : MonoBehaviour
             if(s.effect == sf.effect)
             {
                 //Already exist
-                return;
+                yield break;
             }
         }
 
@@ -81,29 +81,33 @@ public class GameSystem : MonoBehaviour
         statusEffects.Add(unit, list);
     }
 
-    public void EndOfTurnEffects()
+    public IEnumerator EndOfTurnEffects()
     {
         foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
         {
             for (int i = entry.Value.Count - 1; i >= 0; i--)
             {
                 entry.Value[i].effect.OnTurnEnd();
+               // yield return new WaitForSeconds(0.1f);
             }
         }
+        yield break;
     }
 
-    public void StartOfturnEffects()
+    public IEnumerator StartOfturnEffects()
     {
         foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
         {
             for (int i = entry.Value.Count - 1; i >= 0; i--)
             {
                 entry.Value[i].effect.OnTurnBegin();
+               // yield return new WaitForSeconds(0.1f);
             }
         }
+        yield break;
     }
 
-    public void IncreaseEffectsTurnCounter()
+    public IEnumerator IncreaseEffectsTurnCounter()
     {
         foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
         {
@@ -115,6 +119,7 @@ public class GameSystem : MonoBehaviour
                     Debug.Log("Removed effect: "+ entry.Value[i].effect.EffectName);
                     entry.Value[i].effect.OnRemoved();
                     entry.Value.RemoveAt(i);
+                    yield return new WaitForSeconds(0.1f);
                 }
             }
         }
@@ -127,8 +132,8 @@ public class GameSystem : MonoBehaviour
         {
             float damage = 1 * chosenUnit.damageMod;
             yield return StartCoroutine(DamageUnit(Target.index, damage));
-            Debug.Log("Damage!");
-            Target.TakeDamage(damage);
+            Debug.Log(Target.Name);
+            Target.TakeDamage2(damage);
             //Debug.Log(chosenUnit.Name + " atacc " + Target.Name);
         }
         else
@@ -145,7 +150,7 @@ public class GameSystem : MonoBehaviour
         yield return new WaitForSeconds(1);
     }
 
-    public void Move(Unit chosenUnit, Move chosenMove, Unit Target)
+    public IEnumerator Move(Unit chosenUnit, Move chosenMove, Unit Target)
     {
         //Debug.Log("Move!!");
         chosenUnit.MakeMove(chosenMove);
@@ -155,8 +160,7 @@ public class GameSystem : MonoBehaviour
 
             foreach (Effect effect in chosenMove.Effects)
             {
-                Debug.Log(effect.EffectName);
-                ApplyStatusEffect(Target, effect);
+                yield return StartCoroutine(ApplyStatusEffect(Target, effect));
             }
         }
         else
@@ -167,16 +171,16 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator DamageUnit(int index, float dam)
     {
-        Debug.Log("DamageUnit");
+       // Debug.Log("DamageUnit");
         PopUpTextController.CreatePopUpText(dam.ToString(),enemiesUI[index].transform);
         yield return StartCoroutine(enemiesUI[index].Shake());
     }
 
-    public IEnumerator DamageFriendlyUnit(int index, float dam)
+    public IEnumerator DamageFriendlyUnit(GameObject element, float dam)
     {
-        Debug.Log("DamageUnit");
-        PopUpTextController.CreatePopUpText(dam.ToString(), unitsUI[index].transform);
-        yield return StartCoroutine(unitsUI[index].Shake());
+      //  Debug.Log("DamageUnit");
+        PopUpTextController.CreatePopUpText(dam.ToString(), element.transform);
+        yield return StartCoroutine(element.GetComponent<EnemyButton>().Shake());
     }
 
     public bool RandomChance(float chance)

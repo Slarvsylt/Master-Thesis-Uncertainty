@@ -26,6 +26,8 @@ public class Unit: MonoBehaviour
     [SerializeField]
     public float defMod;
 
+    public GameObject attachedObject;
+
     [SerializeField]
     public List<Move> Moves;
     public List<Effect> CurrentEffects = new List<Effect>();
@@ -58,11 +60,20 @@ public class Unit: MonoBehaviour
     public void TakeDamage(float damage)
     {
         //Debug.Log(name + " takes " + damage + " damage");
-        //GameSystem.gameSystem.DamageFriendlyUnit();
+        StartCoroutine(GameSystem.gameSystem.DamageFriendlyUnit(attachedObject,damage));
         currentHP -= damage*defMod;
         if (currentHP <= 0)
             Die();
     }
+
+    public void TakeDamage2(float damage)
+    {
+        //Debug.Log(name + " takes " + damage + " damage");
+        currentHP -= damage * defMod;
+        if (currentHP <= 0)
+            Die();
+    }
+
     public void RestoreHP(float heal)
     {
         currentHP += heal;

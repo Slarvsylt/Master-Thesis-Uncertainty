@@ -52,10 +52,10 @@ public class StateHandler : MonoBehaviour
                 EndGame();
                 break;
             case GameState.PLAYERTURN:
-                StartTurn();
+                StartCoroutine(StartTurn());
                 break;
             case GameState.NEXTTURN:
-                NextTurn();
+                StartCoroutine(NextTurn());
                 break;
 
         }
@@ -107,7 +107,7 @@ public class StateHandler : MonoBehaviour
         Application.Quit();
     }
 
-    private void StartTurn()
+    private IEnumerator StartTurn()
     {
         //Remove defend
         //Do stuff at the start of turn for active player
@@ -115,8 +115,8 @@ public class StateHandler : MonoBehaviour
         // Debug.Log("Starting new turn and populating field :" + currentPlayer.gameObject.name);
         //Debug.Log("STARTING TURN for : " + currentPlayer.gameObject.name);
         currentPlayer.PopulateField();
-        gameSystem.StartOfturnEffects();
-        gameSystem.IncreaseEffectsTurnCounter();
+        yield return StartCoroutine(gameSystem.StartOfturnEffects());
+        yield return StartCoroutine(gameSystem.IncreaseEffectsTurnCounter());
         //StartCoroutine(GameSystem.gameSystem.StartOfturnEffects());
         //StartCoroutine(currentPlayer.ChooseAction());
  
@@ -129,10 +129,10 @@ public class StateHandler : MonoBehaviour
         ChangeState(GameState.NEXTTURN);
     }
 
-    void NextTurn()
+    IEnumerator NextTurn()
     {
         TurnCounter++;
-        gameSystem.EndOfTurnEffects();
+        yield return StartCoroutine(gameSystem.EndOfTurnEffects());
         //Debug.Log("ENDING TURN for player: " + currentPlayer.gameObject.name);
         Player tmp = currentPlayer;
         currentPlayer = inactivePlayer;

@@ -291,8 +291,6 @@ public class Player : MonoBehaviour
     {
         if (change.isOn)
         {
-            Debug.Log(change.name);
-
             isSelectionMode = true;
             selectedOrder = Order.MOVE;
 
@@ -325,7 +323,6 @@ public class Player : MonoBehaviour
 
                 cancelButton.interactable = true;
                 chosenUnit = unit;
-                Debug.Log(chosenUnit.Name);
                 UnitNameText.text = chosenUnit.Name + " " + chosenUnit.currentHP + "/" + chosenUnit.maxHP + " HP \n" + chosenUnit.currentMP +"/" +chosenUnit.maxMP+ "MP";
 
                 StringBuilder sb = new StringBuilder();
@@ -407,7 +404,7 @@ public class Player : MonoBehaviour
                 {
                     if (order.unit.currentMP >= order.move.MPcost)
                     {
-                        gameSystem.Move(order.unit, order.move, order.Target);
+                        yield return StartCoroutine(gameSystem.Move(order.unit, order.move, order.Target));
                         sb.Append(order.unit.Name + " performs the move  " + order.move.MoveName + " on " + order.Target.Name + "! \n");
                         Debug.Log("Cast " + order.move.MoveName);
                     }
@@ -689,6 +686,10 @@ public class Player : MonoBehaviour
         Units[1].transform.position = Unit2Button.transform.position;
         Units[2].transform.position = Unit3Button.transform.position;
 
+        Units[0].attachedObject = Unit1Button.gameObject;
+        Units[1].attachedObject = Unit2Button.gameObject;
+        Units[2].attachedObject = Unit3Button.gameObject;
+
         Enemy1Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[0].GetComponent<Image>().sprite;
         Enemy2Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[1].GetComponent<Image>().sprite;
         Enemy3Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[2].GetComponent<Image>().sprite;
@@ -696,6 +697,10 @@ public class Player : MonoBehaviour
         opponent.Units[0].transform.position = Enemy1Button.transform.position;
         opponent.Units[1].transform.position = Enemy2Button.transform.position;
         opponent.Units[2].transform.position = Enemy3Button.transform.position;
+
+        opponent.Units[0].attachedObject = Enemy1Button.gameObject;
+        opponent.Units[1].attachedObject = Enemy2Button.gameObject;
+        opponent.Units[2].attachedObject = Enemy3Button.gameObject;
 
         //Debug.Log("Pop " + gameObject.name);
     }
