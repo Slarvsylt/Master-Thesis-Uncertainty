@@ -133,7 +133,7 @@ public class StateHandler : MonoBehaviour
     {
         TurnCounter++;
         gameSystem.EndOfTurnEffects();
-        Debug.Log("ENDING TURN for player: " + currentPlayer.gameObject.name);
+        //Debug.Log("ENDING TURN for player: " + currentPlayer.gameObject.name);
         Player tmp = currentPlayer;
         currentPlayer = inactivePlayer;
         inactivePlayer = tmp;

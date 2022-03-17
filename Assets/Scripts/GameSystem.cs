@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 using UnityEngine.EventSystems;
 
@@ -24,14 +25,16 @@ public class GameSystem : MonoBehaviour
     public static GameSystem gameSystem;
 
     public Dictionary<Unit, List<StatusEffect>> statusEffects;
-    public LayerMask enemiesLayer;
-    public LayerMask friendsLayer;
+
+    public List<EnemyButton> unitsUI;
+    public List<EnemyButton> enemiesUI;
 
     private void Awake()
     {
         gameSystem = this;
         QualitySettings.vSyncCount = 0;  // VSync must be disabled
         Application.targetFrameRate = 45;
+        PopUpTextController.Initialize();
     }
 
     private void Start()
@@ -117,12 +120,15 @@ public class GameSystem : MonoBehaviour
         }
     }
 
-    public void Attack(Unit chosenUnit, Unit Target)
+    public IEnumerator Attack(Unit chosenUnit, Unit Target)
     {
         chosenUnit.PerformAttack();
         if (RandomChance(chosenUnit.hitMod * 0.9f))
         {
-            Target.TakeDamage(100 * chosenUnit.damageMod);
+            float damage = 1 * chosenUnit.damageMod;
+            yield return StartCoroutine(DamageUnit(Target.index, damage));
+            Debug.Log("Damage!");
+            Target.TakeDamage(damage);
             //Debug.Log(chosenUnit.Name + " atacc " + Target.Name);
         }
         else
@@ -158,7 +164,21 @@ public class GameSystem : MonoBehaviour
             //missed and do something else
         }
     }
-    
+
+    public IEnumerator DamageUnit(int index, float dam)
+    {
+        Debug.Log("DamageUnit");
+        PopUpTextController.CreatePopUpText(dam.ToString(),enemiesUI[index].transform);
+        yield return StartCoroutine(enemiesUI[index].Shake());
+    }
+
+    public IEnumerator DamageFriendlyUnit(int index, float dam)
+    {
+        Debug.Log("DamageUnit");
+        PopUpTextController.CreatePopUpText(dam.ToString(), unitsUI[index].transform);
+        yield return StartCoroutine(unitsUI[index].Shake());
+    }
+
     public bool RandomChance(float chance)
     {
         return UnityEngine.Random.value <= chance;

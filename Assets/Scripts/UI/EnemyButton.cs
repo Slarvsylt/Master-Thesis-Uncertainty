@@ -9,10 +9,13 @@ public class EnemyButton : MonoBehaviour
 
     [SerializeField]
     private float shake;
+
+    private Vector3 startPos;
     // Start is called before the first frame update
     void Start()
     {
         rt = gameObject.GetComponent<RectTransform>();
+        startPos = rt.position;
     }
 
     
@@ -21,8 +24,8 @@ public class EnemyButton : MonoBehaviour
         if (isShaking)
         {
             Vector3 newPos = Random.insideUnitSphere * (Time.deltaTime * shake);
-            newPos.z = rt.position.z;
-            rt.position = newPos;
+            newPos.z = 0;
+            rt.position = startPos + newPos;
         }
     }
 
@@ -34,8 +37,7 @@ public class EnemyButton : MonoBehaviour
         {
             isShaking = true;
         }
-
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
 
         isShaking = false;
         rt.position = originalPos;

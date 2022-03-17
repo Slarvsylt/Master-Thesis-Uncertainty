@@ -382,6 +382,11 @@ public class Player : MonoBehaviour
 
     public void Done()
     {
+        StartCoroutine(Done1());
+    }
+
+    public IEnumerator Done1()
+    {
         StringBuilder sb = new StringBuilder();
         if(ordersToBeDone.Count > 0)
         {
@@ -390,7 +395,8 @@ public class Player : MonoBehaviour
                 if (order.order == Order.ATTACK)
                 {
                     sb.Append(order.unit.Name + "  " + order.order.ToString() + "  " + order.Target.Name + "! \n");
-                    gameSystem.Attack(order.unit, order.Target);
+                    yield return StartCoroutine(gameSystem.Attack(order.unit, order.Target));
+                    //gameSystem.Attack(order.unit, order.Target);
                 }
                 if (order.order == Order.DEFEND)
                 {
@@ -472,7 +478,6 @@ public class Player : MonoBehaviour
         doneButton.onClick.RemoveListener(Done);
 
         cancelButton.onClick.RemoveListener(Cancel);
-
 
         stateHandler.ChangeState(GameState.NEXTTURN);
     }
@@ -574,7 +579,10 @@ public class Player : MonoBehaviour
             unit.AddMoves(NewMoves);
             unit.index = i;
             //Debug.Log(unit.Name);
+            unit.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            unit.GetComponent<Image>().enabled = false;
             Units.Add(unit);
+            
            // Debug.Log("Loaded a unit! " + unit.GetComponent<Unit>().Name + " plus moves!" + " index : " + i);
         }
     }
@@ -677,9 +685,17 @@ public class Player : MonoBehaviour
         Unit2Button.gameObject.GetComponent<Image>().sprite = GameObjectUnits[1].GetComponent<Image>().sprite;
         Unit3Button.gameObject.GetComponent<Image>().sprite = GameObjectUnits[2].GetComponent<Image>().sprite;
 
+        Units[0].transform.position = Unit1Button.transform.position;
+        Units[1].transform.position = Unit2Button.transform.position;
+        Units[2].transform.position = Unit3Button.transform.position;
+
         Enemy1Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[0].GetComponent<Image>().sprite;
         Enemy2Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[1].GetComponent<Image>().sprite;
         Enemy3Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[2].GetComponent<Image>().sprite;
+
+        opponent.Units[0].transform.position = Enemy1Button.transform.position;
+        opponent.Units[1].transform.position = Enemy2Button.transform.position;
+        opponent.Units[2].transform.position = Enemy3Button.transform.position;
 
         //Debug.Log("Pop " + gameObject.name);
     }
