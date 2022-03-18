@@ -196,33 +196,14 @@ public class Player : MonoBehaviour
             Enemy3Button.interactable = false;
         }
 
-        if(chosenUnit != null)
-        {
-            selectedUnit = chosenUnit.Name;
-        }
-        else
-        {
-            selectedUnit = "No Unit chosen!";
-        }
 
-        if(OneOrder != null)
-        {
-            someOrder = ordersToBeDone[0].order.ToString();
-        }
-        else
-        {
-            someOrder = "No Order given!";
-        }
-        if(selectedEnemy == null)
-        {
-            selectedEnemy = "No enemy targeted!";
-        }
         if (!UnitToggleGroup.AnyTogglesOn())
         {
             ResetStates();
         }
 
-        StatusText.text = selectedUnit + " " + someOrder + "s " + selectedEnemy;
+        showOrders();
+        //StatusText.text = selectedUnit + " " + someOrder + "s " + selectedEnemy;
     }
 
 
@@ -382,22 +363,57 @@ public class Player : MonoBehaviour
         StartCoroutine(Done1());
     }
 
-    public IEnumerator Done1()
+    private void showOrders()
     {
         StringBuilder sb = new StringBuilder();
-        if(ordersToBeDone.Count > 0)
+        if (ordersToBeDone.Count > 0)
         {
             foreach (StoredOrder order in ordersToBeDone)
             {
                 if (order.order == Order.ATTACK)
                 {
                     sb.Append(order.unit.Name + "  " + order.order.ToString() + "  " + order.Target.Name + "! \n");
+                }
+                if (order.order == Order.DEFEND)
+                {
+                    sb.Append(order.unit.Name + "  " + order.order.ToString() + "  " + order.Target.Name + "! \n");
+                }
+                if (order.order == Order.MOVE)
+                {
+                    if (order.unit.currentMP >= order.move.MPcost)
+                    {
+                        sb.Append(order.unit.Name + " performs the move  " + order.move.MoveName + " on " + order.Target.Name + "! \n");
+                    }
+                    else
+                    {
+                        sb.Append(order.unit.Name + " does not have enough MP to perform " + order.move.MoveName);
+                    }
+                }
+            }
+        }
+        else
+        {
+            sb.Append("No Orders given!");
+        }
+        OrderText.text = sb.ToString();
+    }
+
+    public IEnumerator Done1()
+    {
+       // StringBuilder sb = new StringBuilder();
+        if(ordersToBeDone.Count > 0)
+        {
+            foreach (StoredOrder order in ordersToBeDone)
+            {
+                if (order.order == Order.ATTACK)
+                {
+                   // sb.Append(order.unit.Name + "  " + order.order.ToString() + "  " + order.Target.Name + "! \n");
                     yield return StartCoroutine(gameSystem.Attack(order.unit, order.Target));
                     //gameSystem.Attack(order.unit, order.Target);
                 }
                 if (order.order == Order.DEFEND)
                 {
-                    sb.Append(order.unit.Name + "  " + order.order.ToString() + "  " + order.Target.Name + "! \n");
+                   // sb.Append(order.unit.Name + "  " + order.order.ToString() + "  " + order.Target.Name + "! \n");
                     gameSystem.Defend(order.unit, order.Target);
                 }
                 if (order.order == Order.MOVE)
@@ -405,8 +421,8 @@ public class Player : MonoBehaviour
                     if (order.unit.currentMP >= order.move.MPcost)
                     {
                         yield return StartCoroutine(gameSystem.Move(order.unit, order.move, order.Target));
-                        sb.Append(order.unit.Name + " performs the move  " + order.move.MoveName + " on " + order.Target.Name + "! \n");
-                        Debug.Log("Cast " + order.move.MoveName);
+                     //   sb.Append(order.unit.Name + " performs the move  " + order.move.MoveName + " on " + order.Target.Name + "! \n");
+                        //Debug.Log("Cast " + order.move.MoveName);
                     }
                     else
                     {
@@ -417,10 +433,10 @@ public class Player : MonoBehaviour
         }
         else
         {
-            sb.Append("No Orders given!");
+           // sb.Append("No Orders given!");
         }
        
-        OrderText.text = sb.ToString();
+      //  OrderText.text = sb.ToString();
 
         ResetStates();
         opponent.ResetStates();

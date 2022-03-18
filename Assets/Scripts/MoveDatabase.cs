@@ -28,7 +28,7 @@ public class MoveDatabase : MonoBehaviour
         foreach (Move move in Moves)
         {
             if (move.ObjectSlug == moveSlug)
-                return move;
+                return new Move(move);
         }
         Debug.LogWarning("Couldn't find item: " + moveSlug);
         return null;

@@ -6,30 +6,28 @@ public class SonicBoom : MonoBehaviour, Effect
 {
     public UnitStates AppliedState { get; set; }
     public Dictionary<string, int> Modifiers { get; set; }
-    public string EffectName { get; set; } = "Sonic Boom";
+    public string EffectName { get; set; } = "SonicBoom";
     public string Description { get; set; } = "The unit has had their eardrums blown out. \"Huh? What was that?\" ";
     public Unit affected { get; set; }
     public int maxTurns { get; set; } = 3;
-    public void OnInflict()
+    public IEnumerator OnInflict()
     {
         affected.TakeDamage(2);
         Debug.Log("Destroying the hearing of unit: " + affected.Name);
+        yield break;
     }
-    public void OnTurnBegin()
+    public IEnumerator OnTurnBegin()
     {
+        yield break;
     }
-    public void OnTurnEnd()
+    public IEnumerator OnTurnEnd()
     {
-
+        yield break;
     }
-    public void OnRemoved()
+    public IEnumerator OnRemoved()
     {
         Debug.Log("Eardrums has healed: " + affected.Name);
+        yield break;
     }
 
-    void Start()
-    {
-        //EffectName = "Sleeping";
-        //Description = "The unit is sleeping.";
-    }
 }

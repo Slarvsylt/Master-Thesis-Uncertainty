@@ -11,28 +11,21 @@ public class Sleeping3 : MonoBehaviour, Effect
     public string Description { get; set; }
     public Unit affected { get; set; }
     public int maxTurns { get; set; } = 3;
-    public void OnInflict()
+    public IEnumerator OnInflict()
     {
-
+        yield break;
     }
-    public void OnTurnBegin()
+    public IEnumerator OnTurnBegin()
     {
         //Stun Unit
+        yield break;
     }
-    public void OnTurnEnd()
+    public IEnumerator OnTurnEnd()
     {
-
+        yield break;
     }
-    public void OnRemoved()
+    public IEnumerator OnRemoved()
     {
-        
-    }
-
-    void Start()
-    {
-        AppliedState = UnitStates.ASLEEP;
-        Modifiers.Add("Stunned for", 2);
-        //EffectName = "Sleeping3";
-        Description = "The unit is sleeping.";
+        yield break;
     }
 }

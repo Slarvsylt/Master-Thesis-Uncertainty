@@ -114,9 +114,9 @@ public class StateHandler : MonoBehaviour
         //Wait for the player having done their decisions and have clicked the end turn button.
         // Debug.Log("Starting new turn and populating field :" + currentPlayer.gameObject.name);
         //Debug.Log("STARTING TURN for : " + currentPlayer.gameObject.name);
-        currentPlayer.PopulateField();
         yield return StartCoroutine(gameSystem.StartOfturnEffects());
         yield return StartCoroutine(gameSystem.IncreaseEffectsTurnCounter());
+        currentPlayer.PopulateField();
         //StartCoroutine(GameSystem.gameSystem.StartOfturnEffects());
         //StartCoroutine(currentPlayer.ChooseAction());
  
