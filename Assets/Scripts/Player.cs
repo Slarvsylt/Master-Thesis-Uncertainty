@@ -7,7 +7,6 @@ using System.Text;
 using System.Linq;
 using UnityEngine;
 using TMPro;
-using CodeMonkey.Utils;
 
 public enum BattleMenuOption {ATTACK, DEFEND, MOVE}
 public enum Order { ATTACK, DEFEND, MOVE, NONE}
