@@ -34,14 +34,34 @@ public class Move
         foreach (string e in Effects)
         {
             //Debug.Log("Effects/" + e);
-            GameObject go = (GameObject)Resources.Load("Effects/" + e);
+            GameObject go = GameObject.Instantiate((GameObject)Resources.Load("Effects/" + e), GameObject.Find("Canvas").transform);
             Effect ef = go.GetComponent<Effect>();
-            Debug.Log(ef.EffectName);
             this.Effects.Add(ef);
         }
         this.ObjectSlug = ObjectSlug;
         this.Description = Description;
         this.MoveName = MoveName;
         this.Damage = Damage;
+    }
+
+    public Move(Move move)
+    {
+        this.RequireTarget = move.RequireTarget;
+        this.MPcost = move.MPcost;
+        //this.MoveType = (MoveType)Enum.Parse(typeof(MoveType), MoveType);
+        //this.MoveType = MoveType;
+        this.MoveType = (MoveType)move.MoveType;
+        this.Effects = new List<Effect>();
+        foreach (Effect e in move.Effects)
+        {
+            //Debug.Log("Effects/" + e.EffectName);
+            GameObject go = GameObject.Instantiate((GameObject)Resources.Load("Effects/" + e.EffectName), GameObject.Find("Canvas").transform);
+            Effect ef = go.GetComponent<Effect>();
+            this.Effects.Add(ef);
+        }
+        this.ObjectSlug = move.ObjectSlug;
+        this.Description = move.Description;
+        this.MoveName = move.MoveName;
+        this.Damage = move.Damage;
     }
 }

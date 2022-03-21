@@ -26,6 +26,8 @@ public class Unit: MonoBehaviour
     [SerializeField]
     public float defMod;
 
+    public GameObject attachedObject;
+
     [SerializeField]
     public List<Move> Moves;
     public List<Effect> CurrentEffects = new List<Effect>();
@@ -55,13 +57,30 @@ public class Unit: MonoBehaviour
     public void Defend() 
     {
     }
+
     public void TakeDamage(float damage)
     {
-        Debug.Log(name + " takes " + damage + " damage");
-        currentHP -= damage*defMod;
-        if (currentHP <= 0)
-            Die();
+        Debug.Log("TakeDamage");
+        StartCoroutine(TakeDamage1(damage));
     }
+
+    public IEnumerator TakeDamage1(float damage)
+    {
+        Debug.Log("TakeDamage1");
+        yield return StartCoroutine(GameSystem.gameSystem.DamageFriendlyUnit(attachedObject, damage));
+        currentHP -= damage * defMod;
+        if (currentHP <= 0)
+            StartCoroutine(Die());
+    }
+
+    public void TakeDamage2(float damage)
+    {
+        Debug.Log("TakeDamage2");
+        currentHP -= damage * defMod;
+        if (currentHP <= 0)
+            StartCoroutine(Die());
+    }
+
     public void RestoreHP(float heal)
     {
         currentHP += heal;
@@ -78,10 +97,11 @@ public class Unit: MonoBehaviour
     /// <summary>
     /// Tells the unit to die.
     /// </summary>
-    public void Die() 
+    public IEnumerator Die() 
     {
         isDead = true;
         Debug.Log(Name + " died!");
+        yield break;
         //Inactivate unit and display corpse
     }
 

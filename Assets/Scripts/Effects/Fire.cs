@@ -9,30 +9,26 @@ public class Fire : MonoBehaviour, Effect
     public string EffectName { get; set; } = "Fire";
     public string Description { get; set; } = "The unit is burning! Fuck!";
     public Unit affected { get; set; }
-    public void OnInflict()
+    public int maxTurns { get; set; } = 3;
+    public IEnumerator OnInflict()
     {
-        Debug.Log("Putting the unit on fire: " + affected.Name);
+        //Debug.Log("Putting the unit on fire: " + affected.Name);
+        yield break;
     }
-    public void OnTurnBegin()
+    public IEnumerator OnTurnBegin()
     {
-        Debug.Log("owie I'm on fire!");
-        affected.TakeDamage(1);
+        //Debug.Log("owie I'm on fire!" + affected.Name);
+        yield return StartCoroutine(affected.TakeDamage1(1));
         //Stun Unit
     }
-    public void OnTurnEnd()
+    public IEnumerator OnTurnEnd()
     {
+        yield break;
+    }
+    public IEnumerator OnRemoved()
+    {
+        //Debug.Log("Putting the fire out: " + affected.Name);
+        yield break;
+    }
 
-    }
-    public void OnRemoved()
-    {
-        Debug.Log("Putting the fire out: " + affected.Name);
-    }
-
-    void Start()
-    {
-        AppliedState = UnitStates.ASLEEP;
-        Modifiers.Add("Stunned for", 2);
-        //EffectName = "Sleeping";
-        //Description = "The unit is sleeping.";
-    }
 }

@@ -6,31 +6,27 @@ public class BadSmell : MonoBehaviour, Effect
 {
     public UnitStates AppliedState { get; set; }
     public Dictionary<string, int> Modifiers { get; set; }
-    public string EffectName { get; set; } = "Bad Smell";
+    public string EffectName { get; set; } = "BadSmell";
     public string Description { get; set; } = "Something stinks in here...";
     public Unit affected { get; set; }
-    public void OnInflict()
+    public int maxTurns { get; set; } = 3;
+    public IEnumerator OnInflict()
     {
         Debug.Log("Giving the unit a bad smell: " + affected.Name);
+        yield break;
     }
-    public void OnTurnBegin()
+    public IEnumerator OnTurnBegin()
     {
         //Stun Unit
+        yield break;
     }
-    public void OnTurnEnd()
+    public IEnumerator OnTurnEnd()
     {
-
+        yield break;
     }
-    public void OnRemoved()
+    public IEnumerator OnRemoved()
     {
         Debug.Log("Bad smell gone: " + affected.Name);
-    }
-
-    void Start()
-    {
-        AppliedState = UnitStates.ASLEEP;
-        Modifiers.Add("Stunned for", 2);
-        //EffectName = "Sleeping";
-        //Description = "The unit is sleeping.";
+        yield break;
     }
 }

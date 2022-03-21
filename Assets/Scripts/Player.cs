@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
+using UnityEngine.Events;
 using System;
 using System.Text;
 using System.Linq;
 using UnityEngine;
 using TMPro;
-using CodeMonkey.Utils;
 
 public enum BattleMenuOption {ATTACK, DEFEND, MOVE}
 public enum Order { ATTACK, DEFEND, MOVE, NONE}
@@ -90,10 +89,8 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI UnitTypeText;
     public TextMeshProUGUI UnitActiveEffectsText;
 
-    public delegate void OnBattleMenuSelectionCallback();
-    public OnBattleMenuSelectionCallback onBattleMenuSelectionCallback;
-    public delegate void OnBattleSelectionModeConfirmCallback();
-    public OnBattleSelectionModeConfirmCallback onBattleSelectionModeConfirmCallback;
+    public TextMeshProUGUI OrderText;
+
 
     private void Awake()
     {
@@ -114,7 +111,6 @@ public class Player : MonoBehaviour
         move2Button.interactable = false;
         move3Button.interactable = false;
         cancelButton.interactable = false;
-        doneButton.interactable = false;
 
         Enemy1Button.interactable = false;
         Enemy2Button.interactable = false;
@@ -198,42 +194,15 @@ public class Player : MonoBehaviour
             Enemy2Button.interactable = false;
             Enemy3Button.interactable = false;
         }
-        if (ordersToBeDone.Count > 0)
-        {
-            doneButton.interactable = true;
-        }
-        else
-        {
-            doneButton.interactable = false;
-        }
 
-        if(chosenUnit != null)
-        {
-            selectedUnit = chosenUnit.Name;
-        }
-        else
-        {
-            selectedUnit = "No Unit chosen!";
-        }
 
-        if(OneOrder != null)
-        {
-            someOrder = ordersToBeDone[0].order.ToString();
-        }
-        else
-        {
-            someOrder = "No Order given!";
-        }
-        if(selectedEnemy == null)
-        {
-            selectedEnemy = "No enemy targeted!";
-        }
         if (!UnitToggleGroup.AnyTogglesOn())
         {
             ResetStates();
         }
 
-        StatusText.text = selectedUnit + " " + someOrder + "s " + selectedEnemy;
+        showOrders();
+        //StatusText.text = selectedUnit + " " + someOrder + "s " + selectedEnemy;
     }
 
 
@@ -302,11 +271,6 @@ public class Player : MonoBehaviour
     {
         if (change.isOn)
         {
-            Debug.Log(change.name);
-            Debug.Log(i);
-            Debug.Log(chosenUnit.Moves.Count);
-            Debug.Log("Clicked a Move!");
-
             isSelectionMode = true;
             selectedOrder = Order.MOVE;
 
@@ -339,8 +303,7 @@ public class Player : MonoBehaviour
 
                 cancelButton.interactable = true;
                 chosenUnit = unit;
-                Debug.Log(chosenUnit.Name);
-                UnitNameText.text = chosenUnit.Name;
+                UnitNameText.text = chosenUnit.Name + " " + chosenUnit.currentHP + "/" + chosenUnit.maxHP + " HP \n" + chosenUnit.currentMP +"/" +chosenUnit.maxMP+ "MP";
 
                 StringBuilder sb = new StringBuilder();
                 foreach (MoveType move in chosenUnit.Strengths)
@@ -396,70 +359,139 @@ public class Player : MonoBehaviour
 
     public void Done()
     {
+        StartCoroutine(Done1());
+    }
 
-        foreach (StoredOrder order in ordersToBeDone)
+    private void showOrders()
+    {
+        StringBuilder sb = new StringBuilder();
+        if (ordersToBeDone.Count > 0)
         {
-            if(order.order == Order.ATTACK)
+            foreach (StoredOrder order in ordersToBeDone)
             {
-                gameSystem.Attack(order.unit, order.Target);
-            }
-            if (order.order == Order.DEFEND)
-            {
-                gameSystem.Defend(order.unit, order.Target);
-            }
-            if (order.order == Order.MOVE)
-            {
-                if(order.unit.currentMP >= order.move.MPcost)
+                if (order.order == Order.ATTACK)
                 {
-                    gameSystem.Move(order.unit, order.move, order.Target);
-                    Debug.Log("Cast " + order.move.MoveName);
+                    sb.Append(order.unit.Name + "  " + order.order.ToString() + "  " + order.Target.Name + "! \n");
                 }
-                else
+                if (order.order == Order.DEFEND)
                 {
-                    Debug.Log("Not enough mp");
+                    sb.Append(order.unit.Name + "  " + order.order.ToString() + "  " + order.Target.Name + "! \n");
+                }
+                if (order.order == Order.MOVE)
+                {
+                    if (order.unit.currentMP >= order.move.MPcost)
+                    {
+                        sb.Append(order.unit.Name + " performs the move  " + order.move.MoveName + " on " + order.Target.Name + "! \n");
+                    }
+                    else
+                    {
+                        sb.Append(order.unit.Name + " does not have enough MP to perform " + order.move.MoveName);
+                    }
                 }
             }
-
-
         }
+        else
+        {
+            sb.Append("No Orders given!");
+        }
+        OrderText.text = sb.ToString();
+    }
+
+    public IEnumerator Done1()
+    {
+       // StringBuilder sb = new StringBuilder();
+        if(ordersToBeDone.Count > 0)
+        {
+            foreach (StoredOrder order in ordersToBeDone)
+            {
+                if (order.order == Order.ATTACK)
+                {
+                   // sb.Append(order.unit.Name + "  " + order.order.ToString() + "  " + order.Target.Name + "! \n");
+                    yield return StartCoroutine(gameSystem.Attack(order.unit, order.Target));
+                    //gameSystem.Attack(order.unit, order.Target);
+                }
+                if (order.order == Order.DEFEND)
+                {
+                   // sb.Append(order.unit.Name + "  " + order.order.ToString() + "  " + order.Target.Name + "! \n");
+                    gameSystem.Defend(order.unit, order.Target);
+                }
+                if (order.order == Order.MOVE)
+                {
+                    if (order.unit.currentMP >= order.move.MPcost)
+                    {
+                        yield return StartCoroutine(gameSystem.Move(order.unit, order.move, order.Target));
+                     //   sb.Append(order.unit.Name + " performs the move  " + order.move.MoveName + " on " + order.Target.Name + "! \n");
+                        //Debug.Log("Cast " + order.move.MoveName);
+                    }
+                    else
+                    {
+                        Debug.Log("Not enough mp");
+                    }
+                }
+            }
+        }
+        else
+        {
+           // sb.Append("No Orders given!");
+        }
+       
+      //  OrderText.text = sb.ToString();
 
         ResetStates();
         opponent.ResetStates();
 
-        if (isTurn)
-        {
-            stateHandler.ChangeState(GameState.NEXTTURN);
-            doneButton.onClick.RemoveListener(Done);
-            Unit1Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit1Button, 0); });
-            Unit2Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit2Button, 1); });
-            Unit3Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit3Button, 2); });
-            Enemy1Button.onClick.RemoveListener(delegate { SelectedEnemy(0); });
-            Enemy2Button.onClick.RemoveListener(delegate { SelectedEnemy(1); });
-            Enemy3Button.onClick.RemoveListener(delegate { SelectedEnemy(2); });
+        Unit1Button.onValueChanged.RemoveAllListeners();
+        Unit2Button.onValueChanged.RemoveAllListeners();
+        Unit3Button.onValueChanged.RemoveAllListeners();
 
-            attackButton.onValueChanged.RemoveListener(delegate {
-                ChooseAttack(attackButton);
-            });
+        Enemy1Button.onClick.RemoveAllListeners();
+        Enemy2Button.onClick.RemoveAllListeners();
+        Enemy3Button.onClick.RemoveAllListeners();
 
-            defendButton.onValueChanged.RemoveListener(delegate {
-                ChooseDefend(defendButton);
-            });
+        attackButton.onValueChanged.RemoveAllListeners();
 
-            move1Button.onValueChanged.RemoveListener(delegate {
-                ChooseMove(move1Button, 0);
-            });
-            move2Button.onValueChanged.RemoveListener(delegate {
-                ChooseMove(move2Button, 1);
-            });
-            move3Button.onValueChanged.RemoveListener(delegate {
-                ChooseMove(move3Button, 2);
-            });
+        defendButton.onValueChanged.RemoveAllListeners();
 
-            cancelButton.onClick.RemoveListener(Cancel);
-        }
-           
-        else
-            Debug.Log("isNotTurn");
+        move1Button.onValueChanged.RemoveAllListeners();
+
+        move2Button.onValueChanged.RemoveAllListeners();
+
+        move3Button.onValueChanged.RemoveAllListeners();
+
+        //UnityEditor.Events.UnityEventTools.RemovePersistentListener(Unit1Button.onValueChanged, 0);
+        //UnityEditor.Events.UnityEventTools.RemovePersistentListener(Unit2Button.onValueChanged, 0);
+        //UnityEditor.Events.UnityEventTools.RemovePersistentListener(Unit3Button.onValueChanged, 0);
+
+        //Unit1Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit1Button, 0); });
+        //Unit2Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit2Button, 1); });
+        //Unit3Button.onValueChanged.RemoveListener(delegate { ChooseUnit(Unit3Button, 2); });
+        //Enemy1Button.onClick.RemoveListener(delegate { SelectedEnemy(0); });
+        //Enemy2Button.onClick.RemoveListener(delegate { SelectedEnemy(1); });
+        //Enemy3Button.onClick.RemoveListener(delegate { SelectedEnemy(2); });
+
+        /*attackButton.onValueChanged.RemoveListener(delegate {
+            ChooseAttack(attackButton);
+        });
+
+        defendButton.onValueChanged.RemoveListener(delegate {
+            ChooseDefend(defendButton);
+        });
+
+        move1Button.onValueChanged.RemoveListener(delegate {
+            ChooseMove(move1Button, 0);
+        });
+        move2Button.onValueChanged.RemoveListener(delegate {
+            ChooseMove(move2Button, 1);
+        });
+        move3Button.onValueChanged.RemoveListener(delegate {
+            ChooseMove(move3Button, 2);
+        });*/
+
+        doneButton.onClick.RemoveListener(Done);
+
+        cancelButton.onClick.RemoveListener(Cancel);
+
+        stateHandler.ChangeState(GameState.NEXTTURN);
     }
 
     private void ResetStates() 
@@ -477,7 +509,6 @@ public class Player : MonoBehaviour
         move1Button.interactable = false;
         move2Button.interactable = false;
         move3Button.interactable = false;
-        doneButton.interactable = false;
         //Debug.Log("Reseted");
     }
 
@@ -560,7 +591,10 @@ public class Player : MonoBehaviour
             unit.AddMoves(NewMoves);
             unit.index = i;
             //Debug.Log(unit.Name);
+            unit.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            unit.GetComponent<Image>().enabled = false;
             Units.Add(unit);
+            
            // Debug.Log("Loaded a unit! " + unit.GetComponent<Unit>().Name + " plus moves!" + " index : " + i);
         }
     }
@@ -577,6 +611,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void PopulateField()
     {
+
         Unit1Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit1Button, 0); });
         Unit2Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit2Button, 1); });
         Unit3Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit3Button, 2); });
@@ -662,9 +697,25 @@ public class Player : MonoBehaviour
         Unit2Button.gameObject.GetComponent<Image>().sprite = GameObjectUnits[1].GetComponent<Image>().sprite;
         Unit3Button.gameObject.GetComponent<Image>().sprite = GameObjectUnits[2].GetComponent<Image>().sprite;
 
+        Units[0].transform.position = Unit1Button.transform.position;
+        Units[1].transform.position = Unit2Button.transform.position;
+        Units[2].transform.position = Unit3Button.transform.position;
+
+        Units[0].attachedObject = Unit1Button.gameObject;
+        Units[1].attachedObject = Unit2Button.gameObject;
+        Units[2].attachedObject = Unit3Button.gameObject;
+
         Enemy1Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[0].GetComponent<Image>().sprite;
         Enemy2Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[1].GetComponent<Image>().sprite;
         Enemy3Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[2].GetComponent<Image>().sprite;
+
+        opponent.Units[0].transform.position = Enemy1Button.transform.position;
+        opponent.Units[1].transform.position = Enemy2Button.transform.position;
+        opponent.Units[2].transform.position = Enemy3Button.transform.position;
+
+        opponent.Units[0].attachedObject = Enemy1Button.gameObject;
+        opponent.Units[1].attachedObject = Enemy2Button.gameObject;
+        opponent.Units[2].attachedObject = Enemy3Button.gameObject;
 
         //Debug.Log("Pop " + gameObject.name);
     }

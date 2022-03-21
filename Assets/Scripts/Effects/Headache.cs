@@ -9,27 +9,25 @@ public class Headache : MonoBehaviour, Effect
     public string EffectName { get; set; } = "Headache";
     public string Description { get; set; } = "Ow, my head!";
     public Unit affected { get; set; }
-    public void OnInflict()
+    public int maxTurns { get; set; } = 3;
+    public IEnumerator OnInflict()
     {
         Debug.Log("Giving the unit a headache: " + affected.Name);
+        yield break;
     }
-    public void OnTurnBegin()
+    public IEnumerator OnTurnBegin()
     {
+        yield break;
     }
-    public void OnTurnEnd()
+    public IEnumerator OnTurnEnd()
     {
         Debug.Log("owie my head!");
         affected.TakeDamage(1);
+        yield break;
     }
-    public void OnRemoved()
+    public IEnumerator OnRemoved()
     {
         Debug.Log("Headache pills: " + affected.Name);
-    }
-
-    void Start()
-    {
-        AppliedState = UnitStates.ASLEEP;
-        //EffectName = "Sleeping";
-        //Description = "The unit is sleeping.";
+        yield break;
     }
 }

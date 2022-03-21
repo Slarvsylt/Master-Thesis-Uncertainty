@@ -9,31 +9,27 @@ public class Sleeping : MonoBehaviour, Effect
     public string EffectName { get; set; } = "Sleeping";
     public string Description { get; set; } = "Schh... the Unit is sleeping... ";
     public Unit affected { get; set; }
-    public void OnInflict()
+    public int maxTurns { get; set; } = 3;
+    public IEnumerator OnInflict()
     {
         affected.stunned = true;
         Debug.Log("Putting the unit to sleep: " + affected.Name);
+        yield break;
     }
-    public void OnTurnBegin()
+    public IEnumerator OnTurnBegin()
     {
         affected.stunned = true;
         //Stun Unit
+        yield break;
     }
-    public void OnTurnEnd()
+    public IEnumerator OnTurnEnd()
     {
-
+        yield break;
     }
-    public void OnRemoved()
+    public IEnumerator OnRemoved()
     {
         affected.stunned = false;
         Debug.Log("Awaking: " + affected.Name);
-    }
-
-    void Start()
-    {
-        AppliedState = UnitStates.ASLEEP;
-        Modifiers.Add("Stunned for", 2);
-        //EffectName = "Sleeping";
-        //Description = "The unit is sleeping.";
+        yield break;
     }
 }
