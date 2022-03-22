@@ -73,6 +73,11 @@ public class Unit: MonoBehaviour
             StartCoroutine(Die());
     }
 
+    public IEnumerator Effect(string what)
+    {
+        yield return StartCoroutine(GameSystem.gameSystem.PEffect(attachedObject, what));
+    }
+
     public void TakeDamage2(float damage)
     {
         Debug.Log("TakeDamage2");

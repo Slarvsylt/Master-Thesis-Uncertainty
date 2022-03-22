@@ -234,7 +234,7 @@ public class Player : MonoBehaviour
     //Better?
     public void SelectedEnemy(int whichOne)
     {
-        //Debug.Log("Clicked Enemy!");
+        Debug.Log(whichOne);
         StoredOrder newOrder = new StoredOrder();
         newOrder.move = chosenMove;
         newOrder.order = selectedOrder;

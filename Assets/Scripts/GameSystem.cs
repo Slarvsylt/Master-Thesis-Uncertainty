@@ -128,7 +128,7 @@ public class GameSystem : MonoBehaviour
     public IEnumerator Attack(Unit chosenUnit, Unit Target)
     {
         chosenUnit.PerformAttack();
-        if (RandomChance(chosenUnit.hitMod * 0.5f))
+        if (RandomChance(chosenUnit.hitMod * 0.99f))
         {
             float damage = Mathf.Round(2 * chosenUnit.damageMod * UnityEngine.Random.Range(0.5f,1.5f) * 100f)/100f;
             yield return StartCoroutine(DamageUnit(Target.index, damage));
@@ -172,7 +172,7 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator DamageUnit(int index, float dam)
     {
-       // Debug.Log("DamageUnit");
+        Debug.Log(index);
         PopUpTextController.CreatePopUpText(dam.ToString(),enemiesUI[index].transform);
         yield return StartCoroutine(enemiesUI[index].Shake());
     }
@@ -182,6 +182,13 @@ public class GameSystem : MonoBehaviour
         Debug.Log(element.name);
         PopUpTextController.CreatePopUpText(dam.ToString(), element.transform);
         yield return StartCoroutine(element.GetComponent<EnemyButton>().Shake());
+    }
+
+    public IEnumerator PEffect(GameObject element, string what)
+    {
+        Debug.Log(element.name);
+        PopUpTextController.CreatePopUpText(what, element.transform);
+        yield return StartCoroutine(element.GetComponent<EnemyButton>().Particles());
     }
 
     public bool RandomChance(float chance)
