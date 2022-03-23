@@ -6,9 +6,11 @@ using UnityEngine;
 public interface Effect
 {
     string EffectName { get; set; }
+    [SerializeField]
     public Unit affected { get; set; }
-    void OnInflict();
-    void OnTurnBegin();
-    void OnTurnEnd();
-    void OnRemoved(); 
+    public int maxTurns { get; set; }
+    IEnumerator OnInflict();
+    IEnumerator OnTurnBegin();
+    IEnumerator OnTurnEnd();
+    IEnumerator OnRemoved(); 
 }

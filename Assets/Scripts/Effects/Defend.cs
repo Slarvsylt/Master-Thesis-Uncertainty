@@ -9,28 +9,22 @@ public class Defend : MonoBehaviour, Effect
     public string EffectName { get; set; }
     public string Description { get; set; }
     public Unit affected { get; set; }
-    public void OnInflict()
+    public int maxTurns { get; set; } = 3;
+    public IEnumerator OnInflict()
     {
-
+        yield break;
     }
-    public void OnTurnBegin()
+    public IEnumerator OnTurnBegin()
     {
-
+        yield break;
     }
-    public void OnTurnEnd()
+    public IEnumerator OnTurnEnd()
     {
-
+        yield break;
     }
-    public void OnRemoved()
+    public IEnumerator OnRemoved()
     {
-
+        yield break;
     }
 
-    void Start()
-    {
-        AppliedState = UnitStates.ASLEEP;
-        Modifiers.Add("Stunned for", 2);
-        EffectName = "Sleeping";
-        Description = "The unit is sleeping.";
-    }
 }

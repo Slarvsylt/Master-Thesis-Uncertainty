@@ -26,16 +26,30 @@ public class Unit: MonoBehaviour
     [SerializeField]
     public float defMod;
 
+    public GameObject attachedObject;
+
+    [SerializeField]
     public List<Move> Moves;
-    public List<Effect> CurrentEffects;
+    public List<Effect> CurrentEffects = new List<Effect>();
     public List<Effect> CurrentEffectsPerm;
+    [SerializeField]
     public List<MoveType> Strengths;
     public List<MoveType> Weaknesses;
     public List<MoveType> AttackTypes;
 
     public bool defended;
-    public bool stunned = false; 
+    [SerializeField]
+    public bool stunned = false;
+    [SerializeField]
+    public bool isDead = false;
 
+    void Start()
+    {
+        currentHP = maxHP;
+        currentMP = maxMP;
+        isDead = false;
+        //Debug.Log("New Unit " + Name);
+    }
     public void PerformAttack() 
     {
         //Play animation or something
@@ -43,12 +57,30 @@ public class Unit: MonoBehaviour
     public void Defend() 
     {
     }
+
     public void TakeDamage(float damage)
     {
-        currentHP -= damage*defMod;
-        if (currentHP <= 0)
-            Die();
+        Debug.Log("TakeDamage");
+        StartCoroutine(TakeDamage1(damage));
     }
+
+    public IEnumerator TakeDamage1(float damage)
+    {
+        Debug.Log("TakeDamage1");
+        yield return StartCoroutine(GameSystem.gameSystem.DamageFriendlyUnit(attachedObject, damage));
+        currentHP -= damage * defMod;
+        if (currentHP <= 0)
+            StartCoroutine(Die());
+    }
+
+    public void TakeDamage2(float damage)
+    {
+        Debug.Log("TakeDamage2");
+        currentHP -= damage * defMod;
+        if (currentHP <= 0)
+            StartCoroutine(Die());
+    }
+
     public void RestoreHP(float heal)
     {
         currentHP += heal;
@@ -57,13 +89,29 @@ public class Unit: MonoBehaviour
     }
     public void MakeMove(Move move) 
     {
+        currentMP -= move.MPcost;
         //Make move.
         //Animation 
     }
-    public void Die() 
+
+    /// <summary>
+    /// Tells the unit to die.
+    /// </summary>
+    public IEnumerator Die() 
     {
+        isDead = true;
+        Debug.Log(Name + " died!");
+        yield break;
         //Inactivate unit and display corpse
     }
+
+    public void Ressurect()
+    {
+        isDead = false;
+        currentHP = 1.0f;
+        Debug.Log(Name + " is alive once again!");
+    }
+    
     public void HitByMove(Move move) 
     {
         //Hit by move

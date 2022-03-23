@@ -4,9 +4,5 @@ using UnityEngine;
 
 public class Dajep : Unit
 {
-    void Start()
-    {
-        currentHP = maxHP;
-        currentMP = maxMP;
-    }
+
 }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8102713940481322981}
   - component: {fileID: 8102713940481322986}
   - component: {fileID: 8102713940481322987}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: DajepUnit 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -89,8 +89,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9c9470e64f1c764c89105d3b07f058c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHP: 0
+  currentHP: -200
   currentMP: 0
+  index: 2
   Name: Dajep
   maxHP: 10
   maxMP: 10
@@ -102,3 +103,5 @@ MonoBehaviour:
   Weaknesses: 01000000
   AttackTypes: 02000000
   defended: 0
+  stunned: 0
+  isDead: 0

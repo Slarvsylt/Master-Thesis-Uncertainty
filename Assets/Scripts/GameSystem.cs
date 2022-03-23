@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 using UnityEngine.EventSystems;
 
@@ -10,7 +11,6 @@ using UnityEngine.EventSystems;
 public class StatusEffect
 {
     public int TurnsSinceApplied;
-    public int MaxTurns;
     public Effect effect;
 }
 
@@ -25,14 +25,16 @@ public class GameSystem : MonoBehaviour
     public static GameSystem gameSystem;
 
     public Dictionary<Unit, List<StatusEffect>> statusEffects;
-    public LayerMask enemiesLayer;
-    public LayerMask friendsLayer;
+
+    public List<EnemyButton> unitsUI;
+    public List<EnemyButton> enemiesUI;
 
     private void Awake()
     {
         gameSystem = this;
         QualitySettings.vSyncCount = 0;  // VSync must be disabled
         Application.targetFrameRate = 45;
+        PopUpTextController.Initialize();
     }
 
     private void Start()
@@ -40,11 +42,10 @@ public class GameSystem : MonoBehaviour
         statusEffects = new Dictionary<Unit, List<StatusEffect>>();
     }
 
-    public void ApplyStatusEffect(Unit unit, Effect effect)
+    public IEnumerator ApplyStatusEffect(Unit unit, Effect effect)
     {
         StatusEffect sf = new StatusEffect();
         sf.effect = effect;
-        sf.MaxTurns = 2;
         sf.TurnsSinceApplied = 0;
 
         List<StatusEffect> list;
@@ -55,11 +56,11 @@ public class GameSystem : MonoBehaviour
             list = new List<StatusEffect>();
             statusEffects.Remove(unit);
             sf.effect.affected = unit;
-            sf.effect.OnInflict();
+            yield return StartCoroutine(sf.effect.OnInflict());
             list.Add(sf);
             statusEffects.Add(unit, list);
-            Debug.Log("StatusEffect: \n Turns:" + sf.TurnsSinceApplied + "\n Max: " + sf.MaxTurns + "\n Effect: " + sf.effect.EffectName);
-            return;
+            //Debug.Log("StatusEffect: \n Turns:" + sf.TurnsSinceApplied + "\n Max: " + sf.effect.maxTurns + "\n Effect: " + sf.effect.EffectName);
+            yield break;
         }
 
         foreach(StatusEffect s in list)
@@ -67,54 +68,58 @@ public class GameSystem : MonoBehaviour
             if(s.effect == sf.effect)
             {
                 //Already exist
-                return;
+                yield break;
             }
         }
 
-        Debug.Log("StatusEffect: \n Turns:" + sf.TurnsSinceApplied + "\n Max: " + sf.MaxTurns + "\n Effect: " + sf.effect.EffectName);
+        //Debug.Log("StatusEffect: \n Turns:" + sf.TurnsSinceApplied + "\n Max: " + sf.effect.maxTurns + "\n Effect: " + sf.effect.EffectName);
 
         sf.effect.affected = unit;
-        sf.effect.OnInflict();
+        yield return StartCoroutine(sf.effect.OnInflict());
         list.Add(sf);
         statusEffects.Remove(unit);
         statusEffects.Add(unit, list);
     }
 
-    public void EndOfTurnEffects()
+    public IEnumerator EndOfTurnEffects()
     {
         foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
         {
             for (int i = entry.Value.Count - 1; i >= 0; i--)
             {
-                entry.Value[i].effect.OnTurnEnd();
+                yield return StartCoroutine(entry.Value[i].effect.OnTurnEnd());
+               // yield return new WaitForSeconds(0.1f);
             }
         }
+        yield break;
     }
 
-    public void StartOfturnEffects()
+    public IEnumerator StartOfturnEffects()
     {
         foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
         {
             for (int i = entry.Value.Count - 1; i >= 0; i--)
             {
-                entry.Value[i].effect.OnTurnBegin();
+                yield return StartCoroutine(entry.Value[i].effect.OnTurnBegin());
+               // yield return new WaitForSeconds(0.1f);
             }
         }
+        yield break;
     }
 
-    public void IncreaseEffectsTurnCounter()
+    public IEnumerator IncreaseEffectsTurnCounter()
     {
         foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
         {
             for (int i = entry.Value.Count - 1; i >= 0; i--)
             {
                 entry.Value[i].TurnsSinceApplied++;
-                Debug.Log("Increasing turn counter for effect: " + entry.Value[i].effect.EffectName + " " + i);
-                if (entry.Value[i].TurnsSinceApplied >= entry.Value[i].MaxTurns)
+                if (entry.Value[i].TurnsSinceApplied >= entry.Value[i].effect.maxTurns)
                 {
                     Debug.Log("Removed effect: "+ entry.Value[i].effect.EffectName);
-                    entry.Value[i].effect.OnRemoved();
+                    yield return StartCoroutine(entry.Value[i].effect.OnRemoved());
                     entry.Value.RemoveAt(i);
+                    yield return new WaitForSeconds(0.1f);
                 }
             }
         }
@@ -123,15 +128,20 @@ public class GameSystem : MonoBehaviour
     public IEnumerator Attack(Unit chosenUnit, Unit Target)
     {
         chosenUnit.PerformAttack();
-        if (RandomChance(chosenUnit.hitMod * 0.9f))
+        if (RandomChance(chosenUnit.hitMod * 0.5f))
         {
-            Target.TakeDamage(1 * chosenUnit.damageMod);
+            float damage = Mathf.Round(2 * chosenUnit.damageMod * UnityEngine.Random.Range(0.5f,1.5f) * 100f)/100f;
+            yield return StartCoroutine(DamageUnit(Target.index, damage));
+            Debug.Log(Target.Name);
+            Target.TakeDamage2(damage);
+            //Debug.Log(chosenUnit.Name + " atacc " + Target.Name);
         }
         else
         {
+            PopUpTextController.CreatePopUpText("MISSED", enemiesUI[Target.index].transform);
             //Miss and do something else
+            //Debug.Log(chosenUnit.Name + " atacc " + Target.Name + " but MISSES!");
         }
-        yield return new WaitForSeconds(1);
     }
 
     public IEnumerator Defend(Unit chosenUnit, Unit Target)
@@ -141,13 +151,7 @@ public class GameSystem : MonoBehaviour
         yield return new WaitForSeconds(1);
     }
 
-    public IEnumerator Move(Unit chosenUnit, Move chosenMove)
-    {
-        chosenUnit.MakeMove(chosenMove);
-        yield return new WaitForSeconds(1);
-    }
-
-    public void Move(Unit chosenUnit, Move chosenMove, Unit Target)
+    public IEnumerator Move(Unit chosenUnit, Move chosenMove, Unit Target)
     {
         //Debug.Log("Move!!");
         chosenUnit.MakeMove(chosenMove);
@@ -157,8 +161,7 @@ public class GameSystem : MonoBehaviour
 
             foreach (Effect effect in chosenMove.Effects)
             {
-                Debug.Log(effect.EffectName);
-                ApplyStatusEffect(Target, effect);
+                yield return StartCoroutine(ApplyStatusEffect(Target, effect));
             }
         }
         else
@@ -166,9 +169,23 @@ public class GameSystem : MonoBehaviour
             //missed and do something else
         }
     }
-    
+
+    public IEnumerator DamageUnit(int index, float dam)
+    {
+       // Debug.Log("DamageUnit");
+        PopUpTextController.CreatePopUpText(dam.ToString(),enemiesUI[index].transform);
+        yield return StartCoroutine(enemiesUI[index].Shake());
+    }
+
+    public IEnumerator DamageFriendlyUnit(GameObject element, float dam)
+    {
+        Debug.Log(element.name);
+        PopUpTextController.CreatePopUpText(dam.ToString(), element.transform);
+        yield return StartCoroutine(element.GetComponent<EnemyButton>().Shake());
+    }
+
     public bool RandomChance(float chance)
     {
-        return UnityEngine.Random.value >= chance;
+        return UnityEngine.Random.value <= chance;
     }
 }
