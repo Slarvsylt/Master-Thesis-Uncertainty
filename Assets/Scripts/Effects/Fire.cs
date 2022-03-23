@@ -19,7 +19,7 @@ public class Fire : MonoBehaviour, Effect
     {
         //Debug.Log("owie I'm on fire!" + affected.Name);
         yield return StartCoroutine(affected.TakeDamage1(1));
-        yield return StartCoroutine(affected.Effect("Fire, OWIE!"));
+        yield return StartCoroutine(affected.Effect("Fire, OWIE!", Color.red));
         //Stun Unit
     }
     public IEnumerator OnTurnEnd()

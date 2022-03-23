@@ -13,11 +13,11 @@ public class Sleeping : MonoBehaviour, Effect
     public IEnumerator OnInflict()
     {
         affected.stunned = true;
-        Debug.Log("Putting the unit to sleep: " + affected.Name);
         yield break;
     }
     public IEnumerator OnTurnBegin()
     {
+        yield return StartCoroutine(affected.Effect("ZZZzzzzZZZzzzz", Color.blue));
         affected.stunned = true;
         //Stun Unit
         yield break;

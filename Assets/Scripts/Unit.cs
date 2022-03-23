@@ -73,9 +73,9 @@ public class Unit: MonoBehaviour
             StartCoroutine(Die());
     }
 
-    public IEnumerator Effect(string what)
+    public IEnumerator Effect(string what, Color color)
     {
-        yield return StartCoroutine(GameSystem.gameSystem.PEffect(attachedObject, what));
+        yield return StartCoroutine(GameSystem.gameSystem.PEffect(attachedObject, what, color));
     }
 
     public void TakeDamage2(float damage)

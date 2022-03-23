@@ -12,9 +12,8 @@ public class SonicBoom : MonoBehaviour, Effect
     public int maxTurns { get; set; } = 3;
     public IEnumerator OnInflict()
     {
-        affected.TakeDamage(2);
-        Debug.Log("Destroying the hearing of unit: " + affected.Name);
-        yield break;
+        yield return StartCoroutine(affected.TakeDamage1(3));
+        yield return StartCoroutine(affected.Effect("Boom! Deaf!", Color.blue));
     }
     public IEnumerator OnTurnBegin()
     {

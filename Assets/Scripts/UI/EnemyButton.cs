@@ -15,12 +15,14 @@ public class EnemyButton : MonoBehaviour
     private Vector3 startPos;
 
     public UIParticleSystem ps;
+    ParticleSystem.MainModule settings;
 
     // Start is called before the first frame update
     void Start()
     {
         rt = gameObject.GetComponent<RectTransform>();
         startPos = rt.position;
+        settings = ps.pSystem.main;
     }
 
     
@@ -48,8 +50,9 @@ public class EnemyButton : MonoBehaviour
         rt.position = originalPos;
     }
 
-    public IEnumerator Particles()
+    public IEnumerator Particles(Color color)
     {
+        settings.startColor = color;
         ps.StartParticleEmission();
         yield return new WaitForSeconds(1.5f);
         ps.StopParticleEmission();

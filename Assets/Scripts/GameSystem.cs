@@ -184,11 +184,11 @@ public class GameSystem : MonoBehaviour
         yield return StartCoroutine(element.GetComponent<EnemyButton>().Shake());
     }
 
-    public IEnumerator PEffect(GameObject element, string what)
+    public IEnumerator PEffect(GameObject element, string what, Color color)
     {
         Debug.Log(element.name);
         PopUpTextController.CreatePopUpText(what, element.transform);
-        yield return StartCoroutine(element.GetComponent<EnemyButton>().Particles());
+        yield return StartCoroutine(element.GetComponent<EnemyButton>().Particles(color));
     }
 
     public bool RandomChance(float chance)
