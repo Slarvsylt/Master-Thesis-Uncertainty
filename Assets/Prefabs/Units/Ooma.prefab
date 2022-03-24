@@ -95,7 +95,7 @@ MonoBehaviour:
   Name: Ooma
   maxHP: 10
   maxMP: 10
-  hitMod: 1
+  hitMod: 0.8
   critMod: 1
   damageMod: 3
   defMod: 1

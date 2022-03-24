@@ -128,19 +128,25 @@ public class GameSystem : MonoBehaviour
     public IEnumerator Attack(Unit chosenUnit, Unit Target)
     {
         chosenUnit.PerformAttack();
-        if (RandomChance(chosenUnit.hitMod * 0.99f))
+        float result = RandomC();
+        if (result <= 0.30/chosenUnit.hitMod) //Miss
         {
-            float damage = Mathf.Round(2 * chosenUnit.damageMod * UnityEngine.Random.Range(0.5f,1.5f) * 100f)/100f;
+            PopUpTextController.CreatePopUpText("MISSED", enemiesUI[Target.index].transform);
+        } 
+        else if(result >= 0.80*chosenUnit.critMod) //Crit
+        {
+            PopUpTextController.CreatePopUpText("CRIT!", enemiesUI[Target.index].transform);
+            float damage = Mathf.Round(2 * chosenUnit.damageMod * 1.25f * UnityEngine.Random.Range(0.5f, 1.5f) * 100f) / 100f;
             yield return StartCoroutine(DamageUnit(Target.index, damage));
             Debug.Log(Target.Name);
             Target.TakeDamage2(damage);
-            //Debug.Log(chosenUnit.Name + " atacc " + Target.Name);
         }
         else
         {
-            PopUpTextController.CreatePopUpText("MISSED", enemiesUI[Target.index].transform);
-            //Miss and do something else
-            //Debug.Log(chosenUnit.Name + " atacc " + Target.Name + " but MISSES!");
+            float damage = Mathf.Round(2 * chosenUnit.damageMod * UnityEngine.Random.Range(0.5f, 1.5f) * 100f) / 100f;
+            yield return StartCoroutine(DamageUnit(Target.index, damage));
+            Debug.Log(Target.Name);
+            Target.TakeDamage2(damage);
         }
     }
 
@@ -194,5 +200,10 @@ public class GameSystem : MonoBehaviour
     public bool RandomChance(float chance)
     {
         return UnityEngine.Random.value <= chance;
+    }
+
+    public float RandomC()
+    {
+        return RandomSystem.RandomGaussian();
     }
 }

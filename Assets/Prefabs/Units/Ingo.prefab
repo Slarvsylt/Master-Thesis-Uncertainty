@@ -96,7 +96,7 @@ MonoBehaviour:
   maxHP: 10
   maxMP: 10
   hitMod: 1
-  critMod: 2
+  critMod: 0.84
   damageMod: 1
   defMod: 1
   attachedObject: {fileID: 0}

@@ -95,7 +95,7 @@ MonoBehaviour:
   Name: Knut
   maxHP: 10
   maxMP: 10
-  hitMod: 1
+  hitMod: 0.59
   critMod: 1
   damageMod: 5
   defMod: 1
