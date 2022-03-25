@@ -117,10 +117,9 @@ public class Unit: MonoBehaviour
         Debug.Log(Name + " is alive once again!");
     }
     
-    public void HitByMove(Move move) 
+    public IEnumerator HitByMove(Move move) 
     {
-        //Hit by move
-        //Apply status effects
+        yield break;
     }
     public void AddMoves(List<Move> moves)
     {

@@ -6,20 +6,20 @@ public class Poisoned : MonoBehaviour, Effect
 {
     public UnitStates AppliedState { get; set; }
     public Dictionary<string, int> Modifiers { get; set; }
-    public string EffectName { get; set; } = "Fire";
-    public string Description { get; set; } = "The unit is burning! Fuck!";
+    public string EffectName { get; set; } = "Poisoned";
+    public string Description { get; set; } = "Poisoned!";
     public Unit affected { get; set; }
-    public int maxTurns { get; set; } = 3;
+    public int maxTurns { get; set; } = 9;
     public IEnumerator OnInflict()
     {
+        yield return StartCoroutine(affected.Effect("POISONed!", Color.green));
         //Debug.Log("Putting the unit on fire: " + affected.Name);
-        yield break;
     }
     public IEnumerator OnTurnBegin()
     {
         //Debug.Log("owie I'm on fire!" + affected.Name);
         yield return StartCoroutine(affected.TakeDamage1(1));
-        yield return StartCoroutine(affected.Effect("Fire, OWIE!", Color.red));
+
         //Stun Unit
     }
     public IEnumerator OnTurnEnd()

@@ -119,7 +119,7 @@ public class GameSystem : MonoBehaviour
                     Debug.Log("Removed effect: "+ entry.Value[i].effect.EffectName);
                     yield return StartCoroutine(entry.Value[i].effect.OnRemoved());
                     entry.Value.RemoveAt(i);
-                    yield return new WaitForSeconds(0.1f);
+                    //yield return new WaitForSeconds(0.1f);
                 }
             }
         }
@@ -163,7 +163,12 @@ public class GameSystem : MonoBehaviour
         chosenUnit.MakeMove(chosenMove);
         if (RandomChance(0.9f * chosenUnit.hitMod))
         {
-            Target.HitByMove(chosenMove);
+            if(chosenMove.Damage > 0)
+            {
+                yield return StartCoroutine(DamageUnit(Target.index, chosenMove.Damage));
+                Target.TakeDamage2(chosenMove.Damage);
+            }
+            StartCoroutine(Target.HitByMove(chosenMove));
 
             foreach (Effect effect in chosenMove.Effects)
             {

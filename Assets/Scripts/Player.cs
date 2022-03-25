@@ -587,7 +587,15 @@ public class Player : MonoBehaviour
         for (int i = 0; i < GameObjectUnits.Count; i++)
         {
             Unit unit = GameObject.Instantiate<Unit>(GameObjectUnits[i].GetComponent<Unit>());
-            List<Move> NewMoves = new List<Move> { MoveDatabase.Instance.GetMove("fire"), MoveDatabase.Instance.GetMove("fart"), MoveDatabase.Instance.GetMove("headache") };
+            //Move move = MoveDatabase.Instance.GetMove(MoveDatabase.Instance.Moves[(int)RandomSystem.RandomRange(0, MoveDatabase.Instance.Moves.Count)].ObjectSlug);
+            /*List<Move> NewMoves = new List<Move> { 
+                MoveDatabase.Instance.GetMove("fire"), 
+                MoveDatabase.Instance.GetMove("fart"), 
+                MoveDatabase.Instance.GetMove("headache") };*/
+            List<Move> NewMoves = new List<Move> {
+                MoveDatabase.Instance.GetMove(MoveDatabase.Instance.Moves[(int)RandomSystem.RandomRange(0, MoveDatabase.Instance.Moves.Count)].ObjectSlug),
+                MoveDatabase.Instance.GetMove(MoveDatabase.Instance.Moves[(int)RandomSystem.RandomRange(0, MoveDatabase.Instance.Moves.Count)].ObjectSlug),
+                MoveDatabase.Instance.GetMove(MoveDatabase.Instance.Moves[(int)RandomSystem.RandomRange(0, MoveDatabase.Instance.Moves.Count)].ObjectSlug) };
             unit.AddMoves(NewMoves);
             unit.index = i;
             //Debug.Log(unit.Name);

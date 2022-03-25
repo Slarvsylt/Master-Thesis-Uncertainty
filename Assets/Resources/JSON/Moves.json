@@ -58,5 +58,45 @@
 		"Description": "Give headache",
 		"MoveName": "Headache",
 		"Damage": 0
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 3,
+		"MoveType": 9,
+		"Effects": ["Emboldened", "Inspired"], 
+		"ObjectSlug": "compliment",
+		"Description": "Give a compliment to a unit",
+		"MoveName": "Compliment",
+		"Damage": 0
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 1,
+		"MoveType": 8,
+		"Effects": ["Angry"], 
+		"ObjectSlug": "insult",
+		"Description": "Insult unit",
+		"MoveName": "Insult",
+		"Damage": 0
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 1,
+		"MoveType": 8,
+		"Effects": ["Afraid"], 
+		"ObjectSlug": "scare",
+		"Description": "Scare unit",
+		"MoveName": "Scare",
+		"Damage": 0
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 4,
+		"MoveType": 7,
+		"Effects": ["Pain", "Poisoned"], 
+		"ObjectSlug": "rustyknife",
+		"Description": "Stab unit with rusty knife",
+		"MoveName": "Rusty Knife",
+		"Damage": 4
 	}
 ]

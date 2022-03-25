@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 public class MoveDatabase : MonoBehaviour
 {
     public static MoveDatabase Instance { get; set; }
-    private List<Move> Moves { get; set; }
+    public List<Move> Moves { get; set; }
     // Use this for initialization
     void Awake()
     {
