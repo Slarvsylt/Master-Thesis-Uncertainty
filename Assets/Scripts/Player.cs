@@ -89,6 +89,11 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI UnitTypeText;
     public TextMeshProUGUI UnitActiveEffectsText;
 
+    public TextMeshProUGUI MoveNameText;
+    public TextMeshProUGUI MoveTypeText;
+    public TextMeshProUGUI MoveDescription;
+    public TextMeshProUGUI MoveEffectsText;
+
     public TextMeshProUGUI OrderText;
 
 
@@ -275,6 +280,22 @@ public class Player : MonoBehaviour
             selectedOrder = Order.MOVE;
 
             chosenMove = chosenUnit.Moves[i];
+            MoveNameText.text = chosenMove.MoveName;
+            MoveTypeText.text = chosenMove.MoveType.ToString();
+            MoveDescription.text = chosenMove.Description;
+            StringBuilder sb = new StringBuilder();
+            foreach(Effect e in chosenMove.Effects)
+            {
+                sb.Append(e.EffectName + ", ");
+            }
+            MoveEffectsText.text = sb.ToString();
+        }
+        if (!change.isOn)
+        {
+            MoveNameText.text = "No move Selected";
+            MoveTypeText.text = "";
+            MoveDescription.text = "";
+            MoveEffectsText.text = "" ;
         }
     }
 

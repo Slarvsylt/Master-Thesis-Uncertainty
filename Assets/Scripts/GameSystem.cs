@@ -131,18 +131,25 @@ public class GameSystem : MonoBehaviour
     {
         chosenUnit.PerformAttack();
         float result = RandomC();
-        if (result <= 0.30/chosenUnit.hitMod) //Miss
+        if (result <= 0.40/chosenUnit.hitMod) //Miss
         {
             yield return StartCoroutine(RandomNumberVis("Missed!"));
             PopUpTextController.CreatePopUpText("MISSED", enemiesUI[Target.index].transform);
+            yield return new WaitForSeconds(1.0f);
+            dice.text.text = "...";
         } 
-        else if(result >= 0.80*chosenUnit.critMod) //Crit
+        else if(result >= 0.70*chosenUnit.critMod) //Crit
         {
+            dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().AngleMultiplier = 20;
+            dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().CurveScale = 200;
             yield return StartCoroutine(RandomNumberVis("CRIT!"));
             PopUpTextController.CreatePopUpText("CRIT!", enemiesUI[Target.index].transform);
             float damage = Mathf.Round(2 * chosenUnit.damageMod * 1.25f * UnityEngine.Random.Range(0.5f, 1.5f) * 100f) / 100f;
             yield return StartCoroutine(DamageUnit(Target.index, damage));
             Target.TakeDamage2(damage);
+            dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().AngleMultiplier = 3;
+            dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().CurveScale = 5;
+            dice.text.text = "...";
         }
         else
         {
@@ -150,6 +157,7 @@ public class GameSystem : MonoBehaviour
             float damage = Mathf.Round(2 * chosenUnit.damageMod * UnityEngine.Random.Range(0.5f, 1.5f) * 100f) / 100f;
             yield return StartCoroutine(DamageUnit(Target.index, damage));
             Target.TakeDamage2(damage);
+            dice.text.text = "...";
         }
     }
 
@@ -178,10 +186,14 @@ public class GameSystem : MonoBehaviour
             {
                 yield return StartCoroutine(ApplyStatusEffect(Target, effect));
             }
+            yield return new WaitForSeconds(1.0f);
+            dice.text.text = "...";
         }
         else
         {
             yield return StartCoroutine(RandomNumberVis("MISSED MOVE!"));
+            yield return new WaitForSeconds(1.0f);
+            dice.text.text = "...";
         }
     }
 
