@@ -29,6 +29,8 @@ public class GameSystem : MonoBehaviour
     public List<EnemyButton> unitsUI;
     public List<EnemyButton> enemiesUI;
 
+    public DiceVis dice;
+
     private void Awake()
     {
         gameSystem = this;
@@ -131,21 +133,22 @@ public class GameSystem : MonoBehaviour
         float result = RandomC();
         if (result <= 0.30/chosenUnit.hitMod) //Miss
         {
+            yield return StartCoroutine(RandomNumberVis("Missed!"));
             PopUpTextController.CreatePopUpText("MISSED", enemiesUI[Target.index].transform);
         } 
         else if(result >= 0.80*chosenUnit.critMod) //Crit
         {
+            yield return StartCoroutine(RandomNumberVis("CRIT!"));
             PopUpTextController.CreatePopUpText("CRIT!", enemiesUI[Target.index].transform);
             float damage = Mathf.Round(2 * chosenUnit.damageMod * 1.25f * UnityEngine.Random.Range(0.5f, 1.5f) * 100f) / 100f;
             yield return StartCoroutine(DamageUnit(Target.index, damage));
-            Debug.Log(Target.Name);
             Target.TakeDamage2(damage);
         }
         else
         {
+            yield return StartCoroutine(RandomNumberVis("HIT!"));
             float damage = Mathf.Round(2 * chosenUnit.damageMod * UnityEngine.Random.Range(0.5f, 1.5f) * 100f) / 100f;
             yield return StartCoroutine(DamageUnit(Target.index, damage));
-            Debug.Log(Target.Name);
             Target.TakeDamage2(damage);
         }
     }
@@ -163,7 +166,8 @@ public class GameSystem : MonoBehaviour
         chosenUnit.MakeMove(chosenMove);
         if (RandomChance(0.9f * chosenUnit.hitMod))
         {
-            if(chosenMove.Damage > 0)
+            yield return StartCoroutine(RandomNumberVis("HIT BY MOVE!"));
+            if (chosenMove.Damage > 0)
             {
                 yield return StartCoroutine(DamageUnit(Target.index, chosenMove.Damage));
                 Target.TakeDamage2(chosenMove.Damage);
@@ -177,7 +181,7 @@ public class GameSystem : MonoBehaviour
         }
         else
         {
-            //missed and do something else
+            yield return StartCoroutine(RandomNumberVis("MISSED MOVE!"));
         }
     }
 
@@ -200,6 +204,11 @@ public class GameSystem : MonoBehaviour
         Debug.Log(element.name);
         PopUpTextController.CreatePopUpText(what, element.transform);
         yield return StartCoroutine(element.GetComponent<EnemyButton>().Particles(color));
+    }
+
+    public IEnumerator RandomNumberVis(string s)
+    {
+        yield return StartCoroutine(dice.RandomRoll(s));
     }
 
     public bool RandomChance(float chance)
