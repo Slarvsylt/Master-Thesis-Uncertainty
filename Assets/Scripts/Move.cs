@@ -20,10 +20,11 @@ public class Move
     public string Description { get; set; }
     public string MoveName { get; set; }
     public float Damage { get; set; }
+    //public float HitChance { get; set; }
 
 
     [JsonConstructor]
-    public Move(bool RequireTarget, float MPcost, int MoveType, List<string> Effects, string ObjectSlug, string Description, string MoveName, float Damage)
+    public Move(bool RequireTarget, float MPcost, int MoveType, List<string> Effects, string ObjectSlug, string Description, string MoveName, float Damage/*, float HitChance*/)
     {
         this.RequireTarget = RequireTarget;
         this.MPcost = MPcost;
@@ -42,6 +43,7 @@ public class Move
         this.Description = Description;
         this.MoveName = MoveName;
         this.Damage = Damage;
+        //this.HitChance = HitChance;
     }
 
     public Move(Move move)
@@ -63,5 +65,6 @@ public class Move
         this.Description = move.Description;
         this.MoveName = move.MoveName;
         this.Damage = move.Damage;
+        //this.HitChance = move.HitChance;
     }
 }

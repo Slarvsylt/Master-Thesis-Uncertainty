@@ -177,7 +177,7 @@ public class GameSystem : MonoBehaviour
             yield return StartCoroutine(RandomNumberVis("HIT BY MOVE!"));
             if (chosenMove.Damage > 0)
             {
-                yield return StartCoroutine(DamageUnit(Target.index, chosenMove.Damage));
+                yield return StartCoroutine(DamageFriendlyUnit(Target.attachedObject, chosenMove.Damage));
                 Target.TakeDamage2(chosenMove.Damage);
             }
             StartCoroutine(Target.HitByMove(chosenMove));
@@ -213,7 +213,7 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator PEffect(GameObject element, string what, Color color)
     {
-        Debug.Log(element.name);
+        //Debug.Log(element.name);
         PopUpTextController.CreatePopUpText(what, element.transform);
         yield return StartCoroutine(element.GetComponent<EnemyButton>().Particles(color));
     }

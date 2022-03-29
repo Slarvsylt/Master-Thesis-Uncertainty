@@ -37,8 +37,9 @@ public class Player : MonoBehaviour
     public bool hasLost;
 
     public bool hasClicked = false;
-    public bool isSelectionMode = false, onSelectionModeEnabled = false, keyDown = false;
+    public bool isSelectionMode = false, keyDown = false;
     public bool isTurn = false;
+    public bool FreeTargetMove = false;
 
     [SerializeField]
     public List<Unit> Units;
@@ -199,6 +200,18 @@ public class Player : MonoBehaviour
             Enemy2Button.interactable = false;
             Enemy3Button.interactable = false;
         }
+        if (FreeTargetMove)
+        {
+            Unit1Button.interactable = false;
+            Unit2Button.interactable = false;
+            Unit3Button.interactable = false;
+        }
+        else
+        {
+            Unit1Button.interactable = true;
+            Unit2Button.interactable = true;
+            Unit3Button.interactable = true;
+        }
 
 
         if (!UnitToggleGroup.AnyTogglesOn())
@@ -211,16 +224,10 @@ public class Player : MonoBehaviour
     }
 
 
-    void ConfirmSelectionModeChoice()
-    {
-        if (isSelectionMode)
-        {
-            onSelectionModeEnabled = false;
-            isSelectionMode = false;
-            hasClicked = true;
-        }
-    }
-
+    /// <summary>
+    /// Bad
+    /// </summary>
+    /// <param name="enemy"></param>
     public void SelectedEnemy(Unit enemy)
     {
         //Debug.Log("Clicked Enemy!");
@@ -239,7 +246,7 @@ public class Player : MonoBehaviour
     //Better?
     public void SelectedEnemy(int whichOne)
     {
-        Debug.Log(whichOne);
+        //Debug.Log(whichOne);
         StoredOrder newOrder = new StoredOrder();
         newOrder.move = chosenMove;
         newOrder.order = selectedOrder;
@@ -250,6 +257,18 @@ public class Player : MonoBehaviour
 
         //debug
         selectedEnemy = opponent.Units[whichOne].Name;
+        ResetMoveSelection();
+    }
+
+    public void SelectUnit(int whichOne)
+    {
+        StoredOrder newOrder = new StoredOrder();
+        newOrder.move = chosenMove;
+        newOrder.order = selectedOrder;
+        newOrder.Target = Units[whichOne];
+        newOrder.unit = chosenUnit;
+        addOrder(newOrder);
+        ResetMoveSelection();
     }
 
 
@@ -289,6 +308,23 @@ public class Player : MonoBehaviour
                 sb.Append(e.EffectName + ", ");
             }
             MoveEffectsText.text = sb.ToString();
+
+            if (chosenMove.RequireTarget)
+            {
+                FreeTargetMove = true;
+
+                Unit1Button.onValueChanged.RemoveAllListeners();
+                Unit2Button.onValueChanged.RemoveAllListeners();
+                Unit3Button.onValueChanged.RemoveAllListeners();
+
+                Unit1Button.gameObject.GetComponent<UnitButton>().onMyOwnEvent.AddListener(delegate { SelectUnit(0); });
+                Unit2Button.gameObject.GetComponent<UnitButton>().onMyOwnEvent.AddListener(delegate { SelectUnit(1); });
+                Unit3Button.gameObject.GetComponent<UnitButton>().onMyOwnEvent.AddListener(delegate { SelectUnit(2); });
+
+                // Unit1Button.onValueChanged.AddListener(delegate { SelectUnit(0); });
+                //  Unit2Button.onValueChanged.AddListener(delegate { SelectUnit(1); });
+                //  Unit3Button.onValueChanged.AddListener(delegate { SelectUnit(2); });
+            }
         }
         if (!change.isOn)
         {
@@ -515,6 +551,22 @@ public class Player : MonoBehaviour
         stateHandler.ChangeState(GameState.NEXTTURN);
     }
 
+    private void ResetMoveSelection()
+    {
+        Unit1Button.gameObject.GetComponent<UnitButton>().onMyOwnEvent.RemoveAllListeners();
+        Unit2Button.gameObject.GetComponent<UnitButton>().onMyOwnEvent.RemoveAllListeners();
+        Unit3Button.gameObject.GetComponent<UnitButton>().onMyOwnEvent.RemoveAllListeners();
+
+        Unit1Button.onValueChanged.RemoveAllListeners();
+        Unit2Button.onValueChanged.RemoveAllListeners();
+        Unit3Button.onValueChanged.RemoveAllListeners();
+
+        Unit1Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit1Button, 0); });
+        Unit2Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit2Button, 1); });
+        Unit3Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit3Button, 2); });
+        FreeTargetMove = false;
+    }
+
     private void ResetStates() 
     {
         ActionToggleGroup.SetAllTogglesOff();
@@ -524,12 +576,14 @@ public class Player : MonoBehaviour
         chosenMove = null;
         chosenUnit = null;
         isSelectionMode = false;
+        FreeTargetMove = false;
         selectedEnemy = null;
         attackButton.interactable = false;
         defendButton.interactable = false;
         move1Button.interactable = false;
         move2Button.interactable = false;
         move3Button.interactable = false;
+        ResetMoveSelection();
         //Debug.Log("Reseted");
     }
 
