@@ -84,8 +84,6 @@ public class Player : MonoBehaviour
     private string someOrder;
     private string selectedEnemy;
 
-    public Func<Action<bool, bool>, IEnumerator> DoAction;
-
     public TextMeshProUGUI UnitNameText;
     public TextMeshProUGUI UnitTypeText;
     public TextMeshProUGUI UnitActiveEffectsText;

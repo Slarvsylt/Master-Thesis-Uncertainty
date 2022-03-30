@@ -232,4 +232,9 @@ public class GameSystem : MonoBehaviour
     {
         return RandomSystem.RandomGaussian();
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
