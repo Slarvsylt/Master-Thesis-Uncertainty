@@ -806,9 +806,9 @@ public class Player : MonoBehaviour
         opponent.Units[1].transform.position = Enemy2Button.transform.position;
         opponent.Units[2].transform.position = Enemy3Button.transform.position;
 
-        opponent.bars[0].transform.position = Enemy1Button.transform.position - new Vector3(0, 1.0f, 0);
-        opponent.bars[1].transform.position = Enemy2Button.transform.position - new Vector3(0, 1.0f, 0);
-        opponent.bars[2].transform.position = Enemy3Button.transform.position - new Vector3(0, 1.0f, 0);
+        opponent.bars[0].transform.position = Enemy1Button.transform.position + new Vector3(0, 1.0f, 0);
+        opponent.bars[1].transform.position = Enemy2Button.transform.position + new Vector3(0, 1.0f, 0);
+        opponent.bars[2].transform.position = Enemy3Button.transform.position + new Vector3(0, 1.0f, 0);
 
         opponent.Units[0].attachedObject = Enemy1Button.gameObject;
         opponent.Units[1].attachedObject = Enemy2Button.gameObject;
