@@ -145,8 +145,8 @@ public class GameSystem : MonoBehaviour
             yield return StartCoroutine(RandomNumberVis("CRIT!"));
             PopUpTextController.CreatePopUpText("CRIT!", enemiesUI[Target.index].transform);
             float damage = Mathf.Round(2 * chosenUnit.damageMod * 1.25f * UnityEngine.Random.Range(0.5f, 1.5f) * 100f) / 100f;
-            yield return StartCoroutine(DamageUnit(Target.index, damage));
             Target.TakeDamage2(damage);
+            yield return StartCoroutine(DamageUnit(Target.index, damage));
             dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().AngleMultiplier = 3;
             dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().CurveScale = 5;
             dice.text.text = "...";
@@ -155,8 +155,8 @@ public class GameSystem : MonoBehaviour
         {
             yield return StartCoroutine(RandomNumberVis("HIT!"));
             float damage = Mathf.Round(2 * chosenUnit.damageMod * UnityEngine.Random.Range(0.5f, 1.5f) * 100f) / 100f;
-            yield return StartCoroutine(DamageUnit(Target.index, damage));
             Target.TakeDamage2(damage);
+            yield return StartCoroutine(DamageUnit(Target.index, damage));
             dice.text.text = "...";
         }
     }
