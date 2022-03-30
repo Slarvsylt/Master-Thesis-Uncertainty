@@ -9,7 +9,7 @@ public class Headache : MonoBehaviour, Effect
     public string EffectName { get; set; } = "Headache";
     public string Description { get; set; } = "Ow, my head!";
     public Unit affected { get; set; }
-    public int maxTurns { get; set; } = 3;
+    public int maxTurns { get; set; } = 8;
     public IEnumerator OnInflict()
     {
         Debug.Log("Giving the unit a headache: " + affected.Name);
@@ -21,9 +21,8 @@ public class Headache : MonoBehaviour, Effect
     }
     public IEnumerator OnTurnEnd()
     {
-        Debug.Log("owie my head!");
-        affected.TakeDamage(1);
-        yield break;
+        yield return StartCoroutine(affected.TakeDamage1(1));
+        yield return StartCoroutine(affected.Effect("My head, OWIE!", Color.red));
     }
     public IEnumerator OnRemoved()
     {

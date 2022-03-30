@@ -17,7 +17,7 @@ namespace UnityEngine.UI.Extensions
         public bool use3dRotation = false;
 
         private Transform _transform;
-        private ParticleSystem pSystem;
+        public ParticleSystem pSystem;
         private ParticleSystem.Particle[] particles;
         private UIVertex[] _quad = new UIVertex[4];
         private Vector4 imageUV = Vector4.zero;

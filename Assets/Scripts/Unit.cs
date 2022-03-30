@@ -73,6 +73,11 @@ public class Unit: MonoBehaviour
             StartCoroutine(Die());
     }
 
+    public IEnumerator Effect(string what, Color color)
+    {
+        yield return StartCoroutine(GameSystem.gameSystem.PEffect(attachedObject, what, color));
+    }
+
     public void TakeDamage2(float damage)
     {
         Debug.Log("TakeDamage2");
@@ -112,10 +117,9 @@ public class Unit: MonoBehaviour
         Debug.Log(Name + " is alive once again!");
     }
     
-    public void HitByMove(Move move) 
+    public IEnumerator HitByMove(Move move) 
     {
-        //Hit by move
-        //Apply status effects
+        yield break;
     }
     public void AddMoves(List<Move> moves)
     {

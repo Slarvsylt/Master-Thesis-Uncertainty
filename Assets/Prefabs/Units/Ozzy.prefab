@@ -95,10 +95,11 @@ MonoBehaviour:
   Name: Ozzy
   maxHP: 10
   maxMP: 10
-  hitMod: 1
+  hitMod: 0.84
   critMod: 1
-  damageMod: 1
+  damageMod: 3
   defMod: 1
+  attachedObject: {fileID: 0}
   Strengths: 0000000003000000
   Weaknesses: 01000000
   AttackTypes: 02000000

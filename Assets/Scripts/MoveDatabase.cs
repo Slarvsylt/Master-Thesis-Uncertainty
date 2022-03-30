@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 public class MoveDatabase : MonoBehaviour
 {
     public static MoveDatabase Instance { get; set; }
-    private List<Move> Moves { get; set; }
+    public List<Move> Moves { get; set; }
     // Use this for initialization
     void Awake()
     {
@@ -20,7 +20,7 @@ public class MoveDatabase : MonoBehaviour
     private void BuildDatabase()
     {
         Moves = JsonConvert.DeserializeObject<List<Move>>(Resources.Load<TextAsset>("JSON/Moves").ToString());
-        //Debug.Log(Moves[0]);
+        //Debug.Log(Moves[0].MoveName);
     }
 
     public Move GetMove(string moveSlug)

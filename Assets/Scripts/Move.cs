@@ -7,7 +7,7 @@ using Newtonsoft.Json.Converters;
 
 public enum MoveType
 {
-    MAGIC, SNEAKY, BLUNT, SHARP, PAIN, FIRE, FROST, POISON, MENTAL, DIVINE, COOKING, ELECTRIC, WIND, STRONG, WEAK, BIG, SMALL, FAST, SLOW, GUN
+    MAGIC, SNEAKY, BLUNT, SHARP, PAIN, FIRE, FROST, POISON, MENTAL, DIVINE, COOKING, ELECTRIC, WIND, STRONG, WEAK, BIG, SMALL, FAST, SLOW, GUN, UNHOLY
 }
 
 public class Move
@@ -20,10 +20,11 @@ public class Move
     public string Description { get; set; }
     public string MoveName { get; set; }
     public float Damage { get; set; }
+    public float HitChance { get; set; }
 
 
     [JsonConstructor]
-    public Move(bool RequireTarget, float MPcost, int MoveType, List<string> Effects, string ObjectSlug, string Description, string MoveName, float Damage)
+    public Move(bool RequireTarget, float MPcost, int MoveType, List<string> Effects, string ObjectSlug, string Description, string MoveName, float Damage, float HitChance)
     {
         this.RequireTarget = RequireTarget;
         this.MPcost = MPcost;
@@ -42,6 +43,9 @@ public class Move
         this.Description = Description;
         this.MoveName = MoveName;
         this.Damage = Damage;
+        //Debug.Log(HitChance.ToString());
+        this.HitChance = HitChance;
+       // Debug.Log("Passed"+this.MoveName);
     }
 
     public Move(Move move)
@@ -52,6 +56,7 @@ public class Move
         //this.MoveType = MoveType;
         this.MoveType = (MoveType)move.MoveType;
         this.Effects = new List<Effect>();
+        //Debug.Log(move.MoveName);
         foreach (Effect e in move.Effects)
         {
             //Debug.Log("Effects/" + e.EffectName);
@@ -63,5 +68,6 @@ public class Move
         this.Description = move.Description;
         this.MoveName = move.MoveName;
         this.Damage = move.Damage;
+        this.HitChance = move.HitChance;
     }
 }

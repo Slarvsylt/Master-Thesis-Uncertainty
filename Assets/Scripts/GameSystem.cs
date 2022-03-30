@@ -29,6 +29,8 @@ public class GameSystem : MonoBehaviour
     public List<EnemyButton> unitsUI;
     public List<EnemyButton> enemiesUI;
 
+    public DiceVis dice;
+
     private void Awake()
     {
         gameSystem = this;
@@ -119,7 +121,7 @@ public class GameSystem : MonoBehaviour
                     Debug.Log("Removed effect: "+ entry.Value[i].effect.EffectName);
                     yield return StartCoroutine(entry.Value[i].effect.OnRemoved());
                     entry.Value.RemoveAt(i);
-                    yield return new WaitForSeconds(0.1f);
+                    //yield return new WaitForSeconds(0.1f);
                 }
             }
         }
@@ -128,19 +130,34 @@ public class GameSystem : MonoBehaviour
     public IEnumerator Attack(Unit chosenUnit, Unit Target)
     {
         chosenUnit.PerformAttack();
-        if (RandomChance(chosenUnit.hitMod * 0.5f))
+        float result = RandomC();
+        if (result <= 0.40/chosenUnit.hitMod) //Miss
         {
-            float damage = Mathf.Round(2 * chosenUnit.damageMod * UnityEngine.Random.Range(0.5f,1.5f) * 100f)/100f;
+            yield return StartCoroutine(RandomNumberVis("Missed!"));
+            PopUpTextController.CreatePopUpText("MISSED", enemiesUI[Target.index].transform);
+            yield return new WaitForSeconds(1.0f);
+            dice.text.text = "...";
+        } 
+        else if(result >= 0.70*chosenUnit.critMod) //Crit
+        {
+            dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().AngleMultiplier = 20;
+            dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().CurveScale = 200;
+            yield return StartCoroutine(RandomNumberVis("CRIT!"));
+            PopUpTextController.CreatePopUpText("CRIT!", enemiesUI[Target.index].transform);
+            float damage = Mathf.Round(2 * chosenUnit.damageMod * 1.25f * UnityEngine.Random.Range(0.5f, 1.5f) * 100f) / 100f;
             yield return StartCoroutine(DamageUnit(Target.index, damage));
-            Debug.Log(Target.Name);
             Target.TakeDamage2(damage);
-            //Debug.Log(chosenUnit.Name + " atacc " + Target.Name);
+            dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().AngleMultiplier = 3;
+            dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().CurveScale = 5;
+            dice.text.text = "...";
         }
         else
         {
-            PopUpTextController.CreatePopUpText("MISSED", enemiesUI[Target.index].transform);
-            //Miss and do something else
-            //Debug.Log(chosenUnit.Name + " atacc " + Target.Name + " but MISSES!");
+            yield return StartCoroutine(RandomNumberVis("HIT!"));
+            float damage = Mathf.Round(2 * chosenUnit.damageMod * UnityEngine.Random.Range(0.5f, 1.5f) * 100f) / 100f;
+            yield return StartCoroutine(DamageUnit(Target.index, damage));
+            Target.TakeDamage2(damage);
+            dice.text.text = "...";
         }
     }
 
@@ -157,22 +174,32 @@ public class GameSystem : MonoBehaviour
         chosenUnit.MakeMove(chosenMove);
         if (RandomChance(0.9f * chosenUnit.hitMod))
         {
-            Target.HitByMove(chosenMove);
+            yield return StartCoroutine(RandomNumberVis("HIT BY MOVE!"));
+            if (chosenMove.Damage > 0)
+            {
+                yield return StartCoroutine(DamageFriendlyUnit(Target.attachedObject, chosenMove.Damage));
+                Target.TakeDamage2(chosenMove.Damage);
+            }
+            StartCoroutine(Target.HitByMove(chosenMove));
 
             foreach (Effect effect in chosenMove.Effects)
             {
                 yield return StartCoroutine(ApplyStatusEffect(Target, effect));
             }
+            yield return new WaitForSeconds(1.0f);
+            dice.text.text = "...";
         }
         else
         {
-            //missed and do something else
+            yield return StartCoroutine(RandomNumberVis("MISSED MOVE!"));
+            yield return new WaitForSeconds(1.0f);
+            dice.text.text = "...";
         }
     }
 
     public IEnumerator DamageUnit(int index, float dam)
     {
-       // Debug.Log("DamageUnit");
+        Debug.Log(index);
         PopUpTextController.CreatePopUpText(dam.ToString(),enemiesUI[index].transform);
         yield return StartCoroutine(enemiesUI[index].Shake());
     }
@@ -184,8 +211,30 @@ public class GameSystem : MonoBehaviour
         yield return StartCoroutine(element.GetComponent<EnemyButton>().Shake());
     }
 
+    public IEnumerator PEffect(GameObject element, string what, Color color)
+    {
+        //Debug.Log(element.name);
+        PopUpTextController.CreatePopUpText(what, element.transform);
+        yield return StartCoroutine(element.GetComponent<EnemyButton>().Particles(color));
+    }
+
+    public IEnumerator RandomNumberVis(string s)
+    {
+        yield return StartCoroutine(dice.RandomRoll(s));
+    }
+
     public bool RandomChance(float chance)
     {
         return UnityEngine.Random.value <= chance;
+    }
+
+    public float RandomC()
+    {
+        return RandomSystem.RandomGaussian();
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

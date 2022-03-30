@@ -13,6 +13,6 @@ public class CameraScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += new Vector3(Mathf.Sin(Time.time) * 2.0f, 0, 0);
+        transform.position += new Vector3(Mathf.Sin(Time.time) * 1.0f, 0, 0);
     }
 }

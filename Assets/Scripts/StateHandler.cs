@@ -49,7 +49,7 @@ public class StateHandler : MonoBehaviour
                 StartGame();
                 break;
             case GameState.END:
-                EndGame();
+                StartCoroutine(EndGame());
                 break;
             case GameState.PLAYERTURN:
                 StartCoroutine(StartTurn());
@@ -90,7 +90,7 @@ public class StateHandler : MonoBehaviour
         //Populate with units
     }
 
-    void EndGame()
+    private IEnumerator EndGame()
     {
         //StartCoroutine(GameSystem.gameSystem.EndGame());
         //End Game
@@ -104,7 +104,8 @@ public class StateHandler : MonoBehaviour
             m = currentPlayer.name;
         winText.text = m + " won!";
         Debug.Log("Someone lost!");
-        Application.Quit();
+        yield return new WaitForSeconds(2.0f);
+        gameSystem.QuitGame();
     }
 
     private IEnumerator StartTurn()

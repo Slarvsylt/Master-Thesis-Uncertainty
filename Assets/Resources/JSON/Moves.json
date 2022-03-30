@@ -3,11 +3,12 @@
 		"RequireTarget": true,
 		"MPcost": 5,
 		"MoveType": 0,
-		"Effects": ["Sleeping"], 
+		"Effects": ["Sleeping"],
 		"ObjectSlug": "sleep",
 		"Description": "Put a unit to sleep.",
 		"MoveName": "Sleep",
-		"Damage": 0
+		"Damage": 0,
+		"HitChance": 0.9
 	},
 	{
 		"RequireTarget": true,
@@ -17,7 +18,8 @@
 		"ObjectSlug": "sleep3",
 		"Description": "Put a unit to sleep.",
 		"MoveName": "Sleep3",
-		"Damage": 0
+		"Damage": 0,
+		"HitChance": 0.9
 	},
 	{
 		"RequireTarget": true,
@@ -27,7 +29,8 @@
 		"ObjectSlug": "sleep2",
 		"Description": "Put a unit to sleep.",
 		"MoveName": "Sleep2",
-		"Damage": 0
+		"Damage": 0,
+		"HitChance": 0.9
 	},
 	{
 		"RequireTarget": true,
@@ -37,7 +40,8 @@
 		"ObjectSlug": "fire",
 		"Description": "Put a unit to sleep.",
 		"MoveName": "Fire",
-		"Damage": 1
+		"Damage": 1,
+		"HitChance": 0.9
 	},
 	{
 		"RequireTarget": true,
@@ -47,7 +51,8 @@
 		"ObjectSlug": "fart",
 		"Description": "Fart.",
 		"MoveName": "Fart",
-		"Damage": 1
+		"Damage": 1,
+		"HitChance": 0.9
 	},
 	{
 		"RequireTarget": true,
@@ -57,6 +62,271 @@
 		"ObjectSlug": "headache",
 		"Description": "Give headache",
 		"MoveName": "Headache",
-		"Damage": 0
+		"Damage": 0,
+		"HitChance": 0.9
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 3,
+		"MoveType": 9,
+		"Effects": ["Emboldened", "Inspired"], 
+		"ObjectSlug": "compliment",
+		"Description": "Give a compliment to a unit",
+		"MoveName": "Compliment",
+		"Damage": 0,
+		"HitChance": 0.9
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 1,
+		"MoveType": 8,
+		"Effects": ["Angry"], 
+		"ObjectSlug": "insult",
+		"Description": "Insult unit",
+		"MoveName": "Insult",
+		"Damage": 0,
+		"HitChance": 0.9
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 1,
+		"MoveType": 8,
+		"Effects": ["Afraid"], 
+		"ObjectSlug": "scare",
+		"Description": "Scare unit",
+		"MoveName": "Scare",
+		"Damage": 0,
+		"HitChance": 0.9
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 4,
+		"MoveType": 7,
+		"Effects": ["Pain", "Poisoned"], 
+		"ObjectSlug": "rustyknife",
+		"Description": "Stab unit with rusty knife",
+		"MoveName": "Rusty Knife",
+		"Damage": 4,
+		"HitChance": 0.9
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 7,
+		"MoveType": 20,
+		"Effects": ["Pain", "Burning", "Afraid"], 
+		"ObjectSlug": "takersflame",
+		"Description": "Launch a cascade of blasphemous flames at the unit.",
+		"MoveName": "Takers Flame",
+		"Damage": 5,
+		"HitChance": 0.9
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 4,
+		"MoveType": 9,
+		"Effects": ["Awe", "Humbled"], 
+		"ObjectSlug": "order",
+		"Description": "Establish Order over a unit. Take Control over the situation.",
+		"MoveName": "Establish Order",
+		"Damage": 4,
+		"HitChance": 0.9
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 9,
+		"Effects": [ "Bleeding" ],
+		"ObjectSlug": "slash",
+		"Description": "Slash a unit",
+		"MoveName": "Slash",
+		"Damage": 3,
+		"HitChance": 0.7
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 9,
+		"Effects": [ "Blind" ],
+		"ObjectSlug": "faith",
+		"Description": "Blind a unit",
+		"MoveName": "Faith",
+		"Damage": 0,
+		"HitChance": 0.9
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 9,
+		"Effects": [ "Heal" ],
+		"ObjectSlug": "prayer",
+		"Description": "Heal a unit",
+		"MoveName": "Prayer",
+		"Damage": 0,
+		"HitChance": 1
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 9,
+		"Effects": [ "Bleeding" ],
+		"ObjectSlug": "stab",
+		"Description": "Stab a unit",
+		"MoveName": "Stab",
+		"Damage": 3,
+		"HitChance": 0.7
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 9,
+		"Effects": [ "Poisoned" ],
+		"ObjectSlug": "poisonDart",
+		"Description": "Poison a unit",
+		"MoveName": "Poison Dart",
+		"Damage": 0,
+		"HitChance": 0.9
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 9,
+		"Effects": [ "Heal" ],
+		"ObjectSlug": "potion",
+		"Description": "Heal a unit",
+		"MoveName": "Potion",
+		"Damage": 0,
+		"HitChance": 1
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 9,
+		"Effects": [ "Pain" ],
+		"ObjectSlug": "blast",
+		"Description": "Blast a unit",
+		"MoveName": "Blast",
+		"Damage": 3,
+		"HitChance": 0.7
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 9,
+		"Effects": [ "Fire" ],
+		"ObjectSlug": "burn",
+		"Description": "Burn a unit",
+		"MoveName": "Burn",
+		"Damage": 0,
+		"HitChance": 0.9
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 9,
+		"Effects": [ "Heal" ],
+		"ObjectSlug": "heal",
+		"Description": "Heal a unit",
+		"MoveName": "Heal",
+		"Damage": 0,
+		"HitChance": 1
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 9,
+		"Effects": [ "Headache" ],
+		"ObjectSlug": "whack",
+		"Description": "Whack a unit",
+		"MoveName": "Whack",
+		"Damage": 3,
+		"HitChance": 0.7
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 9,
+		"Effects": [ "Bleeding" ],
+		"ObjectSlug": "throwPebbles",
+		"Description": "Make a unit bleed",
+		"MoveName": "Throw Pebbles",
+		"Damage": 0,
+		"HitChance": 0.9
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 9,
+		"Effects": [ "Heal" ],
+		"ObjectSlug": "patchUp",
+		"Description": "Heal a unit",
+		"MoveName": "Patch Up",
+		"Damage": 0,
+		"HitChance": 1
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 9,
+		"Effects": [ "Pain" ],
+		"ObjectSlug": "shoot",
+		"Description": "Shoot a unit",
+		"MoveName": "Shoot",
+		"Damage": 3,
+		"HitChance": 0.7
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 9,
+		"Effects": [ "Confused" ],
+		"ObjectSlug": "confuse",
+		"Description": "Confuse a unit",
+		"MoveName": "Confuse",
+		"Damage": 0,
+		"HitChance": 0.9
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 9,
+		"Effects": [ "Heal" ],
+		"ObjectSlug": "regenerate",
+		"Description": "Heal a unit",
+		"MoveName": "Regenerate",
+		"Damage": 0,
+		"HitChance": 1
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 9,
+		"Effects": [ "Sad", "Crying" ],
+		"ObjectSlug": "insult",
+		"Description": "Insult a unit",
+		"MoveName": "Insult",
+		"Damage": 3,
+		"HitChance": 0.7
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 9,
+		"Effects": [ "Charmed" ],
+		"ObjectSlug": "charm",
+		"Description": "Charm a unit",
+		"MoveName": "Charm",
+		"Damage": 0,
+		"HitChance": 0.9
+	},
+	{
+		"RequireTarget": true,
+		"MPcost": 5,
+		"MoveType": 9,
+		"Effects": [ "Heal" ],
+		"ObjectSlug": "flirt",
+		"Description": "Heal a unit",
+		"MoveName": "Flirt",
+		"Damage": 0,
+		"HitChance": 1
 	}
 ]

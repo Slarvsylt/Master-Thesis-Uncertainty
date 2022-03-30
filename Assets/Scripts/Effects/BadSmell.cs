@@ -13,6 +13,7 @@ public class BadSmell : MonoBehaviour, Effect
     public IEnumerator OnInflict()
     {
         Debug.Log("Giving the unit a bad smell: " + affected.Name);
+        yield return StartCoroutine(affected.Effect("Ew!", Color.green));
         yield break;
     }
     public IEnumerator OnTurnBegin()
