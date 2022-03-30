@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class CameraScript : MonoBehaviour
 {
+
+    public float XSinscale = 0.5f;
+    public float Xscale = 1.5f; 
     // Start is called before the first frame update
     void Start()
     {
@@ -13,6 +16,6 @@ public class CameraScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += new Vector3(Mathf.Sin(Time.time) * 1.0f, 0, 0);
+        transform.position += new Vector3(Mathf.Sin(Time.time*XSinscale) * Xscale, 0, 0);
     }
 }
