@@ -35,7 +35,7 @@ public class GameSystem : MonoBehaviour
     {
         gameSystem = this;
         QualitySettings.vSyncCount = 0;  // VSync must be disabled
-        Application.targetFrameRate = 45;
+        Application.targetFrameRate = 35;
         PopUpTextController.Initialize();
     }
 
