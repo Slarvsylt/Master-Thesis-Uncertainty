@@ -700,7 +700,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void PopulateField()
     {
-
+        StatusText.text = gameObject.name + "'s turn";
         Unit1Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit1Button, 0); });
         Unit2Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit2Button, 1); });
         Unit3Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit3Button, 2); });

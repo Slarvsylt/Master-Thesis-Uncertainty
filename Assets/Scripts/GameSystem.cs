@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using UnityEngine.EventSystems;
+using TMPro;
 
 /// <summary>
 /// Used for storing data about applied effects.
@@ -26,6 +27,8 @@ public class GameSystem : MonoBehaviour
 
     public Dictionary<Unit, List<StatusEffect>> statusEffects;
 
+    public TextMeshProUGUI StatusText;
+
     public List<EnemyButton> unitsUI;
     public List<EnemyButton> enemiesUI;
 
@@ -46,6 +49,7 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator ApplyStatusEffect(Unit unit, Effect effect)
     {
+        StatusText.text = "Applying status effects...";
         StatusEffect sf = new StatusEffect();
         sf.effect = effect;
         sf.TurnsSinceApplied = 0;
@@ -85,6 +89,7 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator EndOfTurnEffects()
     {
+        StatusText.text = "Triggering end of turn effects...";
         foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
         {
             for (int i = entry.Value.Count - 1; i >= 0; i--)
@@ -98,6 +103,7 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator StartOfturnEffects()
     {
+        StatusText.text = "Triggering start of turn effects";
         foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
         {
             for (int i = entry.Value.Count - 1; i >= 0; i--)
@@ -111,6 +117,7 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator IncreaseEffectsTurnCounter()
     {
+        StatusText.text = "Removing effects due for removal...";
         foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
         {
             for (int i = entry.Value.Count - 1; i >= 0; i--)
@@ -129,9 +136,10 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator Attack(Unit chosenUnit, Unit Target)
     {
+        StatusText.text = "Attacking!";
         chosenUnit.PerformAttack();
         float result = RandomC();
-        if (result <= 0.40/chosenUnit.hitMod) //Miss
+        if (result <= 0.30/chosenUnit.hitMod) //Miss
         {
             yield return StartCoroutine(RandomNumberVis("Missed!"));
             PopUpTextController.CreatePopUpText("MISSED", enemiesUI[Target.index].transform);
@@ -163,6 +171,7 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator Defend(Unit chosenUnit, Unit Target)
     {
+        StatusText.text = "Defending!";
         chosenUnit.Defend();
         Target.defended = true;
         yield return new WaitForSeconds(1);
@@ -170,6 +179,7 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator Move(Unit chosenUnit, Move chosenMove, Unit Target)
     {
+        StatusText.text = "Perform Moves!";
         //Debug.Log("Move!!");
         chosenUnit.MakeMove(chosenMove);
         if (RandomChance(0.9f * chosenUnit.hitMod))
