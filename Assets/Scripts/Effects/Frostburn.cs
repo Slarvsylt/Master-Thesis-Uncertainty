@@ -21,7 +21,7 @@ public class Frostburn : MonoBehaviour, Effect
     }
     public IEnumerator OnTurnEnd()
     {
-        yield return StartCoroutine(affected.TakeDamage1(RandomSystem.RandomRange(0.8f, 1.6)));
+        yield return StartCoroutine(affected.TakeDamage1(RandomSystem.RandomRange(0.8f, 1.6f)));
         yield return StartCoroutine(affected.Effect("I can't feel my fingers!", Color.cyan));
 
     }
