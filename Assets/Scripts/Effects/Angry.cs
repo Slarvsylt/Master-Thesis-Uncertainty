@@ -14,7 +14,7 @@ public class Angry : MonoBehaviour, Effect
     {
         //Debug.Log("Putting the unit on fire: " + affected.Name);
         affected.damageMod += 0.2f;
-        affected.hitMod -= 0.3f; 
+        affected.hitMod += 0.2f; 
         yield return StartCoroutine(affected.Effect("ANGRY!", Color.red));
 
     }
@@ -29,7 +29,7 @@ public class Angry : MonoBehaviour, Effect
     public IEnumerator OnRemoved()
     {
         affected.damageMod -= 0.2f;
-        affected.hitMod += 0.3f;
+        affected.hitMod -= 0.3f;
         yield break;
     }
 }

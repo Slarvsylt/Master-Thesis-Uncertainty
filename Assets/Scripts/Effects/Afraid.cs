@@ -12,13 +12,14 @@ public class Afraid : MonoBehaviour, Effect
     public int maxTurns { get; set; } = 4;
     public IEnumerator OnInflict()
     {
+        affected.critMod -= 0.2f;
         //Debug.Log("Putting the unit on fire: " + affected.Name);
-        yield break;
+        yield return StartCoroutine(affected.Effect("Boho, I'm afraid!", Color.blue));
     }
     public IEnumerator OnTurnBegin()
     {
         //Debug.Log("owie I'm on fire!" + affected.Name);
-        yield return StartCoroutine(affected.Effect("Boho, I'm afraid!", Color.blue));
+        yield break;
         //Stun Unit
     }
     public IEnumerator OnTurnEnd()
@@ -27,7 +28,8 @@ public class Afraid : MonoBehaviour, Effect
     }
     public IEnumerator OnRemoved()
     {
+        affected.critMod += 0.2f;
+        yield return StartCoroutine(affected.Effect("Hoho, I'm no longer afraid!", Color.blue));
         //Debug.Log("Putting the fire out: " + affected.Name);
-        yield break;
     }
 }

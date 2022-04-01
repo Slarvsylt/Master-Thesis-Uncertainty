@@ -18,7 +18,7 @@ public class Poisoned : MonoBehaviour, Effect
     public IEnumerator OnTurnBegin()
     {
         //Debug.Log("owie I'm on fire!" + affected.Name);
-        yield return StartCoroutine(affected.TakeDamage1(1));
+        yield return StartCoroutine(affected.TakeDamage1(RandomSystem.RandomRange(1,3)));
 
         //Stun Unit
     }

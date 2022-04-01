@@ -60,7 +60,7 @@ public class Move
         foreach (Effect e in move.Effects)
         {
             //Debug.Log("Effects/" + e.EffectName);
-            GameObject go = GameObject.Instantiate((GameObject)Resources.Load("Effects/" + e.EffectName), GameObject.Find("Canvas").transform);
+            GameObject go = GameObject.Instantiate((GameObject)Resources.Load("Effects/" + e.EffectName.Replace(" ", "")), GameObject.Find("Canvas").transform);
             Effect ef = go.GetComponent<Effect>();
             this.Effects.Add(ef);
         }

@@ -23,6 +23,7 @@ public class Pain : MonoBehaviour, Effect
     }
     public IEnumerator OnTurnEnd()
     {
+        yield return StartCoroutine(affected.Effect("Pain, OWIE!", Color.red));
         yield break;
     }
     public IEnumerator OnRemoved()

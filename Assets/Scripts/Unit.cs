@@ -67,7 +67,7 @@ public class Unit: MonoBehaviour
     public IEnumerator TakeDamage1(float damage)
     {
         Debug.Log("TakeDamage1");
-        currentHP -= damage * defMod;
+        currentHP -= damage / defMod;
         yield return StartCoroutine(GameSystem.gameSystem.DamageFriendlyUnit(attachedObject, damage));
         if (currentHP <= 0)
             StartCoroutine(Die());
@@ -81,7 +81,7 @@ public class Unit: MonoBehaviour
     public void TakeDamage2(float damage)
     {
         Debug.Log("TakeDamage2");
-        currentHP -= damage * defMod;
+        currentHP -= damage / defMod;
         if (currentHP <= 0)
             StartCoroutine(Die());
     }

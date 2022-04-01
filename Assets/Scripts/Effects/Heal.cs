@@ -6,13 +6,20 @@ public class Heal : MonoBehaviour, Effect
 {
     public UnitStates AppliedState { get; set; }
     public Dictionary<string, int> Modifiers { get; set; }
-    public string EffectName { get; set; } = "Headache";
-    public string Description { get; set; } = "Ow, my head!";
+    public string EffectName { get; set; } = "Heal";
+    public string Description { get; set; } = "Heal unit!";
     public Unit affected { get; set; }
     public int maxTurns { get; set; } = 8;
     public IEnumerator OnInflict()
     {
-        Debug.Log("Giving the unit a headache: " + affected.Name);
+        if (affected.isDead)
+        {
+            affected.Ressurect();
+        }
+        else
+        {
+            affected.RestoreHP(RandomSystem.RandomRange(1,4));
+        }
         yield break;
     }
     public IEnumerator OnTurnBegin()
@@ -21,12 +28,10 @@ public class Heal : MonoBehaviour, Effect
     }
     public IEnumerator OnTurnEnd()
     {
-        yield return StartCoroutine(affected.TakeDamage1(1));
-        yield return StartCoroutine(affected.Effect("My head, OWIE!", Color.red));
+        yield break;
     }
     public IEnumerator OnRemoved()
     {
-        Debug.Log("Headache pills: " + affected.Name);
         yield break;
     }
 }

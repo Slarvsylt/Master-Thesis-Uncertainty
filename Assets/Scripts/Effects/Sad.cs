@@ -6,10 +6,10 @@ public class Sad : MonoBehaviour, Effect
 {
     public UnitStates AppliedState { get; set; }
     public Dictionary<string, int> Modifiers { get; set; }
-    public string EffectName { get; set; } = "Fire";
-    public string Description { get; set; } = "The unit is burning! Fuck!";
+    public string EffectName { get; set; } = "Sad";
+    public string Description { get; set; } = "The unit is sad! Fuck!";
     public Unit affected { get; set; }
-    public int maxTurns { get; set; } = 3;
+    public int maxTurns { get; set; } = 8;
     public IEnumerator OnInflict()
     {
         //Debug.Log("Putting the unit on fire: " + affected.Name);
@@ -18,8 +18,7 @@ public class Sad : MonoBehaviour, Effect
     public IEnumerator OnTurnBegin()
     {
         //Debug.Log("owie I'm on fire!" + affected.Name);
-        yield return StartCoroutine(affected.TakeDamage1(1));
-        yield return StartCoroutine(affected.Effect("Fire, OWIE!", Color.red));
+        yield return StartCoroutine(affected.Effect("I'm not feeling very happy right now...", Color.black));
         //Stun Unit
     }
     public IEnumerator OnTurnEnd()

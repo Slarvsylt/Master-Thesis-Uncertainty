@@ -6,21 +6,21 @@ public class Crying : MonoBehaviour, Effect
 {
     public UnitStates AppliedState { get; set; }
     public Dictionary<string, int> Modifiers { get; set; }
-    public string EffectName { get; set; } = "Angry";
-    public string Description { get; set; } = "The unit is ANGRY! Fuck!";
+    public string EffectName { get; set; } = "Crying";
+    public string Description { get; set; } = "The unit is crying!";
     public Unit affected { get; set; }
-    public int maxTurns { get; set; } = 3;
+    public int maxTurns { get; set; } = 8;
     public IEnumerator OnInflict()
     {
         //Debug.Log("Putting the unit on fire: " + affected.Name);
-        affected.damageMod += 0.2f;
-        affected.hitMod -= 0.3f;
-        yield return StartCoroutine(affected.Effect("ANGRY!", Color.red));
+        affected.damageMod -= 0.2f;
+        affected.hitMod += 0.3f;
+        yield return StartCoroutine(affected.Effect("Boho, I'm sad!", Color.blue));
 
     }
     public IEnumerator OnTurnBegin()
     {
-        yield break;
+        yield return StartCoroutine(affected.Effect("Boho! Bohoho!", Color.blue));
     }
     public IEnumerator OnTurnEnd()
     {
@@ -28,8 +28,8 @@ public class Crying : MonoBehaviour, Effect
     }
     public IEnumerator OnRemoved()
     {
-        affected.damageMod -= 0.2f;
-        affected.hitMod += 0.3f;
-        yield break;
+        affected.damageMod += 0.2f;
+        affected.hitMod -= 0.3f;
+        yield return StartCoroutine(affected.Effect("I'm no longer sad!", Color.yellow));
     }
 }
