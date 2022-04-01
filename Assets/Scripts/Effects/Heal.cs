@@ -14,13 +14,12 @@ public class Heal : MonoBehaviour, Effect
     {
         if (affected.isDead)
         {
-            affected.Ressurect();
+            yield return StartCoroutine(affected.Ressurect());
         }
         else
         {
-            affected.RestoreHP(RandomSystem.RandomRange(1,4));
+            yield return StartCoroutine(affected.RestoreHP(RandomSystem.RandomRange(1,4)));
         }
-        yield break;
     }
     public IEnumerator OnTurnBegin()
     {

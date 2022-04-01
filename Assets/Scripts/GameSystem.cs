@@ -182,7 +182,7 @@ public class GameSystem : MonoBehaviour
         StatusText.text = "Perform Moves!";
         //Debug.Log("Move!!");
         chosenUnit.MakeMove(chosenMove);
-        if (RandomChance(0.9f * chosenUnit.hitMod))
+        if (RandomSystem.RandomValue() <= 0.95f)
         {
             yield return StartCoroutine(RandomNumberVis("HIT BY MOVE!"));
             if (chosenMove.Damage > 0)

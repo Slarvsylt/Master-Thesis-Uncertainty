@@ -23,7 +23,7 @@ public class RandomMeter : MonoBehaviour
         front.fillAmount = Mathf.Abs(Mathf.Sin(Time.time*0.1f));
         if(colorGradingLayer != null)
         {
-            colorGradingLayer.hueShift.value = front.fillAmount * 180f;
+            //colorGradingLayer.hueShift.value = front.fillAmount * 180f;
         }
     }
 }

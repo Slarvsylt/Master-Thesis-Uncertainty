@@ -86,9 +86,10 @@ public class Unit: MonoBehaviour
             StartCoroutine(Die());
     }
 
-    public void RestoreHP(float heal)
+    public IEnumerator RestoreHP(float heal)
     {
         currentHP += heal;
+        yield return StartCoroutine(GameSystem.gameSystem.PEffect(attachedObject, "+"+heal.ToString(), Color.green));
         if (currentHP > maxHP)
             currentHP = maxHP;
     }
@@ -110,11 +111,11 @@ public class Unit: MonoBehaviour
         //Inactivate unit and display corpse
     }
 
-    public void Ressurect()
+    public IEnumerator Ressurect()
     {
         isDead = false;
         currentHP = 1.0f;
-        Debug.Log(Name + " is alive once again!");
+        yield return StartCoroutine(GameSystem.gameSystem.PEffect(attachedObject, Name + " is alive once more!", Color.yellow));
     }
     
     public IEnumerator HitByMove(Move move) 
