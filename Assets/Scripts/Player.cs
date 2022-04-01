@@ -31,6 +31,8 @@ public class StoredOrderForOne
 public class Player : MonoBehaviour
 {
     public Player opponent;
+    public GameObject healthbar;
+    public List<HealthManaBar> bars;
 
     public GameSystem gameSystem;
 
@@ -657,9 +659,11 @@ public class Player : MonoBehaviour
             Debug.Log("Loaded a unit! " + unit.GetComponent<Unit>().Name + " plus moves!");
         }*/
         Units = new List<Unit>();
+        bars = new List<HealthManaBar>();
         for (int i = 0; i < GameObjectUnits.Count; i++)
         {
             Unit unit = GameObject.Instantiate<Unit>(GameObjectUnits[i].GetComponent<Unit>());
+            HealthManaBar bar = GameObject.Instantiate<HealthManaBar>(healthbar.GetComponent<HealthManaBar>());
             //Move move = MoveDatabase.Instance.GetMove(MoveDatabase.Instance.Moves[(int)RandomSystem.RandomRange(0, MoveDatabase.Instance.Moves.Count)].ObjectSlug);
             /*List<Move> NewMoves = new List<Move> { 
                 MoveDatabase.Instance.GetMove("fire"), 
@@ -673,8 +677,12 @@ public class Player : MonoBehaviour
             unit.index = i;
             //Debug.Log(unit.Name);
             unit.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            bar.transform.SetParent(unit.transform, false);
             unit.GetComponent<Image>().enabled = false;
+            bar.currentUnit = unit;
+            bar.transform.localScale = new Vector3 (0.6f, 1.6f, 1);
             Units.Add(unit);
+            bars.Add(bar);
             
            // Debug.Log("Loaded a unit! " + unit.GetComponent<Unit>().Name + " plus moves!" + " index : " + i);
         }
@@ -692,7 +700,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public void PopulateField()
     {
-
+        StatusText.text = gameObject.name + "'s turn";
         Unit1Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit1Button, 0); });
         Unit2Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit2Button, 1); });
         Unit3Button.onValueChanged.AddListener(delegate { ChooseUnit(Unit3Button, 2); });
@@ -782,6 +790,10 @@ public class Player : MonoBehaviour
         Units[1].transform.position = Unit2Button.transform.position;
         Units[2].transform.position = Unit3Button.transform.position;
 
+        bars[0].transform.position = Unit1Button.transform.position - new Vector3(0, 1.0f, 0);
+        bars[1].transform.position = Unit2Button.transform.position - new Vector3(0, 1.0f, 0);
+        bars[2].transform.position = Unit3Button.transform.position - new Vector3(0, 1.0f, 0);
+
         Units[0].attachedObject = Unit1Button.gameObject;
         Units[1].attachedObject = Unit2Button.gameObject;
         Units[2].attachedObject = Unit3Button.gameObject;
@@ -793,6 +805,10 @@ public class Player : MonoBehaviour
         opponent.Units[0].transform.position = Enemy1Button.transform.position;
         opponent.Units[1].transform.position = Enemy2Button.transform.position;
         opponent.Units[2].transform.position = Enemy3Button.transform.position;
+
+        opponent.bars[0].transform.position = Enemy1Button.transform.position + new Vector3(0, 1.0f, 0);
+        opponent.bars[1].transform.position = Enemy2Button.transform.position + new Vector3(0, 1.0f, 0);
+        opponent.bars[2].transform.position = Enemy3Button.transform.position + new Vector3(0, 1.0f, 0);
 
         opponent.Units[0].attachedObject = Enemy1Button.gameObject;
         opponent.Units[1].attachedObject = Enemy2Button.gameObject;
