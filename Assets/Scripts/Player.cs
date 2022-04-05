@@ -358,6 +358,16 @@ public class Player : MonoBehaviour
                 move2Button.GetComponentInChildren<Text>().text = unit.Moves[1].MoveName;
                 move3Button.GetComponentInChildren<Text>().text = unit.Moves[2].MoveName;
 
+                Debug.Log((int)unit.Moves[0].MoveType);
+                Debug.Log((int)unit.Moves[1].MoveType);
+                Debug.Log((int)unit.Moves[2].MoveType);
+
+                //move1Button.GetComponent<Image>().color = new Color((int)unit.Moves[0].MoveType, (int)unit.Moves[0].MoveType, (int)unit.Moves[0].MoveType);
+
+               // move2Button.GetComponent<Image>().color = new Color((int)unit.Moves[1].MoveType, (int)unit.Moves[1].MoveType, (int)unit.Moves[1].MoveType);
+
+               // move3Button.GetComponent<Image>().color = new Color((int)unit.Moves[2].MoveType, (int)unit.Moves[2].MoveType, (int)unit.Moves[2].MoveType);
+
                 cancelButton.interactable = true;
                 chosenUnit = unit;
                 UnitNameText.text = chosenUnit.Name + " " + chosenUnit.currentHP + "/" + chosenUnit.maxHP + " HP \n" + chosenUnit.currentMP +"/" +chosenUnit.maxMP+ "MP";

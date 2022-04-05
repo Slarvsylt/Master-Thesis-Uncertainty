@@ -34,6 +34,9 @@ public class GameSystem : MonoBehaviour
 
     public DiceVis dice;
 
+    public float GodOfFortune = 0.0f;
+    private RandomMeter sanity;
+
     private void Awake()
     {
         gameSystem = this;
@@ -45,6 +48,7 @@ public class GameSystem : MonoBehaviour
     private void Start()
     {
         statusEffects = new Dictionary<Unit, List<StatusEffect>>();
+        sanity = GameObject.Find("Sanity").GetComponent<RandomMeter>();
     }
 
     public IEnumerator ApplyStatusEffect(Unit unit, Effect effect)
@@ -138,13 +142,14 @@ public class GameSystem : MonoBehaviour
     {
         StatusText.text = "Attacking!";
         chosenUnit.PerformAttack();
-        float result = RandomC();
-        if (result <= 0.30/chosenUnit.hitMod) //Miss
+        float result = RandomC() + GodOfFortune * (sanity.perc);
+        if (result <= 0.35/chosenUnit.hitMod) //Miss
         {
             yield return StartCoroutine(RandomNumberVis("Missed!"));
             PopUpTextController.CreatePopUpText("MISSED", enemiesUI[Target.index].transform);
             yield return new WaitForSeconds(1.0f);
             dice.text.text = "...";
+            GodOfFortune += 0.1f;
         } 
         else if(result >= 0.70*chosenUnit.critMod) //Crit
         {
@@ -158,6 +163,7 @@ public class GameSystem : MonoBehaviour
             dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().AngleMultiplier = 3;
             dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().CurveScale = 5;
             dice.text.text = "...";
+            GodOfFortune = 0.0f;
         }
         else
         {
@@ -166,6 +172,7 @@ public class GameSystem : MonoBehaviour
             Target.TakeDamage2(damage);
             yield return StartCoroutine(DamageUnit(Target.index, damage));
             dice.text.text = "...";
+            GodOfFortune = 0.0f;
         }
     }
 
@@ -182,7 +189,7 @@ public class GameSystem : MonoBehaviour
         StatusText.text = "Perform Moves!";
         //Debug.Log("Move!!");
         chosenUnit.MakeMove(chosenMove);
-        if (RandomSystem.RandomValue() <= 0.95f)
+        if (RandomSystem.RandomValue() + GodOfFortune <= 0.75f)
         {
             yield return StartCoroutine(RandomNumberVis("HIT BY MOVE!"));
             if (chosenMove.Damage > 0)
@@ -198,12 +205,14 @@ public class GameSystem : MonoBehaviour
             }
             yield return new WaitForSeconds(1.0f);
             dice.text.text = "...";
+            GodOfFortune = 0.0f; 
         }
         else
         {
             yield return StartCoroutine(RandomNumberVis("MISSED MOVE!"));
             yield return new WaitForSeconds(1.0f);
             dice.text.text = "...";
+            GodOfFortune += 0.1f;
         }
     }
 
