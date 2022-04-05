@@ -13,7 +13,8 @@ public class Emboldened : MonoBehaviour, Effect
     public IEnumerator OnInflict()
     {
         //Debug.Log("Putting the unit on fire: " + affected.Name);
-        yield break;
+        affected.damageMod += 1;
+        yield return StartCoroutine(affected.Effect("Haha! Come and get it!", Color.yellow));
     }
     public IEnumerator OnTurnBegin()
     {
@@ -27,6 +28,7 @@ public class Emboldened : MonoBehaviour, Effect
     }
     public IEnumerator OnRemoved()
     {
+        affected.damageMod -= 1;
         //Debug.Log("Putting the fire out: " + affected.Name);
         yield break;
     }

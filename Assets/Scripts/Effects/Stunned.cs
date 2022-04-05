@@ -6,8 +6,8 @@ public class Stunned : MonoBehaviour, Effect
 {
     public UnitStates AppliedState { get; set; }
     public Dictionary<string, int> Modifiers { get; set; }
-    public string EffectName { get; set; } = "Fire";
-    public string Description { get; set; } = "The unit is burning! Fuck!";
+    public string EffectName { get; set; } = "Stunned";
+    public string Description { get; set; } = "The unit is stunned! Fuck!";
     public Unit affected { get; set; }
     public int maxTurns { get; set; } = 3;
     public IEnumerator OnInflict()
@@ -18,8 +18,7 @@ public class Stunned : MonoBehaviour, Effect
     public IEnumerator OnTurnBegin()
     {
         //Debug.Log("owie I'm on fire!" + affected.Name);
-        yield return StartCoroutine(affected.TakeDamage1(1));
-        yield return StartCoroutine(affected.Effect("Fire, OWIE!", Color.red));
+        yield return StartCoroutine(affected.Effect("I'm stunned!", Color.magenta));
         //Stun Unit
     }
     public IEnumerator OnTurnEnd()

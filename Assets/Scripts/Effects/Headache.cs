@@ -21,7 +21,7 @@ public class Headache : MonoBehaviour, Effect
     }
     public IEnumerator OnTurnEnd()
     {
-        yield return StartCoroutine(affected.TakeDamage1(1));
+        yield return StartCoroutine(affected.TakeDamage1(RandomSystem.RandomRange(0.1f, 1)));
         yield return StartCoroutine(affected.Effect("My head, OWIE!", Color.red));
     }
     public IEnumerator OnRemoved()

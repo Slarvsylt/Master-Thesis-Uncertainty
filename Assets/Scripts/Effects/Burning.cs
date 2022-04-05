@@ -18,7 +18,7 @@ public class Burning : MonoBehaviour, Effect
     public IEnumerator OnTurnBegin()
     {
         //Debug.Log("owie I'm on fire!" + affected.Name);
-        yield return StartCoroutine(affected.TakeDamage1(1));
+        yield return StartCoroutine(affected.TakeDamage1(RandomSystem.RandomRange(0.5f, 2)));
         yield return StartCoroutine(affected.Effect("Fire, OWIE!", Color.red));
         //Stun Unit
     }
@@ -28,7 +28,6 @@ public class Burning : MonoBehaviour, Effect
     }
     public IEnumerator OnRemoved()
     {
-        //Debug.Log("Putting the fire out: " + affected.Name);
-        yield break;
+        yield return StartCoroutine(affected.Effect("I'm no longer burning!", Color.red));
     }
 }

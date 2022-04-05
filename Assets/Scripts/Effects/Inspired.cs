@@ -18,7 +18,6 @@ public class Inspired : MonoBehaviour, Effect
     public IEnumerator OnTurnBegin()
     {
         //Debug.Log("owie I'm on fire!" + affected.Name);
-        yield return StartCoroutine(affected.Effect("Fire, OWIE!", Color.red));
         yield break;
         //Stun Unit
     }
