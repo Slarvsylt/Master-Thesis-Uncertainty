@@ -85,6 +85,7 @@ public class StateHandler : MonoBehaviour
 
         currentPlayer.gameObject.SetActive(true);
         currentPlayer.isTurn = true;
+        gameSystem.LoadUnits();
         ChangeState(GameState.PLAYERTURN);
         //StartCoroutine(GameSystem.gameSystem.StartGame());
         //Populate with units

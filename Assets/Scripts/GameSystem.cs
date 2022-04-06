@@ -30,6 +30,10 @@ public class GameSystem : MonoBehaviour
     public TextMeshProUGUI StatusText;
     public TextMeshProUGUI GFText;
 
+    public Player p1;
+    public Player p2;
+    public List<Unit> UnitsInPlay = new List<Unit>();
+
     public List<EnemyButton> unitsUI;
     public List<EnemyButton> enemiesUI;
 
@@ -62,6 +66,13 @@ public class GameSystem : MonoBehaviour
         {
             GFText.text = "...";
         }
+    }
+
+    public void LoadUnits()
+    {
+        UnitsInPlay.AddRange(p1.Units);
+        UnitsInPlay.AddRange(p2.Units);
+        Debug.Log(UnitsInPlay.Count);
     }
 
     public IEnumerator ApplyStatusEffect(Unit unit, Effect effect)
@@ -158,10 +169,22 @@ public class GameSystem : MonoBehaviour
         float result = RandomC() + GodOfFortune * (sanity.perc * RandomSystem.RandomRange(-1,1));
         if (result <= 0.65/chosenUnit.hitMod) //Miss
         {
-            yield return StartCoroutine(RandomNumberVis("Missed!"));
+            yield return StartCoroutine(RandomNumberVis("MISSED!"));
             PopUpTextController.CreatePopUpText("MISSED", enemiesUI[Target.index].transform);
             yield return new WaitForSeconds(1.0f);
             dice.text.text = "...";
+            if (RandomSystem.RandomValue() >= 0.5f + (GodOfFortune*0.10f))
+            {
+
+                //Target random Unit
+                StatusText.text = "Attacking Random Unit!";
+                Unit hitUnit = UnitsInPlay[(int)RandomSystem.RandomRange(0, UnitsInPlay.Count)];
+                StatusText.text = chosenUnit.Name + " missed their target and hit "+ hitUnit.Name + " instead!";
+                //yield return StartCoroutine(RandomNumberVis("HIT!"));
+                float damage = Mathf.Round(2 * chosenUnit.damageMod * UnityEngine.Random.Range(0.5f, 1.5f) * 100f) / 100f;
+                hitUnit.TakeDamage2(damage);
+                yield return StartCoroutine(DamageUnit(hitUnit.index, damage));
+            }
             GodOfFortune += 0.1f;
         } 
         else if(result >= 0.70*chosenUnit.critMod) //Crit
