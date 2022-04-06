@@ -28,6 +28,7 @@ public class GameSystem : MonoBehaviour
     public Dictionary<Unit, List<StatusEffect>> statusEffects;
 
     public TextMeshProUGUI StatusText;
+    public TextMeshProUGUI GFText;
 
     public List<EnemyButton> unitsUI;
     public List<EnemyButton> enemiesUI;
@@ -49,6 +50,18 @@ public class GameSystem : MonoBehaviour
     {
         statusEffects = new Dictionary<Unit, List<StatusEffect>>();
         sanity = GameObject.Find("Sanity").GetComponent<RandomMeter>();
+    }
+
+    private void Update()
+    {
+        if(GodOfFortune >= 0.4)
+        {
+            GFText.text = "The God of Fortune is smiling";
+        }
+        else
+        {
+            GFText.text = "...";
+        }
     }
 
     public IEnumerator ApplyStatusEffect(Unit unit, Effect effect)
@@ -143,7 +156,7 @@ public class GameSystem : MonoBehaviour
         StatusText.text = "Attacking!";
         chosenUnit.PerformAttack();
         float result = RandomC() + GodOfFortune * (sanity.perc * RandomSystem.RandomRange(-1,1));
-        if (result <= 0.35/chosenUnit.hitMod) //Miss
+        if (result <= 0.65/chosenUnit.hitMod) //Miss
         {
             yield return StartCoroutine(RandomNumberVis("Missed!"));
             PopUpTextController.CreatePopUpText("MISSED", enemiesUI[Target.index].transform);
