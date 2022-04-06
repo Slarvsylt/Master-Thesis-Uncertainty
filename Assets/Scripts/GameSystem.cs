@@ -142,7 +142,7 @@ public class GameSystem : MonoBehaviour
     {
         StatusText.text = "Attacking!";
         chosenUnit.PerformAttack();
-        float result = RandomC() + GodOfFortune * (sanity.perc);
+        float result = RandomC() + GodOfFortune * (sanity.perc * RandomSystem.RandomRange(-1,1));
         if (result <= 0.35/chosenUnit.hitMod) //Miss
         {
             yield return StartCoroutine(RandomNumberVis("Missed!"));
@@ -212,6 +212,10 @@ public class GameSystem : MonoBehaviour
             yield return StartCoroutine(RandomNumberVis("MISSED MOVE!"));
             yield return new WaitForSeconds(1.0f);
             dice.text.text = "...";
+            if(RandomSystem.RandomValue() >= 0.5f)
+            {
+                //Target random Unit
+            }
             GodOfFortune += 0.1f;
         }
     }

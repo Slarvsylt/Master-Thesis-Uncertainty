@@ -670,9 +670,9 @@ public class Player : MonoBehaviour
         }*/
         Units = new List<Unit>();
         bars = new List<HealthManaBar>();
-        for (int i = 0; i < GameObjectUnits.Count; i++)
+        for (int i = 0; i < 3; i++)
         {
-            Unit unit = GameObject.Instantiate<Unit>(GameObjectUnits[i].GetComponent<Unit>());
+            Unit unit = GameObject.Instantiate<Unit>(GameObjectUnits[(int)RandomSystem.RandomRange(0,GameObjectUnits.Count)].GetComponent<Unit>());
             HealthManaBar bar = GameObject.Instantiate<HealthManaBar>(healthbar.GetComponent<HealthManaBar>());
             //Move move = MoveDatabase.Instance.GetMove(MoveDatabase.Instance.Moves[(int)RandomSystem.RandomRange(0, MoveDatabase.Instance.Moves.Count)].ObjectSlug);
             /*List<Move> NewMoves = new List<Move> { 
@@ -771,6 +771,7 @@ public class Player : MonoBehaviour
         doneButton.onClick.AddListener(Done);
         for (int i = 0; i < Units.Count; i++)
         {
+            Debug.Log(i);
             if (Units[i].isDead)
             {
                 deadIndexes[i] = true;
@@ -792,9 +793,13 @@ public class Player : MonoBehaviour
                 deadEnemies[i] = false;
             }
         }
-        Unit1Button.gameObject.GetComponent<Image>().sprite = GameObjectUnits[0].GetComponent<Image>().sprite;
-        Unit2Button.gameObject.GetComponent<Image>().sprite = GameObjectUnits[1].GetComponent<Image>().sprite;
-        Unit3Button.gameObject.GetComponent<Image>().sprite = GameObjectUnits[2].GetComponent<Image>().sprite;
+        //Unit1Button.gameObject.GetComponent<Image>().sprite = GameObjectUnits[0].GetComponent<Image>().sprite;
+        // Unit2Button.gameObject.GetComponent<Image>().sprite = GameObjectUnits[1].GetComponent<Image>().sprite;
+        // Unit3Button.gameObject.GetComponent<Image>().sprite = GameObjectUnits[2].GetComponent<Image>().sprite;
+
+        Unit1Button.gameObject.GetComponent<Image>().sprite = Units[0].gameObject.GetComponent<Image>().sprite;
+        Unit2Button.gameObject.GetComponent<Image>().sprite = Units[1].gameObject.GetComponent<Image>().sprite;
+        Unit3Button.gameObject.GetComponent<Image>().sprite = Units[2].gameObject.GetComponent<Image>().sprite;
 
         Units[0].transform.position = Unit1Button.transform.position;
         Units[1].transform.position = Unit2Button.transform.position;
@@ -808,9 +813,14 @@ public class Player : MonoBehaviour
         Units[1].attachedObject = Unit2Button.gameObject;
         Units[2].attachedObject = Unit3Button.gameObject;
 
-        Enemy1Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[0].GetComponent<Image>().sprite;
-        Enemy2Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[1].GetComponent<Image>().sprite;
-        Enemy3Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[2].GetComponent<Image>().sprite;
+
+        Enemy1Button.gameObject.GetComponent<Image>().sprite = opponent.Units[0].gameObject.GetComponent<Image>().sprite;
+        Enemy2Button.gameObject.GetComponent<Image>().sprite = opponent.Units[1].gameObject.GetComponent<Image>().sprite;
+        Enemy3Button.gameObject.GetComponent<Image>().sprite = opponent.Units[2].gameObject.GetComponent<Image>().sprite;
+        //opponent.Units[0].gameObject.GetComponent<Image>().sprite;
+        //Enemy1Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[0].GetComponent<Image>().sprite;
+        //Enemy2Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[1].GetComponent<Image>().sprite;
+        // Enemy3Button.gameObject.GetComponent<Image>().sprite = opponent.GameObjectUnits[2].GetComponent<Image>().sprite;
 
         opponent.Units[0].transform.position = Enemy1Button.transform.position;
         opponent.Units[1].transform.position = Enemy2Button.transform.position;
