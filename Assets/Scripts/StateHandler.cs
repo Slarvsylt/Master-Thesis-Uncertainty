@@ -117,7 +117,7 @@ public class StateHandler : MonoBehaviour
         // Debug.Log("Starting new turn and populating field :" + currentPlayer.gameObject.name);
         //Debug.Log("STARTING TURN for : " + currentPlayer.gameObject.name);
         yield return StartCoroutine(gameSystem.StartOfturnEffects());
-        yield return StartCoroutine(gameSystem.IncreaseEffectsTurnCounter());
+        yield return StartCoroutine(gameSystem.IncreaseEffectsTurnCounter(TurnCounter));
         currentPlayer.PopulateField();
         //StartCoroutine(GameSystem.gameSystem.StartOfturnEffects());
         //StartCoroutine(currentPlayer.ChooseAction());

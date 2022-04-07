@@ -41,6 +41,8 @@ public class GameSystem : MonoBehaviour
 
     public float GodOfFortune = 0.0f;
     private RandomMeter sanity;
+    public int TurnsSinceStart;
+    private float random;
 
     private void Awake()
     {
@@ -66,6 +68,7 @@ public class GameSystem : MonoBehaviour
         {
             GFText.text = "...";
         }
+        random = TurnsSinceStart * 0.01f;
     }
 
     public void LoadUnits()
@@ -145,8 +148,9 @@ public class GameSystem : MonoBehaviour
         yield break;
     }
 
-    public IEnumerator IncreaseEffectsTurnCounter()
+    public IEnumerator IncreaseEffectsTurnCounter(int turnsSinceStart)
     {
+        TurnsSinceStart = turnsSinceStart;
         StatusText.text = "Removing effects due for removal...";
         foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
         {
@@ -168,7 +172,7 @@ public class GameSystem : MonoBehaviour
     {
         StatusText.text = "Attacking!";
         chosenUnit.PerformAttack();
-        float result = RandomC() + GodOfFortune * (sanity.perc * RandomSystem.RandomRange(-1,1));
+        float result = RandomC() + random + GodOfFortune * (sanity.perc * RandomSystem.RandomRange(-1,1));
         if (result <= 0.38/chosenUnit.hitMod) //Miss
         {
             yield return StartCoroutine(RandomNumberVis("MISSED!"));
@@ -227,7 +231,7 @@ public class GameSystem : MonoBehaviour
         StatusText.text = "Perform Moves!";
         //Debug.Log("Move!!");
         chosenUnit.MakeMove(chosenMove);
-        if (RandomSystem.RandomValue() - GodOfFortune <= 0.75f)
+        if (RandomSystem.RandomValue() - GodOfFortune - random <= 0.75f)
         {
             yield return StartCoroutine(RandomNumberVis("HIT BY MOVE!"));
             if (chosenMove.Damage > 0)
@@ -250,7 +254,7 @@ public class GameSystem : MonoBehaviour
             yield return StartCoroutine(RandomNumberVis("MISSED MOVE!"));
             yield return new WaitForSeconds(1.0f);
             dice.text.text = "...";
-            if(RandomSystem.RandomValue() >= 0.4f + (GodOfFortune * 0.10f))
+            if(RandomSystem.RandomValue() >= 0.4f + random + (GodOfFortune * 0.10f))
             {
                 //Target random Unit
                 StatusText.text = "Hitting Random Unit!";
