@@ -167,7 +167,7 @@ public class GameSystem : MonoBehaviour
         StatusText.text = "Attacking!";
         chosenUnit.PerformAttack();
         float result = RandomC() + GodOfFortune * (sanity.perc * RandomSystem.RandomRange(-1,1));
-        if (result <= 0.65/chosenUnit.hitMod) //Miss
+        if (result <= 0.38/chosenUnit.hitMod) //Miss
         {
             yield return StartCoroutine(RandomNumberVis("MISSED!"));
             PopUpTextController.CreatePopUpText("MISSED", enemiesUI[Target.index].transform);
@@ -225,7 +225,7 @@ public class GameSystem : MonoBehaviour
         StatusText.text = "Perform Moves!";
         //Debug.Log("Move!!");
         chosenUnit.MakeMove(chosenMove);
-        if (RandomSystem.RandomValue() + GodOfFortune <= 0.75f)
+        if (RandomSystem.RandomValue() - GodOfFortune <= 0.75f)
         {
             yield return StartCoroutine(RandomNumberVis("HIT BY MOVE!"));
             if (chosenMove.Damage > 0)
@@ -248,9 +248,25 @@ public class GameSystem : MonoBehaviour
             yield return StartCoroutine(RandomNumberVis("MISSED MOVE!"));
             yield return new WaitForSeconds(1.0f);
             dice.text.text = "...";
-            if(RandomSystem.RandomValue() >= 0.5f)
+            if(RandomSystem.RandomValue() >= 0.4f + (GodOfFortune * 0.10f))
             {
                 //Target random Unit
+                StatusText.text = "Hitting Random Unit!";
+                Unit hitUnit = UnitsInPlay[(int)RandomSystem.RandomRange(0, UnitsInPlay.Count)];
+                StatusText.text = chosenUnit.Name + " missed their target and hit " + hitUnit.Name + " instead!";
+                yield return StartCoroutine(RandomNumberVis("HIT BY MOVE!"));
+                if (chosenMove.Damage > 0)
+                {
+                    yield return StartCoroutine(DamageFriendlyUnit(hitUnit.attachedObject, chosenMove.Damage));
+                    hitUnit.TakeDamage2(chosenMove.Damage);
+                }
+                StartCoroutine(hitUnit.HitByMove(chosenMove));
+
+                foreach (Effect effect in chosenMove.Effects)
+                {
+                    yield return StartCoroutine(ApplyStatusEffect(hitUnit, effect));
+                }
+                yield return new WaitForSeconds(1.0f);
             }
             GodOfFortune += 0.1f;
         }
