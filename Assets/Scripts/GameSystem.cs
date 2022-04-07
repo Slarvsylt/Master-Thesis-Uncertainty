@@ -90,6 +90,7 @@ public class GameSystem : MonoBehaviour
             list = new List<StatusEffect>();
             statusEffects.Remove(unit);
             sf.effect.affected = unit;
+            sf.effect.maxTurns += (int)RandomSystem.RandomRange(-2,2);
             yield return StartCoroutine(sf.effect.OnInflict());
             list.Add(sf);
             statusEffects.Add(unit, list);
@@ -109,6 +110,7 @@ public class GameSystem : MonoBehaviour
         //Debug.Log("StatusEffect: \n Turns:" + sf.TurnsSinceApplied + "\n Max: " + sf.effect.maxTurns + "\n Effect: " + sf.effect.EffectName);
 
         sf.effect.affected = unit;
+        sf.effect.maxTurns += (int)RandomSystem.RandomRange(-2, 2);
         yield return StartCoroutine(sf.effect.OnInflict());
         list.Add(sf);
         statusEffects.Remove(unit);
