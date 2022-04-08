@@ -300,7 +300,7 @@ public class Player : MonoBehaviour
 
             chosenMove = chosenUnit.Moves[i];
             MoveNameText.text = chosenMove.MoveName;
-            MoveTypeText.text = chosenMove.MoveType.ToString();
+            MoveTypeText.text = "MP cost: " + chosenMove.MPcost;
             MoveDescription.text = chosenMove.Description;
             StringBuilder sb = new StringBuilder();
             foreach(Effect e in chosenMove.Effects)
@@ -370,14 +370,14 @@ public class Player : MonoBehaviour
 
                 cancelButton.interactable = true;
                 chosenUnit = unit;
-                UnitNameText.text = chosenUnit.Name + " " + chosenUnit.currentHP + "/" + chosenUnit.maxHP + " HP \n" + chosenUnit.currentMP +"/" +chosenUnit.maxMP+ "MP";
+                UnitNameText.text = chosenUnit.Name + "\n" + chosenUnit.currentHP + "/" + chosenUnit.maxHP + " HP \n" + chosenUnit.currentMP +"/" +chosenUnit.maxMP+ "MP";
 
                 StringBuilder sb = new StringBuilder();
                 foreach (MoveType move in chosenUnit.Strengths)
                 {
                     sb.Append(move + "\n");
                 }
-                UnitTypeText.text = sb.ToString();
+                UnitTypeText.text = "\nHit Mod: " + chosenUnit.hitMod.ToString() + "\nDamage Mod: " + chosenUnit.damageMod.ToString();
 
                 sb = new StringBuilder();
                 if (gameSystem.statusEffects.ContainsKey(unit))
