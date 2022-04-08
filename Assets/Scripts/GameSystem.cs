@@ -190,6 +190,7 @@ public class GameSystem : MonoBehaviour
                 float damage = Mathf.Round(2 * chosenUnit.damageMod * UnityEngine.Random.Range(0.5f, 1.5f) * 100f) / 100f;
                 hitUnit.TakeDamage2(damage);
                 yield return StartCoroutine(DamageUnit(hitUnit.index, damage));
+                yield return new WaitForSeconds(1.0f);
             }
             GodOfFortune += 0.1f;
         } 

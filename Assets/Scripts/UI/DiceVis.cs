@@ -20,7 +20,7 @@ public class DiceVis : MonoBehaviour
     {
         if (isRolling)
         {
-            text.text = ((int)RandomSystem.RandomRange(-10000,10000)).ToString();
+            text.text = ((int)RandomSystem.RandomRange(0,10000)).ToString();
             text.fontSize = RandomSystem.RandomRange(40,65);
         }
     }
