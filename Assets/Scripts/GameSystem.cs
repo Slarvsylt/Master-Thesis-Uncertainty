@@ -41,6 +41,8 @@ public class GameSystem : MonoBehaviour
 
     public float GodOfFortune = 0.0f;
     private RandomMeter sanity;
+    public int TurnsSinceStart;
+    private float random;
 
     private void Awake()
     {
@@ -66,6 +68,7 @@ public class GameSystem : MonoBehaviour
         {
             GFText.text = "...";
         }
+        random = TurnsSinceStart * 0.01f;
     }
 
     public void LoadUnits()
@@ -90,6 +93,7 @@ public class GameSystem : MonoBehaviour
             list = new List<StatusEffect>();
             statusEffects.Remove(unit);
             sf.effect.affected = unit;
+            sf.effect.maxTurns += (int)RandomSystem.RandomRange(-2,2);
             yield return StartCoroutine(sf.effect.OnInflict());
             list.Add(sf);
             statusEffects.Add(unit, list);
@@ -109,6 +113,7 @@ public class GameSystem : MonoBehaviour
         //Debug.Log("StatusEffect: \n Turns:" + sf.TurnsSinceApplied + "\n Max: " + sf.effect.maxTurns + "\n Effect: " + sf.effect.EffectName);
 
         sf.effect.affected = unit;
+        sf.effect.maxTurns += (int)RandomSystem.RandomRange(-2, 2);
         yield return StartCoroutine(sf.effect.OnInflict());
         list.Add(sf);
         statusEffects.Remove(unit);
@@ -143,8 +148,9 @@ public class GameSystem : MonoBehaviour
         yield break;
     }
 
-    public IEnumerator IncreaseEffectsTurnCounter()
+    public IEnumerator IncreaseEffectsTurnCounter(int turnsSinceStart)
     {
+        TurnsSinceStart = turnsSinceStart;
         StatusText.text = "Removing effects due for removal...";
         foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
         {
@@ -166,8 +172,8 @@ public class GameSystem : MonoBehaviour
     {
         StatusText.text = "Attacking!";
         chosenUnit.PerformAttack();
-        float result = RandomC() + GodOfFortune * (sanity.perc * RandomSystem.RandomRange(-1,1));
-        if (result <= 0.65/chosenUnit.hitMod) //Miss
+        float result = RandomC() + random + GodOfFortune * (sanity.perc * RandomSystem.RandomRange(-1,1));
+        if (result <= 0.38/chosenUnit.hitMod) //Miss
         {
             yield return StartCoroutine(RandomNumberVis("MISSED!"));
             PopUpTextController.CreatePopUpText("MISSED", enemiesUI[Target.index].transform);
@@ -225,7 +231,7 @@ public class GameSystem : MonoBehaviour
         StatusText.text = "Perform Moves!";
         //Debug.Log("Move!!");
         chosenUnit.MakeMove(chosenMove);
-        if (RandomSystem.RandomValue() + GodOfFortune <= 0.75f)
+        if (RandomSystem.RandomValue() - GodOfFortune - random <= 0.75f)
         {
             yield return StartCoroutine(RandomNumberVis("HIT BY MOVE!"));
             if (chosenMove.Damage > 0)
@@ -248,9 +254,25 @@ public class GameSystem : MonoBehaviour
             yield return StartCoroutine(RandomNumberVis("MISSED MOVE!"));
             yield return new WaitForSeconds(1.0f);
             dice.text.text = "...";
-            if(RandomSystem.RandomValue() >= 0.5f)
+            if(RandomSystem.RandomValue() >= 0.4f + random + (GodOfFortune * 0.10f))
             {
                 //Target random Unit
+                StatusText.text = "Hitting Random Unit!";
+                Unit hitUnit = UnitsInPlay[(int)RandomSystem.RandomRange(0, UnitsInPlay.Count)];
+                StatusText.text = chosenUnit.Name + " missed their target and hit " + hitUnit.Name + " instead!";
+                yield return StartCoroutine(RandomNumberVis("HIT BY MOVE!"));
+                if (chosenMove.Damage > 0)
+                {
+                    yield return StartCoroutine(DamageFriendlyUnit(hitUnit.attachedObject, chosenMove.Damage));
+                    hitUnit.TakeDamage2(chosenMove.Damage);
+                }
+                StartCoroutine(hitUnit.HitByMove(chosenMove));
+
+                foreach (Effect effect in chosenMove.Effects)
+                {
+                    yield return StartCoroutine(ApplyStatusEffect(hitUnit, effect));
+                }
+                yield return new WaitForSeconds(1.0f);
             }
             GodOfFortune += 0.1f;
         }

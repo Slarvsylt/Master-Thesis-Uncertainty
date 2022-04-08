@@ -4,6 +4,9 @@ using UnityEngine;
 
 public static class RandomSystem
 {
+
+    public static float GlobalMod = 1.0f;
+
     /// <summary>
     /// Returns a random value between two values.
     /// </summary>
