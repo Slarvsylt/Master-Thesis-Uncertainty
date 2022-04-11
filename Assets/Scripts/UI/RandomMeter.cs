@@ -40,7 +40,7 @@ public class RandomMeter : MonoBehaviour, ISelectHandler
 
     public void OnSelect(BaseEventData eventData)
     {
-        Debug.Log(this.gameObject.name + " was selected");
+        //Debug.Log(this.gameObject.name + " was selected");
     }
 
 

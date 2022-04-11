@@ -69,6 +69,15 @@ public class GameSystem : MonoBehaviour
             GFText.text = "...";
         }
         random = TurnsSinceStart * 0.01f;
+        if (TurnsSinceStart % 10 == 0)
+        {
+            NewWeatherEffect();
+        }
+    }
+
+    public void NewWeatherEffect()
+    {
+
     }
 
     public void LoadUnits()
@@ -173,7 +182,7 @@ public class GameSystem : MonoBehaviour
         StatusText.text = "Attacking!";
         chosenUnit.PerformAttack();
         float result = RandomC() + random + GodOfFortune * (sanity.perc * RandomSystem.RandomRange(-1,1));
-        if (result <= 0.38/chosenUnit.hitMod) //Miss
+        if (result <= 0.35/chosenUnit.hitMod) //Miss
         {
             yield return StartCoroutine(RandomNumberVis("MISSED!"));
             PopUpTextController.CreatePopUpText("MISSED", enemiesUI[Target.index].transform);
