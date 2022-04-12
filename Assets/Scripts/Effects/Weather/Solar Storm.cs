@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Blizzard : MonoBehaviour, Effect
+public class SolarStorm : MonoBehaviour, Effect
 {
     public UnitStates AppliedState { get; set; }
     public Dictionary<string, int> Modifiers { get; set; }
-    public string EffectName { get; set; } = "Blizzard";
-    public string Description { get; set; } = "It is a Blizzard.";
+    public string EffectName { get; set; } = "SolarStorm";
+    public string Description { get; set; } = "Solar storm inbound.";
     public Unit affected { get; set; }
     public int maxTurns { get; set; } = 10;
     public IEnumerator OnInflict()

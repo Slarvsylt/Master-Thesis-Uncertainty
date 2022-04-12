@@ -6,8 +6,8 @@ public class Weird : MonoBehaviour, Effect
 {
     public UnitStates AppliedState { get; set; }
     public Dictionary<string, int> Modifiers { get; set; }
-    public string EffectName { get; set; } = "Foggy";
-    public string Description { get; set; } = "It is foggy.";
+    public string EffectName { get; set; } = "Weird";
+    public string Description { get; set; } = "Whoa.";
     public Unit affected { get; set; }
     public int maxTurns { get; set; } = 10;
     public IEnumerator OnInflict()

@@ -42,7 +42,11 @@ public class GameSystem : MonoBehaviour
     public float GodOfFortune = 0.0f;
     private RandomMeter sanity;
     public int TurnsSinceStart;
+    public int MovesMade = 0;
+    private bool missNext = false;
     private float random;
+
+    private List<Effect> WeatherEffects = new List<Effect>();
 
     private void Awake()
     {
@@ -71,13 +75,25 @@ public class GameSystem : MonoBehaviour
         random = TurnsSinceStart * 0.01f;
         if (TurnsSinceStart % 10 == 0)
         {
-            NewWeatherEffect();
+           // NewWeatherEffect();
+        }
+        if(MovesMade % 5 == 0)
+        {
+            missNext = true;
+        }
+        else
+        {
+            missNext = false;
         }
     }
 
     public void NewWeatherEffect()
     {
-
+        Effect e = WeatherEffects[(int)RandomSystem.RandomRange(0, WeatherEffects.Count)];
+        foreach(Unit u in UnitsInPlay)
+        {
+            ApplyStatusEffect(u, e);
+        }
     }
 
     public void LoadUnits()
@@ -179,10 +195,12 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator Attack(Unit chosenUnit, Unit Target)
     {
+        MovesMade++;
         StatusText.text = "Attacking!";
         chosenUnit.PerformAttack();
         float result = RandomC() + random + GodOfFortune * (sanity.perc * RandomSystem.RandomRange(-1,1));
-        if (result <= 0.35/chosenUnit.hitMod) //Miss
+        //if(missNext)
+        if (result <= 0.35/chosenUnit.hitMod || missNext) //Miss
         {
             yield return StartCoroutine(RandomNumberVis("MISSED!"));
             PopUpTextController.CreatePopUpText("MISSED", enemiesUI[Target.index].transform);
@@ -230,6 +248,7 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator Defend(Unit chosenUnit, Unit Target)
     {
+        MovesMade++;
         StatusText.text = "Defending!";
         chosenUnit.Defend();
         Target.defended = true;
@@ -238,10 +257,12 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator Move(Unit chosenUnit, Move chosenMove, Unit Target)
     {
+        MovesMade++;
         StatusText.text = "Perform Moves!";
         //Debug.Log("Move!!");
         chosenUnit.MakeMove(chosenMove);
-        if (RandomSystem.RandomValue() - GodOfFortune - random <= 0.75f)
+        //if(missNext)
+        if (RandomSystem.RandomValue() - GodOfFortune - random <= 0.75f || missNext)
         {
             yield return StartCoroutine(RandomNumberVis("HIT BY MOVE!"));
             if (chosenMove.Damage > 0)
