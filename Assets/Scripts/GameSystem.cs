@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.PostProcessing;
 using TMPro;
 
 /// <summary>
@@ -47,6 +48,8 @@ public class GameSystem : MonoBehaviour
     private float random;
 
     private List<Effect> WeatherEffects = new List<Effect>();
+    public PostProcessVolume ppv;
+    private ColorGrading colorGradingLayer = null;
 
     private void Awake()
     {
@@ -58,6 +61,7 @@ public class GameSystem : MonoBehaviour
 
     private void Start()
     {
+        ppv.profile.TryGetSettings<ColorGrading>(out colorGradingLayer);
         statusEffects = new Dictionary<Unit, List<StatusEffect>>();
         sanity = GameObject.Find("Sanity").GetComponent<RandomMeter>();
     }
@@ -75,7 +79,7 @@ public class GameSystem : MonoBehaviour
         random = TurnsSinceStart * 0.01f;
         if (TurnsSinceStart % 10 == 0)
         {
-           // NewWeatherEffect();
+         //  NewWeatherEffect();
         }
         if(MovesMade % 5 == 0)
         {
@@ -90,9 +94,60 @@ public class GameSystem : MonoBehaviour
     public void NewWeatherEffect()
     {
         Effect e = WeatherEffects[(int)RandomSystem.RandomRange(0, WeatherEffects.Count)];
-        foreach(Unit u in UnitsInPlay)
+        /*foreach(Unit u in UnitsInPlay)
         {
             ApplyStatusEffect(u, e);
+        }*/
+        switch (e.EffectName)
+        {
+            case "Sunny":
+                if (colorGradingLayer != null)
+                {
+                    colorGradingLayer.colorFilter.value = Color.yellow;
+                }
+                break;
+            case "Blizzard":
+                if (colorGradingLayer != null)
+                {
+                    colorGradingLayer.colorFilter.value = Color.cyan;
+                }
+                break;
+            case "Chilly":
+                if (colorGradingLayer != null)
+                {
+                    colorGradingLayer.colorFilter.value = Color.blue;
+                }
+                break;
+            case "Drizzle":
+                if (colorGradingLayer != null)
+                {
+                    colorGradingLayer.colorFilter.value = new Color(0,105,255);
+                }
+                break;
+            case "Drought":
+                if (colorGradingLayer != null)
+                {
+                    colorGradingLayer.colorFilter.value = Color.yellow;
+                }
+                break;
+            case "Foggy":
+                if (colorGradingLayer != null)
+                {
+                    colorGradingLayer.colorFilter.value = Color.grey;
+                }
+                break;
+            case "Solar Storm":
+                if (colorGradingLayer != null)
+                {
+                    colorGradingLayer.colorFilter.value = Color.red;
+                }
+                break;
+            case "Weird":
+                if (colorGradingLayer != null)
+                {
+                    colorGradingLayer.colorFilter.value = Color.magenta;
+                }
+                break;
         }
     }
 
@@ -198,7 +253,7 @@ public class GameSystem : MonoBehaviour
         MovesMade++;
         StatusText.text = "Attacking!";
         chosenUnit.PerformAttack();
-        float result = RandomC() + random + GodOfFortune * (sanity.perc * RandomSystem.RandomRange(-1,1));
+        float result = RandomC() + random + GodOfFortune /** (sanity.perc * RandomSystem.RandomRange(-1,1))*/;
         //if(missNext)
         if (result <= 0.35/chosenUnit.hitMod || missNext) //Miss
         {
