@@ -94,11 +94,11 @@ MonoBehaviour:
   index: 0
   Name: Knut
   maxHP: 10
-  maxMP: 10
-  hitMod: 1.2
+  maxMP: 5
+  hitMod: 0.65
   critMod: 1
   damageMod: 5
-  defMod: 1
+  defMod: 2
   attachedObject: {fileID: 0}
   Strengths: 0000000003000000
   Weaknesses: 01000000

@@ -93,8 +93,8 @@ MonoBehaviour:
   currentMP: 0
   index: 1
   Name: Ozzy
-  maxHP: 10
-  maxMP: 10
+  maxHP: 15
+  maxMP: 15
   hitMod: 0.84
   critMod: 1
   damageMod: 3

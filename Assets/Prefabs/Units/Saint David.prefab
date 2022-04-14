@@ -93,12 +93,12 @@ MonoBehaviour:
   currentMP: 0
   index: 2
   Name: Saint David
-  maxHP: 10
-  maxMP: 10
+  maxHP: 15
+  maxMP: 25
   hitMod: 0.91
   critMod: 0.88
-  damageMod: 1
-  defMod: 1
+  damageMod: 0.9
+  defMod: 2
   attachedObject: {fileID: 0}
   Strengths: 0000000003000000
   Weaknesses: 01000000

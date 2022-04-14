@@ -67,7 +67,7 @@ public class Unit: MonoBehaviour
     public IEnumerator TakeDamage1(float damage)
     {
         Debug.Log("TakeDamage1");
-        currentHP -= damage / defMod;
+        currentHP -= (damage / defMod);
         yield return StartCoroutine(GameSystem.gameSystem.DamageFriendlyUnit(attachedObject, damage));
         if (currentHP <= 0)
             StartCoroutine(Die());
@@ -81,14 +81,14 @@ public class Unit: MonoBehaviour
     public void TakeDamage2(float damage)
     {
         Debug.Log("TakeDamage2");
-        currentHP -= damage / defMod;
+        currentHP -= (damage / defMod);
         if (currentHP <= 0)
             StartCoroutine(Die());
     }
 
     public IEnumerator RestoreHP(float heal)
     {
-        currentHP += heal;
+        currentHP += (heal);
         yield return StartCoroutine(GameSystem.gameSystem.PEffect(attachedObject, "+"+heal.ToString(), Color.green));
         if (currentHP > maxHP)
             currentHP = maxHP;
@@ -105,6 +105,7 @@ public class Unit: MonoBehaviour
     /// </summary>
     public IEnumerator Die() 
     {
+        GameSystem.gameSystem.RemoveStatusAllEffects(this);
         isDead = true;
         Debug.Log(Name + " died!");
         yield break;
@@ -113,8 +114,9 @@ public class Unit: MonoBehaviour
 
     public IEnumerator Ressurect()
     {
+        GameSystem.gameSystem.RemoveStatusAllEffects(this);
         isDead = false;
-        currentHP = 1.0f;
+        currentHP = 1;
         yield return StartCoroutine(GameSystem.gameSystem.PEffect(attachedObject, Name + " is alive once more!", Color.yellow));
     }
     

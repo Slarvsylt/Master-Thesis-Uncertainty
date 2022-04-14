@@ -158,6 +158,19 @@ public class GameSystem : MonoBehaviour
         Debug.Log(UnitsInPlay.Count);
     }
 
+    /// <summary>
+    /// Removes all effects on unit.
+    /// </summary>
+    /// <param name="unit"></param>
+    public void RemoveStatusAllEffects(Unit unit)
+    {
+        List<StatusEffect> list;
+        if (statusEffects.TryGetValue(unit, out list))
+        {
+            statusEffects.Remove(unit);
+        }
+    }
+
     public IEnumerator ApplyStatusEffect(Unit unit, Effect effect)
     {
         StatusText.text = "Applying status effects...";
@@ -255,7 +268,7 @@ public class GameSystem : MonoBehaviour
         chosenUnit.PerformAttack();
         float result = RandomC() + random + GodOfFortune /** (sanity.perc * RandomSystem.RandomRange(-1,1))*/;
         //if(missNext)
-        if (result <= 0.35/chosenUnit.hitMod || missNext) //Miss
+        if (result <= 0.45/chosenUnit.hitMod || missNext) //Miss
         {
             yield return StartCoroutine(RandomNumberVis("MISSED!"));
             PopUpTextController.CreatePopUpText("MISSED", enemiesUI[Target.index].transform);
@@ -271,12 +284,12 @@ public class GameSystem : MonoBehaviour
                 //yield return StartCoroutine(RandomNumberVis("HIT!"));
                 float damage = Mathf.Round(2 * chosenUnit.damageMod * UnityEngine.Random.Range(0.5f, 1.5f) * 100f) / 100f;
                 hitUnit.TakeDamage2(damage);
-                yield return StartCoroutine(DamageUnit(hitUnit.index, damage));
+                yield return StartCoroutine(DamageFriendlyUnit(hitUnit.attachedObject, damage));
                 yield return new WaitForSeconds(1.0f);
             }
             GodOfFortune += 0.1f;
         } 
-        else if(result >= 0.70*chosenUnit.critMod) //Crit
+        else if(result >= 0.70/chosenUnit.critMod) //Crit
         {
             dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().AngleMultiplier = 20;
             dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().CurveScale = 200;
@@ -310,6 +323,14 @@ public class GameSystem : MonoBehaviour
         yield return new WaitForSeconds(1);
     }
 
+    public void RemoveDefend()
+    {
+        foreach(Unit u in UnitsInPlay)
+        {
+            u.defended = false;
+        }
+    }
+
     public IEnumerator Move(Unit chosenUnit, Move chosenMove, Unit Target)
     {
         MovesMade++;
@@ -317,7 +338,7 @@ public class GameSystem : MonoBehaviour
         //Debug.Log("Move!!");
         chosenUnit.MakeMove(chosenMove);
         //if(missNext)
-        if (RandomSystem.RandomValue() - GodOfFortune - random <= 0.75f || missNext)
+        if (RandomSystem.RandomValue()*chosenMove.HitChance - GodOfFortune - random <= 0.75f || missNext)
         {
             yield return StartCoroutine(RandomNumberVis("HIT BY MOVE!"));
             if (chosenMove.Damage > 0)

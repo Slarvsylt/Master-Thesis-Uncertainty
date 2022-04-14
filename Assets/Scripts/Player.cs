@@ -370,14 +370,29 @@ public class Player : MonoBehaviour
 
                 cancelButton.interactable = true;
                 chosenUnit = unit;
-                UnitNameText.text = chosenUnit.Name + "\n" + chosenUnit.currentHP + "/" + chosenUnit.maxHP + " HP \n" + chosenUnit.currentMP +"/" +chosenUnit.maxMP+ "MP";
+                string currentHP = (Mathf.Round(chosenUnit.currentHP * 1000f) / 1000f).ToString();
+                string currentMP = (Mathf.Round(chosenUnit.currentMP * 1000f) / 1000f).ToString();
+                UnitNameText.text = chosenUnit.Name + "\n" + currentHP + "/" + chosenUnit.maxHP + " HP \n" + currentMP + "/" +chosenUnit.maxMP+ "MP";
 
                 StringBuilder sb = new StringBuilder();
                 foreach (MoveType move in chosenUnit.Strengths)
                 {
                     sb.Append(move + "\n");
                 }
-                UnitTypeText.text = "\nHit Mod: " + chosenUnit.hitMod.ToString() + "\nDamage Mod: " + chosenUnit.damageMod.ToString();
+                String s = "";
+                if (chosenUnit.hitMod <= 0.75f)
+                {
+                    s = "Low";
+                } 
+                else if(chosenUnit.hitMod >= 1.05f)
+                {
+                    s = "High";
+                }
+                else
+                {
+                    s = "Average";
+                }
+                UnitTypeText.text = "\nHit Chance: " + s + "\nDamage Mult.: " + chosenUnit.damageMod.ToString();
 
                 sb = new StringBuilder();
                 if (gameSystem.statusEffects.ContainsKey(unit))

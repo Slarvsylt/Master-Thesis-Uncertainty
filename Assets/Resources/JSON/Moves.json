@@ -12,40 +12,18 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
-		"MoveType": 0,
-		"Effects": ["Sleeping"], 
-		"ObjectSlug": "sleep3",
-		"Description": "Put a unit to sleep.",
-		"MoveName": "Sleep3",
-		"Damage": 0,
-		"HitChance": 0.9
-	},
-	{
-		"RequireTarget": true,
-		"MPcost": 5,
-		"MoveType": 0,
-		"Effects": ["Sleeping"], 
-		"ObjectSlug": "sleep2",
-		"Description": "Put a unit to sleep.",
-		"MoveName": "Sleep2",
-		"Damage": 0,
-		"HitChance": 0.9
-	},
-	{
-		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 2,
 		"MoveType": 5,
 		"Effects": ["Fire"], 
 		"ObjectSlug": "fire",
-		"Description": "Put a unit to sleep.",
+		"Description": "Light an unit on fire.",
 		"MoveName": "Fire",
 		"Damage": 1,
 		"HitChance": 0.9
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 3,
 		"MoveType": 7,
 		"Effects": ["BadSmell", "SonicBoom"], 
 		"ObjectSlug": "fart",
@@ -56,7 +34,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 2,
 		"MoveType": 8,
 		"Effects": ["Headache"], 
 		"ObjectSlug": "headache",
@@ -67,7 +45,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 3,
+		"MPcost": 2,
 		"MoveType": 9,
 		"Effects": ["Emboldened", "Inspired"], 
 		"ObjectSlug": "compliment",
@@ -100,7 +78,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 4,
+		"MPcost": 5,
 		"MoveType": 7,
 		"Effects": ["Pain", "Poisoned"], 
 		"ObjectSlug": "rustyknife",
@@ -111,7 +89,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 7,
+		"MPcost": 5,
 		"MoveType": 20,
 		"Effects": ["Pain", "Burning", "Afraid"], 
 		"ObjectSlug": "takersflame",
@@ -122,7 +100,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 4,
+		"MPcost": 3,
 		"MoveType": 9,
 		"Effects": ["Awe", "Humbled"], 
 		"ObjectSlug": "order",
@@ -133,7 +111,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 3,
 		"MoveType": 9,
 		"Effects": [ "Bleeding" ],
 		"ObjectSlug": "slash",
@@ -144,7 +122,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 4,
 		"MoveType": 9,
 		"Effects": [ "Blind" ],
 		"ObjectSlug": "faith",
@@ -155,7 +133,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 3,
 		"MoveType": 9,
 		"Effects": [ "Heal" ],
 		"ObjectSlug": "prayer",
@@ -166,7 +144,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 3,
 		"MoveType": 9,
 		"Effects": [ "Bleeding" ],
 		"ObjectSlug": "stab",
@@ -177,7 +155,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 4,
 		"MoveType": 9,
 		"Effects": [ "Poisoned" ],
 		"ObjectSlug": "poisonDart",
@@ -188,7 +166,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 2,
 		"MoveType": 9,
 		"Effects": [ "Heal" ],
 		"ObjectSlug": "potion",
@@ -199,7 +177,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 3,
 		"MoveType": 9,
 		"Effects": [ "Pain" ],
 		"ObjectSlug": "blast",
@@ -210,7 +188,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 3,
 		"MoveType": 9,
 		"Effects": [ "Fire" ],
 		"ObjectSlug": "burn",
@@ -221,7 +199,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 3,
 		"MoveType": 9,
 		"Effects": [ "Heal" ],
 		"ObjectSlug": "heal",
@@ -232,7 +210,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 4,
 		"MoveType": 9,
 		"Effects": [ "Headache" ],
 		"ObjectSlug": "whack",
@@ -243,7 +221,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 3,
 		"MoveType": 9,
 		"Effects": [ "Bleeding" ],
 		"ObjectSlug": "throwPebbles",
@@ -254,7 +232,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 4,
 		"MoveType": 9,
 		"Effects": [ "Heal" ],
 		"ObjectSlug": "patchUp",
@@ -265,7 +243,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 3,
 		"MoveType": 9,
 		"Effects": [ "Pain" ],
 		"ObjectSlug": "shoot",
@@ -276,7 +254,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 2,
 		"MoveType": 9,
 		"Effects": [ "Confused" ],
 		"ObjectSlug": "confuse",
@@ -287,7 +265,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 3,
 		"MoveType": 9,
 		"Effects": [ "Heal" ],
 		"ObjectSlug": "regenerate",
@@ -298,7 +276,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 2,
 		"MoveType": 9,
 		"Effects": [ "Sad", "Crying" ],
 		"ObjectSlug": "insult",
@@ -309,7 +287,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 2,
 		"MoveType": 9,
 		"Effects": [ "Charmed" ],
 		"ObjectSlug": "charm",
@@ -320,7 +298,7 @@
 	},
 	{
 		"RequireTarget": true,
-		"MPcost": 5,
+		"MPcost": 2,
 		"MoveType": 9,
 		"Effects": [ "Heal" ],
 		"ObjectSlug": "flirt",
