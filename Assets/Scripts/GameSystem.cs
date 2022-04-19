@@ -47,6 +47,7 @@ public class GameSystem : MonoBehaviour
     public int MovesMade = 0;
     private bool missNext = false;
     private float random;
+    private float damageMod;
 
     private List<Effect> WeatherEffects = new List<Effect>();
     public PostProcessVolume ppv;
@@ -89,6 +90,14 @@ public class GameSystem : MonoBehaviour
         else
         {
             missNext = false;
+        }
+        if (Succeeded)
+        {
+            damageMod = 1.5f;
+        }
+        else
+        {
+            damageMod = 0.8f;
         }
     }
 
@@ -283,7 +292,7 @@ public class GameSystem : MonoBehaviour
                 Unit hitUnit = UnitsInPlay[(int)RandomSystem.RandomRange(0, UnitsInPlay.Count)];
                 StatusText.text = chosenUnit.Name + " missed their target and hit "+ hitUnit.Name + " instead!";
                 //yield return StartCoroutine(RandomNumberVis("HIT!"));
-                float damage = Mathf.Round(2 * chosenUnit.damageMod * UnityEngine.Random.Range(0.5f, 1.5f) * 100f) / 100f;
+                float damage = Mathf.Round(2 * chosenUnit.damageMod * damageMod * UnityEngine.Random.Range(0.5f, 1.5f) * 100f) / 100f;
                 hitUnit.TakeDamage2(damage);
                 yield return StartCoroutine(DamageFriendlyUnit(hitUnit.attachedObject, damage));
                 yield return new WaitForSeconds(1.0f);
@@ -296,7 +305,7 @@ public class GameSystem : MonoBehaviour
             dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().CurveScale = 200;
             yield return StartCoroutine(RandomNumberVis("CRIT!"));
             PopUpTextController.CreatePopUpText("CRIT!", enemiesUI[Target.index].transform);
-            float damage = Mathf.Round(2 * chosenUnit.damageMod * 1.25f * UnityEngine.Random.Range(0.5f, 1.5f) * 100f) / 100f;
+            float damage = Mathf.Round(2 * chosenUnit.damageMod * damageMod * 1.25f * UnityEngine.Random.Range(0.5f, 1.5f) * 100f) / 100f;
             Target.TakeDamage2(damage);
             yield return StartCoroutine(DamageUnit(Target.index, damage));
             dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().AngleMultiplier = 3;
