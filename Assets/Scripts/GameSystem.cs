@@ -39,6 +39,7 @@ public class GameSystem : MonoBehaviour
     public List<EnemyButton> enemiesUI;
 
     public DiceVis dice;
+    public bool Succeeded;
 
     public float GodOfFortune = 0.0f;
     private RandomMeter sanity;

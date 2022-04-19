@@ -53,6 +53,7 @@ public class Player : MonoBehaviour
     public Order selectedOrder;
 
     public StateHandler stateHandler;
+    public RunningButton RunningButton;
 
     [SerializeField]
     public Unit chosenUnit;
