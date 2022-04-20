@@ -33,7 +33,7 @@ public class RunningButton : MonoBehaviour, ISelectHandler
     {
         if (Move)
         {
-            rt.anchoredPosition = Vector2.Lerp(rt.anchoredPosition, targetPos, Time.deltaTime*2.0f);
+            rt.anchoredPosition = Vector2.Lerp(rt.anchoredPosition, targetPos, Time.deltaTime*5.0f);
         }
     }
 
