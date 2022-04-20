@@ -48,6 +48,10 @@ public class GameSystem : MonoBehaviour
     private bool missNext = false;
     private float random;
     private float damageMod;
+    public AudioSource source;
+    public AudioClip bonk;
+    public AudioClip crit;
+    public AudioClip miss;
 
     private List<Effect> WeatherEffects = new List<Effect>();
     public PostProcessVolume ppv;
@@ -74,10 +78,10 @@ public class GameSystem : MonoBehaviour
         {
             GFText.text = "The God of Fortune is smiling";
         }
-        else
+   /*     else
         {
             GFText.text = "...";
-        }
+        }*/
         random = TurnsSinceStart * 0.01f;
         if (TurnsSinceStart % 10 == 0)
         {
@@ -280,13 +284,16 @@ public class GameSystem : MonoBehaviour
         //if(missNext)
         if (result <= 0.45/chosenUnit.hitMod || missNext) //Miss
         {
+            source.clip = miss;
+
             yield return StartCoroutine(RandomNumberVis("MISSED!"));
             PopUpTextController.CreatePopUpText("MISSED", enemiesUI[Target.index].transform);
+            source.Play();
             yield return new WaitForSeconds(1.0f);
             dice.text.text = "...";
             if (RandomSystem.RandomValue() >= 0.5f + (GodOfFortune*0.10f))
             {
-
+                source.clip = bonk;
                 //Target random Unit
                 StatusText.text = "Attacking Random Unit!";
                 Unit hitUnit = UnitsInPlay[(int)RandomSystem.RandomRange(0, UnitsInPlay.Count)];
@@ -301,6 +308,7 @@ public class GameSystem : MonoBehaviour
         } 
         else if(result >= 0.70/chosenUnit.critMod) //Crit
         {
+            source.clip = crit;
             dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().AngleMultiplier = 20;
             dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().CurveScale = 200;
             yield return StartCoroutine(RandomNumberVis("CRIT!"));
@@ -315,6 +323,7 @@ public class GameSystem : MonoBehaviour
         }
         else
         {
+            source.clip = bonk;
             yield return StartCoroutine(RandomNumberVis("HIT!"));
             float damage = Mathf.Round(2 * chosenUnit.damageMod * UnityEngine.Random.Range(0.5f, 1.5f) * 100f) / 100f;
             Target.TakeDamage2(damage);
@@ -397,6 +406,7 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator DamageUnit(int index, float dam)
     {
+        source.Play();
         Debug.Log(index);
         PopUpTextController.CreatePopUpText(dam.ToString(),enemiesUI[index].transform);
         yield return StartCoroutine(enemiesUI[index].Shake());
@@ -404,6 +414,7 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator DamageFriendlyUnit(GameObject element, float dam)
     {
+        source.Play();
         Debug.Log(element.name);
         PopUpTextController.CreatePopUpText(dam.ToString(), element.transform);
         yield return StartCoroutine(element.GetComponent<EnemyButton>().Shake());

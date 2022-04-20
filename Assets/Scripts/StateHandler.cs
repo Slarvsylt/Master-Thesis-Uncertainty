@@ -14,6 +14,7 @@ public class StateHandler : MonoBehaviour
     public GameSystem gameSystem;
     public int TurnCounter = 0;
     public TextMeshProUGUI winText;
+    public RunningButton runningButton;
 
     void Awake()
     {
@@ -23,6 +24,7 @@ public class StateHandler : MonoBehaviour
     private void Start()
     {
         ChangeState(GameState.START);
+        runningButton.gameObject.SetActive(false);
     }
 
     public void Update()
@@ -116,12 +118,36 @@ public class StateHandler : MonoBehaviour
         //Wait for the player having done their decisions and have clicked the end turn button.
         // Debug.Log("Starting new turn and populating field :" + currentPlayer.gameObject.name);
         //Debug.Log("STARTING TURN for : " + currentPlayer.gameObject.name);
+        runningButton.text.text = "3";
+        yield return new WaitForSeconds(0.5f);
+        runningButton.text.text = "2";
+        yield return new WaitForSeconds(0.5f);
+        runningButton.text.text = "1";
+        yield return new WaitForSeconds(0.5f);
+        runningButton.text.text = "GO!";
+        yield return new WaitForSeconds(0.5f);
+        runningButton.gameObject.SetActive(true);
+        Debug.Log("before");
+        StartCoroutine(runningButton.StartRun());
+        Debug.Log("after");
+        yield return new WaitForSeconds(2.5f);
+        if (runningButton.Success)
+        {
+            Debug.Log("Success");
+            gameSystem.Succeeded = true;
+        }
+        else
+        {
+            Debug.Log("Failure");
+            gameSystem.Succeeded = false;
+        }
+        runningButton.StopRun();
+        runningButton.gameObject.SetActive(false);
         yield return StartCoroutine(gameSystem.StartOfturnEffects());
         yield return StartCoroutine(gameSystem.IncreaseEffectsTurnCounter(TurnCounter));
         currentPlayer.PopulateField();
         //StartCoroutine(GameSystem.gameSystem.StartOfturnEffects());
         //StartCoroutine(currentPlayer.ChooseAction());
- 
     }
 
     private void EndTurn()
