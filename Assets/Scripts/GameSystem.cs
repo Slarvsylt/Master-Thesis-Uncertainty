@@ -291,7 +291,7 @@ public class GameSystem : MonoBehaviour
             source.Play();
             yield return new WaitForSeconds(1.0f);
             dice.text.text = "...";
-            if (RandomSystem.RandomValue() >= 0.5f + (GodOfFortune*0.10f))
+            if (RandomSystem.RandomValue() >= 0.4f + (GodOfFortune*0.10f))
             {
                 source.clip = bonk;
                 //Target random Unit
@@ -320,6 +320,7 @@ public class GameSystem : MonoBehaviour
             dice.gameObject.GetComponent<TMPro.Examples.VertexJitter>().CurveScale = 5;
             dice.text.text = "...";
             GodOfFortune = 0.0f;
+            source.clip = bonk;
         }
         else
         {
@@ -373,7 +374,7 @@ public class GameSystem : MonoBehaviour
             }
             yield return new WaitForSeconds(1.0f);
             dice.text.text = "...";
-            GodOfFortune = 0.0f; 
+            //GodOfFortune = 0.0f; 
         }
         else
         {

@@ -14,6 +14,7 @@ public class RandomMeter : MonoBehaviour, ISelectHandler
     ColorGrading colorGradingLayer = null;
     public Button testButton;
     public float perc = 1.0f;
+    private bool fill = false;
     void Start()
     {
         ppv.profile.TryGetSettings<ColorGrading>(out colorGradingLayer);
@@ -24,6 +25,7 @@ public class RandomMeter : MonoBehaviour, ISelectHandler
     // Update is called once per frame
     void Update()
     {
+
         front.fillAmount -= 0.001f;
         perc = front.fillAmount;
         if(colorGradingLayer != null)
