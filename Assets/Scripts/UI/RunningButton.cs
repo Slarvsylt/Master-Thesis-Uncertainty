@@ -73,6 +73,10 @@ public class RunningButton : MonoBehaviour, ISelectHandler
     {
         Move = false;
         StopCoroutine(Run());
+        if (source.isPlaying && source.clip.name == "annoying")
+        {
+            source.Stop();
+        }
         //source.Stop();
     }
 
