@@ -15,6 +15,7 @@ public class StateHandler : MonoBehaviour
     public int TurnCounter = 0;
     public TextMeshProUGUI winText;
     public RunningButton runningButton;
+    public AudioClip startSound;
 
     void Awake()
     {
@@ -118,14 +119,16 @@ public class StateHandler : MonoBehaviour
         //Wait for the player having done their decisions and have clicked the end turn button.
         // Debug.Log("Starting new turn and populating field :" + currentPlayer.gameObject.name);
         //Debug.Log("STARTING TURN for : " + currentPlayer.gameObject.name);
+        gameSystem.source.clip = startSound;
+        gameSystem.source.Play();
         runningButton.text.text = "3";
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.95f);
         runningButton.text.text = "2";
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.95f);
         runningButton.text.text = "1";
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.95f);
         runningButton.text.text = "GO!";
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.0f);
         runningButton.gameObject.SetActive(true);
         Debug.Log("before");
         StartCoroutine(runningButton.StartRun());

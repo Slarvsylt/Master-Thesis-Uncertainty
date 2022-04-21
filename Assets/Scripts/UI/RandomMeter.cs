@@ -25,8 +25,20 @@ public class RandomMeter : MonoBehaviour, ISelectHandler
     // Update is called once per frame
     void Update()
     {
+        if (fill)
+        {
+            front.fillAmount += 0.001f;
+        }
+        else
+        {
+            front.fillAmount -= 0.001f;
+        }
 
-        front.fillAmount -= 0.001f;
+        if (front.fillAmount <= 0.001f)
+        {
+            fill = true;
+        }
+
         perc = front.fillAmount;
         if(colorGradingLayer != null)
         {

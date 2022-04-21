@@ -33,7 +33,7 @@ public class RunningButton : MonoBehaviour, ISelectHandler
     {
         if (Move)
         {
-            rt.anchoredPosition = Vector2.Lerp(rt.anchoredPosition, targetPos, Time.deltaTime*5.0f);
+            rt.anchoredPosition = Vector2.Lerp(rt.anchoredPosition, targetPos, Time.deltaTime*3.5f);
         }
     }
 
@@ -64,6 +64,7 @@ public class RunningButton : MonoBehaviour, ISelectHandler
 
     public IEnumerator StartRun()
     {
+        transform.SetAsLastSibling();
         gameObject.GetComponent<Image>().color = color;
         Success = false;
         yield return StartCoroutine(Run());
@@ -91,7 +92,7 @@ public class RunningButton : MonoBehaviour, ISelectHandler
             Vector2 randomPos = new Vector2(Random.Range(0, Screen.width), Random.Range(0, Screen.height));
             targetPos = new Vector2(randomPos.x, randomPos.y);
             //SetNewAnchor(new Vector2(randomPos.x, randomPos.y));
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.4f);
         }
     }
 
