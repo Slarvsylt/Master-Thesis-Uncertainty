@@ -169,7 +169,6 @@ public class GameSystem : MonoBehaviour
     {
         UnitsInPlay.AddRange(p1.Units);
         UnitsInPlay.AddRange(p2.Units);
-        Debug.Log(UnitsInPlay.Count);
     }
 
     /// <summary>

@@ -18,6 +18,8 @@ public class RunningButton : MonoBehaviour, ISelectHandler
     public AudioClip bonk;
     public AudioSource source;
     private Color color;
+    public Sprite normal;
+    public Sprite damaged;
     
     // Start is called before the first frame update
     void Start()
@@ -33,7 +35,8 @@ public class RunningButton : MonoBehaviour, ISelectHandler
     {
         if (Move)
         {
-            rt.anchoredPosition = Vector2.Lerp(rt.anchoredPosition, targetPos, Time.deltaTime*3.5f);
+            rt.anchoredPosition = Vector2.Lerp(rt.anchoredPosition, targetPos, Time.deltaTime*1.5f);
+           // rt.anchoredPosition = cubeBezier2(rt.anchoredPosition, new Vector2(0, 0), new Vector2(0, 0), targetPos, Time.deltaTime * 3.5f);
         }
     }
 
@@ -51,7 +54,8 @@ public class RunningButton : MonoBehaviour, ISelectHandler
         source.Stop();
         source.clip = bonk;
         source.Play();
-        gameObject.GetComponent<Image>().color = Color.red;
+       // gameObject.GetComponent<Image>().color = color;
+        gameObject.GetComponent<Image>().sprite = damaged;
        // Debug.Log(source.clip.name);
         StopRun();
         Success = true;
@@ -65,7 +69,8 @@ public class RunningButton : MonoBehaviour, ISelectHandler
     public IEnumerator StartRun()
     {
         transform.SetAsLastSibling();
-        gameObject.GetComponent<Image>().color = color;
+        gameObject.GetComponent<Image>().sprite = normal;
+        //gameObject.GetComponent<Image>().color = color;
         Success = false;
         yield return StartCoroutine(Run());
     }
@@ -101,5 +106,18 @@ public class RunningButton : MonoBehaviour, ISelectHandler
         Vector3[] v = new Vector3[4];
         rt.GetWorldCorners(v);
         return v[0];
+    }
+
+    public Vector2 cubeBezier2(Vector2 p0, Vector2 p1, Vector2 p2, Vector2 p3, float t)
+    {
+        float r = 1f - t;
+        float f0 = r * r * r;
+        float f1 = r * r * t * 3;
+        float f2 = r * t * t * 3;
+        float f3 = t * t * t;
+        return new Vector2(
+            f0 * p0.x + f1 * p1.x + f2 * p2.x + f3 * p3.x,
+            f0 * p0.y + f1 * p1.y + f2 * p2.y + f3 * p3.y
+        );
     }
 }

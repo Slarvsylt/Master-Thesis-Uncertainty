@@ -15,6 +15,7 @@ public class StateHandler : MonoBehaviour
     public int TurnCounter = 0;
     public TextMeshProUGUI winText;
     public RunningButton runningButton;
+    public PerformativeButton pbutton;
     public AudioClip startSound;
 
     void Awake()
@@ -119,33 +120,63 @@ public class StateHandler : MonoBehaviour
         //Wait for the player having done their decisions and have clicked the end turn button.
         // Debug.Log("Starting new turn and populating field :" + currentPlayer.gameObject.name);
         //Debug.Log("STARTING TURN for : " + currentPlayer.gameObject.name);
-        gameSystem.source.clip = startSound;
-        gameSystem.source.Play();
-        runningButton.text.text = "3";
-        yield return new WaitForSeconds(0.95f);
-        runningButton.text.text = "2";
-        yield return new WaitForSeconds(0.95f);
-        runningButton.text.text = "1";
-        yield return new WaitForSeconds(0.95f);
-        runningButton.text.text = "GO!";
-        yield return new WaitForSeconds(1.0f);
-        runningButton.gameObject.SetActive(true);
-        Debug.Log("before");
-        StartCoroutine(runningButton.StartRun());
-        Debug.Log("after");
-        yield return new WaitForSeconds(2.5f);
-        if (runningButton.Success)
+        if(RandomSystem.RandomValue() < 0.5f)
         {
-            Debug.Log("Success");
-            gameSystem.Succeeded = true;
+            gameSystem.source.clip = startSound;
+            gameSystem.source.Play();
+            runningButton.text.text = "3";
+            yield return new WaitForSeconds(0.95f);
+            runningButton.text.text = "2";
+            yield return new WaitForSeconds(0.95f);
+            runningButton.text.text = "1";
+            yield return new WaitForSeconds(0.95f);
+            runningButton.text.text = "GO!";
+            yield return new WaitForSeconds(1.0f);
+            StartCoroutine(pbutton.StartRun());
+            yield return new WaitForSeconds(2.5f);
+            if (pbutton.Success)
+            {
+                Debug.Log("Success");
+                gameSystem.Succeeded = true;
+            }
+            else
+            {
+                Debug.Log("Failure");
+                gameSystem.Succeeded = false;
+            }
+            pbutton.StopRun();
         }
         else
         {
-            Debug.Log("Failure");
-            gameSystem.Succeeded = false;
+            gameSystem.source.clip = startSound;
+            gameSystem.source.Play();
+            runningButton.text.text = "3";
+            yield return new WaitForSeconds(0.95f);
+            runningButton.text.text = "2";
+            yield return new WaitForSeconds(0.95f);
+            runningButton.text.text = "1";
+            yield return new WaitForSeconds(0.95f);
+            runningButton.text.text = "GO!";
+            yield return new WaitForSeconds(1.0f);
+            runningButton.gameObject.SetActive(true);
+            Debug.Log("before");
+            StartCoroutine(runningButton.StartRun());
+            Debug.Log("after");
+            yield return new WaitForSeconds(4.5f);
+            if (runningButton.Success)
+            {
+                Debug.Log("Success");
+                gameSystem.Succeeded = true;
+            }
+            else
+            {
+                Debug.Log("Failure");
+                gameSystem.Succeeded = false;
+            }
+            runningButton.StopRun();
+            runningButton.gameObject.SetActive(false);
         }
-        runningButton.StopRun();
-        runningButton.gameObject.SetActive(false);
+
         yield return StartCoroutine(gameSystem.StartOfturnEffects());
         yield return StartCoroutine(gameSystem.IncreaseEffectsTurnCounter(TurnCounter));
         currentPlayer.PopulateField();
