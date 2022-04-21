@@ -35,7 +35,7 @@ public class RunningButton : MonoBehaviour, ISelectHandler
     {
         if (Move)
         {
-            rt.anchoredPosition = Vector2.Lerp(rt.anchoredPosition, targetPos, Time.deltaTime*1.5f);
+            rt.anchoredPosition = Vector2.Lerp(rt.anchoredPosition, targetPos, Time.deltaTime*3.5f);
            // rt.anchoredPosition = cubeBezier2(rt.anchoredPosition, new Vector2(0, 0), new Vector2(0, 0), targetPos, Time.deltaTime * 3.5f);
         }
     }
@@ -68,6 +68,7 @@ public class RunningButton : MonoBehaviour, ISelectHandler
 
     public IEnumerator StartRun()
     {
+        GameObject.Find("dice").GetComponent<TextMeshProUGUI>().text = "Catch Bobo!";
         transform.SetAsLastSibling();
         gameObject.GetComponent<Image>().sprite = normal;
         //gameObject.GetComponent<Image>().color = color;
@@ -77,6 +78,7 @@ public class RunningButton : MonoBehaviour, ISelectHandler
 
     public void StopRun()
     {
+        GameObject.Find("dice").GetComponent<TextMeshProUGUI>().text = "...";
         Move = false;
         StopCoroutine(Run());
         if (source.isPlaying && source.clip.name == "annoying")

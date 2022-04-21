@@ -38,6 +38,10 @@ public class RandomMeter : MonoBehaviour, ISelectHandler
         {
             fill = true;
         }
+        if(front.fillAmount >= 0.995)
+        {
+            fill = false;
+        }
 
         perc = front.fillAmount;
         if(colorGradingLayer != null)
