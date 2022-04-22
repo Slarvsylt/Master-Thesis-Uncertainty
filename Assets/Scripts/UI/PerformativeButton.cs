@@ -14,7 +14,8 @@ public class PerformativeButton : MonoBehaviour, ISelectHandler
     public bool Success = false;
     public TextMeshProUGUI text;
     public AudioClip clip;
-    public AudioClip bonk;
+    public AudioClip successSound;
+    public AudioClip failSound;
     public AudioSource source;
     private Color color;
     private bool run = false;
@@ -40,6 +41,7 @@ public class PerformativeButton : MonoBehaviour, ISelectHandler
             if (Input.GetKeyDown((KeyCode)System.Enum.Parse(typeof(KeyCode), key)))
             {
                 Success = true;
+                source.clip = successSound;
                 StopRun();
             }
         }
@@ -53,6 +55,7 @@ public class PerformativeButton : MonoBehaviour, ISelectHandler
     {
         transform.SetAsLastSibling();
         Success = false;
+        source.clip = failSound;
         Debug.Log("GO!");
         yield return StartCoroutine(Run());
     }
@@ -72,8 +75,8 @@ public class PerformativeButton : MonoBehaviour, ISelectHandler
 
     public IEnumerator Run()
     {
-        source.clip = clip;
-        source.Play();
+        //source.clip = clip;
+        //source.Play();
         key = KeyList[(int)RandomSystem.RandomRange(0,KeyList.Count)];
         Debug.Log(key);
         text.text = "Press " + key;
