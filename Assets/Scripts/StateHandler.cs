@@ -123,7 +123,7 @@ public class StateHandler : MonoBehaviour
         if(RandomSystem.RandomValue() < 0.5f)
         {
             gameSystem.source.clip = startSound;
-            gameSystem.source.volume = 0.6f;
+            gameSystem.source.volume = 0.4f;
             gameSystem.source.Play();
             runningButton.text.text = "3";
             yield return new WaitForSeconds(0.95f);
@@ -133,6 +133,7 @@ public class StateHandler : MonoBehaviour
             yield return new WaitForSeconds(0.95f);
             runningButton.text.text = "GO!";
             yield return new WaitForSeconds(1.0f);
+            gameSystem.source.Stop();
             gameSystem.source.volume = 1.0f;
             StartCoroutine(pbutton.StartRun());
             yield return new WaitForSeconds(2.5f);
@@ -153,7 +154,7 @@ public class StateHandler : MonoBehaviour
         else
         {
             gameSystem.source.clip = startSound;
-            gameSystem.source.volume = 0.6f;
+            gameSystem.source.volume = 0.4f;
             gameSystem.source.Play();
             runningButton.text.text = "3";
             yield return new WaitForSeconds(0.95f);
@@ -163,6 +164,7 @@ public class StateHandler : MonoBehaviour
             yield return new WaitForSeconds(0.95f);
             runningButton.text.text = "GO!";
             yield return new WaitForSeconds(1.0f);
+            gameSystem.source.Stop();
             gameSystem.source.volume = 1.0f;
             runningButton.gameObject.SetActive(true);
             Debug.Log("before");

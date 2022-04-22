@@ -281,7 +281,7 @@ public class GameSystem : MonoBehaviour
         chosenUnit.PerformAttack();
         float result = RandomC() + random + GodOfFortune /** (sanity.perc * RandomSystem.RandomRange(-1,1))*/;
         //if(missNext)
-        if (result <= 0.45/chosenUnit.hitMod || missNext) //Miss
+        if (result <= 0.35/chosenUnit.hitMod || missNext) //Miss
         {
             source.clip = miss;
 

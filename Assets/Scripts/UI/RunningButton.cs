@@ -35,7 +35,7 @@ public class RunningButton : MonoBehaviour, ISelectHandler
     {
         if (Move)
         {
-            rt.anchoredPosition = Vector2.Lerp(rt.anchoredPosition, targetPos, Time.deltaTime*0.5f);
+            rt.anchoredPosition = Vector2.Lerp(rt.anchoredPosition, targetPos, Time.deltaTime*3.5f);
            // rt.anchoredPosition = cubeBezier2(rt.anchoredPosition, new Vector2(0, 0), new Vector2(0, 0), targetPos, Time.deltaTime * 3.5f);
         }
     }
