@@ -56,9 +56,9 @@ public class RunningButton : MonoBehaviour, ISelectHandler
         source.Play();
        // gameObject.GetComponent<Image>().color = color;
         gameObject.GetComponent<Image>().sprite = damaged;
-       // Debug.Log(source.clip.name);
-        StopRun();
+        // Debug.Log(source.clip.name);
         Success = true;
+        StopRun();
     }
 
     public void OnSelect(BaseEventData eventData)
@@ -78,12 +78,20 @@ public class RunningButton : MonoBehaviour, ISelectHandler
 
     public void StopRun()
     {
-        GameObject.Find("dice").GetComponent<TextMeshProUGUI>().text = "...";
+
         Move = false;
         StopCoroutine(Run());
         if (source.isPlaying && source.clip.name == "annoying")
         {
             source.Stop();
+        }
+        if (Success)
+        {
+            GameObject.Find("dice").GetComponent<TextMeshProUGUI>().text = "+Atk. dmg.";
+        }
+        else
+        {
+            GameObject.Find("dice").GetComponent<TextMeshProUGUI>().text = "...";
         }
         //source.Stop();
     }

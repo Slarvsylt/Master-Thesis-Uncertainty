@@ -52,7 +52,7 @@ public class RandomMeter : MonoBehaviour, ISelectHandler
 
     void TaskOnClick()
     {
-        front.fillAmount += 0.01f;
+        front.fillAmount += 0.08f;
         Debug.Log("You have clicked the Sanity!");
     }
 

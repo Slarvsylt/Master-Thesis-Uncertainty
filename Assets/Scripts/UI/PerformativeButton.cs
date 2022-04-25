@@ -69,7 +69,14 @@ public class PerformativeButton : MonoBehaviour, ISelectHandler
         {
             source.Stop();
         }
-        text.text = "...";
+        if (Success)
+        {
+            text.text = "+Atk. dmg.";
+        }
+        else
+        {
+            text.text = "...";
+        }
         //source.Stop();
     }
 
