@@ -70,7 +70,10 @@ public class Unit: MonoBehaviour
         currentHP -= (damage / defMod);
         yield return StartCoroutine(GameSystem.gameSystem.DamageFriendlyUnit(attachedObject, damage));
         if (currentHP <= 0)
+        {
+            currentHP = 0f;
             StartCoroutine(Die());
+        }
     }
 
     public IEnumerator Effect(string what, Color color)
@@ -83,7 +86,10 @@ public class Unit: MonoBehaviour
         Debug.Log("TakeDamage2");
         currentHP -= (damage / defMod);
         if (currentHP <= 0)
+        {
+            currentHP = 0f;
             StartCoroutine(Die());
+        }
     }
 
     public IEnumerator RestoreHP(float heal)

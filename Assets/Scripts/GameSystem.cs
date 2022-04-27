@@ -53,6 +53,10 @@ public class GameSystem : MonoBehaviour
     public AudioClip crit;
     public AudioClip miss;
 
+    public RandomMeter RM;
+    private float totalHealth = 0f;
+    private float maxHealth = 0f;
+
     private List<Effect> WeatherEffects = new List<Effect>();
     public PostProcessVolume ppv;
     private ColorGrading colorGradingLayer = null;
@@ -165,10 +169,19 @@ public class GameSystem : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Load units.
+    /// </summary>
     public void LoadUnits()
     {
         UnitsInPlay.AddRange(p1.Units);
         UnitsInPlay.AddRange(p2.Units);
+        
+        foreach(Unit unit in UnitsInPlay)
+        {
+            maxHealth += unit.maxHP;
+        }
+        totalHealth = maxHealth;
     }
 
     /// <summary>
@@ -228,12 +241,25 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator EndOfTurnEffects()
     {
+        totalHealth = 0f;
+        foreach (Unit unit in UnitsInPlay)
+        {
+            totalHealth += unit.currentHP;
+        }
+        RM.perc = totalHealth / maxHealth;
         StatusText.text = "Triggering end of turn effects...";
         foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
         {
             for (int i = entry.Value.Count - 1; i >= 0; i--)
             {
-                yield return StartCoroutine(entry.Value[i].effect.OnTurnEnd());
+                if (!entry.Key.isDead)
+                {
+                    yield return StartCoroutine(entry.Value[i].effect.OnTurnEnd());
+                }
+                else
+                {
+                    RemoveStatusAllEffects(entry.Key);
+                }
                // yield return new WaitForSeconds(0.1f);
             }
         }
@@ -247,7 +273,14 @@ public class GameSystem : MonoBehaviour
         {
             for (int i = entry.Value.Count - 1; i >= 0; i--)
             {
-                yield return StartCoroutine(entry.Value[i].effect.OnTurnBegin());
+                if (!entry.Key.isDead)
+                {
+                    yield return StartCoroutine(entry.Value[i].effect.OnTurnBegin());
+                }
+                else
+                {
+                    RemoveStatusAllEffects(entry.Key);
+                }
                // yield return new WaitForSeconds(0.1f);
             }
         }
@@ -406,6 +439,10 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator DamageUnit(int index, float dam)
     {
+        if(source.clip.name != "crit" || source.clip.name != "dmg")
+        {
+            source.clip = bonk;
+        }
         source.Play();
         Debug.Log(index);
         PopUpTextController.CreatePopUpText(dam.ToString(),enemiesUI[index].transform);
@@ -414,6 +451,10 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator DamageFriendlyUnit(GameObject element, float dam)
     {
+        if (source.clip.name != "crit" || source.clip.name != "dmg")
+        {
+            source.clip = bonk;
+        }
         source.Play();
         Debug.Log(element.name);
         PopUpTextController.CreatePopUpText(dam.ToString(), element.transform);

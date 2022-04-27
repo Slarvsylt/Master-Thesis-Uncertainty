@@ -15,6 +15,9 @@ public class RandomMeter : MonoBehaviour, ISelectHandler
     public Button testButton;
     public float perc = 1.0f;
     private bool fill = false;
+    public AudioSource MusicSource;
+    public float ShakeAmount; //Amount the UI will shake
+
     void Start()
     {
         ppv.profile.TryGetSettings<ColorGrading>(out colorGradingLayer);
@@ -25,6 +28,7 @@ public class RandomMeter : MonoBehaviour, ISelectHandler
     // Update is called once per frame
     void Update()
     {
+        /*
         if (fill)
         {
             front.fillAmount += 0.001f;
@@ -42,11 +46,13 @@ public class RandomMeter : MonoBehaviour, ISelectHandler
         {
             fill = false;
         }
+        */
 
-        perc = front.fillAmount;
+        front.fillAmount = perc;
+        SetPitch(perc);
         if(colorGradingLayer != null)
         {
-            //colorGradingLayer.hueShift.value = front.fillAmount * 180f;
+            colorGradingLayer.hueShift.value = 180f - (180f*perc) ;
         }
     }
 
@@ -54,6 +60,11 @@ public class RandomMeter : MonoBehaviour, ISelectHandler
     {
         front.fillAmount += 0.08f;
         Debug.Log("You have clicked the Sanity!");
+    }
+
+    public void SetPitch(float p)
+    {
+        MusicSource.pitch = 1 + (1-p)*0.1f;
     }
 
     public void OnSelect(BaseEventData eventData)
