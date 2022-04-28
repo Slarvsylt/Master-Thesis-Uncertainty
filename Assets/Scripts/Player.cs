@@ -486,6 +486,10 @@ public class Player : MonoBehaviour
         {
             foreach (StoredOrder order in ordersToBeDone)
             {
+                if (order.unit.isDead)
+                {
+                    continue;
+                }
                 if (order.order == Order.ATTACK)
                 {
                    // sb.Append(order.unit.Name + "  " + order.order.ToString() + "  " + order.Target.Name + "! \n");
