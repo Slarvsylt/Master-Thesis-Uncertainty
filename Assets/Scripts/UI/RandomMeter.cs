@@ -16,7 +16,7 @@ public class RandomMeter : MonoBehaviour, ISelectHandler
     public float perc = 1.0f;
     private bool fill = false;
     public AudioSource MusicSource;
-    public float ShakeAmount; //Amount the UI will shake
+   // public float ShakeAmount; //Amount the UI will shake
 
     void Start()
     {
@@ -47,6 +47,14 @@ public class RandomMeter : MonoBehaviour, ISelectHandler
             fill = false;
         }
         */
+        if(perc < 0)
+        {
+            perc = 0;
+        }
+        if (perc > 1)
+        {
+            perc = 1;
+        }
 
         front.fillAmount = perc;
         SetPitch(perc);

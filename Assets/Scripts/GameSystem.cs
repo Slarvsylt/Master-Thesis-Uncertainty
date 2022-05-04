@@ -246,7 +246,14 @@ public class GameSystem : MonoBehaviour
         {
             totalHealth += unit.currentHP;
         }
-        RM.perc = totalHealth / maxHealth;
+        foreach (Unit unit in UnitsInPlay)
+        {
+            if (unit.isDead)
+            {
+                RemoveStatusAllEffects(unit);
+            }
+        }
+        //RM.perc = totalHealth / maxHealth;
         StatusText.text = "Triggering end of turn effects...";
         foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
         {
@@ -268,6 +275,13 @@ public class GameSystem : MonoBehaviour
 
     public IEnumerator StartOfturnEffects()
     {
+        foreach(Unit unit in UnitsInPlay)
+        {
+            if (unit.isDead)
+            {
+                RemoveStatusAllEffects(unit);
+            }
+        }
         StatusText.text = "Triggering start of turn effects";
         foreach (KeyValuePair<Unit, List<StatusEffect>> entry in statusEffects)
         {
