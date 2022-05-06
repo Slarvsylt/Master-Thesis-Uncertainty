@@ -72,7 +72,7 @@ public class RandomMeter : MonoBehaviour, ISelectHandler
 
     public void SetPitch(float p)
     {
-        MusicSource.pitch = 1 + (1-p)*0.1f;
+        MusicSource.pitch = 1 + (1-p)*0.5f;
     }
 
     public void OnSelect(BaseEventData eventData)

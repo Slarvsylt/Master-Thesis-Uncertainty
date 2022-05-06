@@ -28,15 +28,16 @@ public class ShakingUI : MonoBehaviour
 
     void LateUpdate()
     {
-        shake = (1f - rm.perc) * 600f;
-        if (shake > 50f)
+        shake = (1f - rm.perc) * 100f;
+        if (shake > 5f && !isShaking)
         {
             StartCoroutine(Shake());
         }
-        else if(isShaking)
+        else if (shake < 5f)
         {
             isShaking = false;
         }
+
         if (isShaking)
         {
             //  rt.position = startPos + newPos;
@@ -47,7 +48,6 @@ public class ShakingUI : MonoBehaviour
     public IEnumerator Shake()
     {
         Vector3 originalPos = rt.anchoredPosition;
-
         if (!isShaking)
         {
             isShaking = true;
@@ -55,9 +55,9 @@ public class ShakingUI : MonoBehaviour
 
         while (isShaking)
         {
-            newPos = Random.insideUnitSphere * (Time.deltaTime * shake);
+            newPos = Random.insideUnitSphere * (shake);
             newPos.z = 0;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.05f);
         }
         isShaking = false;
         rt.anchoredPosition = originalPos;
