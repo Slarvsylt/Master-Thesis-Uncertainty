@@ -87,7 +87,7 @@ public class RunningButton : MonoBehaviour, ISelectHandler
         }
         if (Success)
         {
-            GameObject.Find("dice").GetComponent<TextMeshProUGUI>().text = "+Atk. dmg.";
+            GameObject.Find("dice").GetComponent<TextMeshProUGUI>().text = "+Atk.";
         }
         else
         {

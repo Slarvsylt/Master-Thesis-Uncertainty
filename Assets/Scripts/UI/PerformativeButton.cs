@@ -71,7 +71,7 @@ public class PerformativeButton : MonoBehaviour, ISelectHandler
         }
         if (Success)
         {
-            text.text = "+Atk. dmg.";
+            text.text = "+Atk.";
         }
         else
         {
